@@ -39,6 +39,7 @@ coding!
 - Brendan K. Schatzki: [GitHub](https://github.com/BKSchatzki) / [LinkedIn](https://www.linkedin.com/in/bkschatzki)
 - Veronika Kolesnikova: [GitHub](https://github.com/kweeuhree) / [LinkedIn](https://www.linkedin.com/in/vekolesnikova)
 - Aigul Yermagambetova: [GitHub](https://github.com/aigul-ermak) / [LinkedIn](https://www.linkedin.com/in/aigul-ermak/)
+- Luis Castillo: [GitHub](https://github.com/LuisCastilloKC) / [LinkedIn](https://www.linkedin.com/in/luis-castillokc/)
   ...
 
 - Teammate name #n: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
