@@ -41,3 +41,4 @@ coding!
 - Aigul Yermagambetova: [GitHub](https://github.com/aigul-ermak) / [LinkedIn](https://www.linkedin.com/in/aigul-ermak/)
 - Steffi S.: [GitHub](https://github.com/stefley1509) / [LinkedIn](https://www.linkedin.com/in/steffisp)
 - Sarita Jha: [GitHub](https://github.com/Sarita1517) / [LinkedIn](https://www.linkedin.com/in/jha-sarita/)
+- Luis Castillo: [GitHub](https://github.com/LuisCastilloKC) / [LinkedIn](https://www.linkedin.com/in/luis-castillokc/)
