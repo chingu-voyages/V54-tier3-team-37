@@ -1,0 +1,9 @@
+{
+  "name": "V54-tier3-team-37",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "packageManager": "yarn@4.7.0"
+}
