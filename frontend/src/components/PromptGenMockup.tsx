@@ -91,12 +91,12 @@ const selects = [
 
 const PromptGenMockup = () => {
   return (
-    <div className="w-xl max-w-full flex flex-col items-center gap-8">
+    <div className="flex w-xl max-w-full flex-col items-center gap-8 pb-16">
       <Card className="w-full">
         <CardContent>
-          <h2 className="mb-8 text-center text-2xl">Prompt Builder</h2>
+          <h2 className="mb-8 text-center text-2xl">Prompt Builder #1</h2>
           <div className="grid grid-cols-2 gap-8">
-            <Label className="col-span-2 sm:col-span-1 flex flex-col items-start">
+            <Label className="col-span-2 flex flex-col items-start sm:col-span-1">
               Task Description
               <Textarea className="h-full" />
             </Label>
@@ -104,7 +104,7 @@ const PromptGenMockup = () => {
               {selects.map((item) => (
                 <Label
                   key={item.label}
-                  className="col-span-2 sm:col-span-1 flex flex-col items-start"
+                  className="col-span-2 flex flex-col items-start sm:col-span-1"
                 >
                   {item.label}
                   <Select>
@@ -136,12 +136,52 @@ const PromptGenMockup = () => {
             </Label>
             <Label className="col-span-2 flex flex-col items-start">
               Response Length
-              <Slider defaultValue={[50]} max={100} step={1} />
+              <Slider
+                defaultValue={[50]}
+                max={100}
+                step={1}
+              />
             </Label>
           </div>
         </CardContent>
       </Card>
-      <Button size="lg" className="cursor-pointer">Generate Prompt</Button>
+      <Button
+        size="lg"
+        className="cursor-pointer"
+      >
+        Generate Prompt
+      </Button>
+      <Card className="w-full">
+        <CardContent className="flex flex-col gap-8">
+          <h2 className="text-center text-2xl">Prompt Builder #2</h2>
+          <Label className="col-span-2 flex flex-col items-start">
+            Persona
+            <Textarea className="h-full min-h-24 min-w-[240px]" />
+          </Label>
+          <Label className="col-span-2 flex flex-col items-start">
+            Context
+            <Textarea className="h-full min-h-24 min-w-[240px]" />
+          </Label>
+          <Label className="col-span-2 flex flex-col items-start">
+            Task
+            <Textarea className="h-full min-h-24 min-w-[240px]" />
+          </Label>
+          <Label className="col-span-2 flex flex-col items-start">
+            Output
+            <Textarea className="h-full min-h-24 min-w-[240px]" />
+          </Label>
+          <Label className="col-span-2 flex flex-col items-start">
+            Constraints
+            <Textarea className="h-full min-h-24 min-w-[240px]" />
+          </Label>
+        </CardContent>
+      </Card>
+      <Button
+        size="lg"
+        className="cursor-pointer"
+      >
+        Generate Prompt
+      </Button>
     </div>
   );
 }
