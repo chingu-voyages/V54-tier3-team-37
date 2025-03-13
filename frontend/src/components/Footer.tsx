@@ -1,11 +1,9 @@
 const Footer = () => {
   return (
-    <div className="bg-neutral-700 text-background w-full p-16">
-      <p className="mx-auto max-w-xl text-xl text-center">
-        WOW A FOOTER
-      </p>
+    <div className="text-background w-full bg-neutral-700 p-16">
+      <p className="mx-auto max-w-xl text-center text-xl">WOW A FOOTER</p>
     </div>
   );
-}
+};
 
-export default Footer
+export default Footer;
