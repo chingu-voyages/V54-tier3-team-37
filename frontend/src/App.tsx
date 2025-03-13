@@ -1,13 +1,17 @@
 import About from './components/About';
 import Footer from './components/Footer';
 import Hero from './components/Hero';
+import Nav from './components/Nav';
 import PromptGenMockup from './components/PromptGenMockup';
 
 function App() {
   let user;
 
   return (
-    <div className="flex h-screen w-screen flex-col items-center justify-start gap-8 py-16">
+    <div className="flex h-screen w-screen flex-col items-center justify-start gap-8">
+      <header className="w-full">
+        <Nav />
+      </header>
       <Hero />
       {user ? (
         <PromptGenMockup />
