@@ -1,4 +1,5 @@
 import About from './components/About';
+import Footer from './components/Footer';
 import Hero from './components/Hero';
 import PromptGenMockup from './components/PromptGenMockup';
 
@@ -18,6 +19,7 @@ function App() {
         </div>
       )}
       <About />
+      <Footer />
     </div>
   );
 }
