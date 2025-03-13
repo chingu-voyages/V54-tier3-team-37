@@ -184,6 +184,6 @@ const PromptGenMockup = () => {
       </Button>
     </div>
   );
-}
+};
 
 export default PromptGenMockup;

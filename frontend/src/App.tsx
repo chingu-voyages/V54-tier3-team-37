@@ -6,9 +6,17 @@ function App() {
   let user;
 
   return (
-    <div className="flex flex-col gap-8 h-screen w-screen items-center justify-start py-16">
+    <div className="flex h-screen w-screen flex-col items-center justify-start gap-8 py-16">
       <Hero />
-      {user ? <PromptGenMockup /> : <div className="bg-muted w-full max-w-xl text-center p-16">Oh no you're not logged in ahhh you can't see the prompt creator hurry up and log in 🐕</div>}
+      {user ? (
+        <PromptGenMockup />
+      ) : (
+        <div className="bg-muted w-full p-16">
+          <p className="text-center max-w-xl mx-auto">
+            💫 Oh no you're not logged in ahhh you can't see the prompt creator hurry up and log in you know you want to get this show on the road yeah? 🐕
+          </p>
+        </div>
+      )}
       <About />
     </div>
   );
