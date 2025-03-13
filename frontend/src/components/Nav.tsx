@@ -2,7 +2,12 @@ import { Stars } from 'lucide-react';
 
 import { Button } from './ui/button';
 
-const navLinks = [
+interface NavLink {
+  href: string;
+  text: string;
+}
+
+const navLinks: NavLink[] = [
   {
     href: '/',
     text: 'Home',
