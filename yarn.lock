@@ -1577,6 +1577,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/uuid@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "@types/uuid@npm:10.0.0"
+  checksum: 10c0/9a1404bf287164481cb9b97f6bb638f78f955be57c40c6513b7655160beb29df6f84c915aaf4089a1559c216557dc4d2f79b48d978742d3ae10b937420ddac60
+  languageName: node
+  linkType: hard
+
 "@typescript-eslint/eslint-plugin@npm:8.26.0":
   version: 8.26.0
   resolution: "@typescript-eslint/eslint-plugin@npm:8.26.0"
@@ -1843,6 +1850,7 @@ __metadata:
     "@types/express": "npm:^5.0.0"
     "@types/node": "npm:^22.13.10"
     "@types/pg": "npm:^8.11.11"
+    "@types/uuid": "npm:^10.0.0"
     dotenv: "npm:^16.4.7"
     express: "npm:^5.0.1"
     nodemon: "npm:^3.1.9"
