@@ -1,18 +1,18 @@
-import { Router, Request, Response } from "express";
-import prisma from "../prisma.js";
-import { validate as isUUID } from "uuid";
+import { Router } from "express";
+// import prisma from "../prisma.js";
+// import { validate as isUUID } from "uuid";
 
 export const promptRoute: Router = Router({});
 
 interface PromptRequestBody {
-    title: string;
-    persona: string;
-    context: string;
-    task: string;
-    output: string;
-    constraints: string;
-    score?: number;
-    isBookmarked?: boolean;
+  title: string;
+  persona: string;
+  context: string;
+  task: string;
+  output: string;
+  constraints: string;
+  score?: number;
+  isBookmarked?: boolean;
 }
 
 // promptRoute.post("/:userId", async (req: Request<{ userId: string }, {}, PromptRequestBody>, res: Response) => {
