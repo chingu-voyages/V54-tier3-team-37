@@ -1,24 +1,20 @@
 import { Router, Request, Response } from "express";
-// import prisma from "../prisma.js";
+import prisma from "../prisma.js";
 
 export const userRoute: Router = Router({});
 
-userRoute.get("/", async (req: Request, res: Response) => {
-  res.status(200).json({ message: "i am become user" });
+userRoute.post("/", async (req: Request, res: Response) => {
+  try {
+    const { email, displayName } = req.body;
+    const newUser = await prisma.user.create({
+      data: { email, displayName },
+    });
+    res.status(201).json(newUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Something went wrong" });
+  }
 });
-
-// userRoute.post("/", async (req, res) => {
-//     try {
-//         const { email, displayName } = req.body;
-//         const newUser = await prisma.user.create({
-//             data: { email, displayName },
-//         });
-//         res.status(201).json(newUser);
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ error: "Something went wrong" });
-//     }
-// });
 
 // userRoute.get("/:userId", async (req: Request, res: Response) => {
 //     try {
