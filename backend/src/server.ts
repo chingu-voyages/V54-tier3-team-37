@@ -1,7 +1,9 @@
 import prisma from "./prisma.ts";
 import { configApp } from "./config/settings.ts";
-// Enable access to environment variables
-import "dotenv/config";
+
+import dotenv from "dotenv";
+// Enable access to environment variables for Prisma client
+dotenv.config({ path: "./src/.env" });
 
 const port = process.env.PORT || 3000;
 
