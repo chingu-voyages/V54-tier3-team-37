@@ -1,15 +1,18 @@
 import express from "express";
-import {userRoute} from "../routes/userRoutes.js";
-import {promptRoute} from "../routes/promptRoutes.js";
-
+// import { userRoute } from "../routes/userRoutes.ts";
+// import { promptRoute } from "../routes/promptRoutes.ts";
 
 export const configApp = () => {
-    const app = express()
+  const app = express();
 
-    app.use(express.json())
+  app.use(express.json());
 
-    app.use('/users', userRoute);
-    app.use("/prompts", promptRoute);
+  app.get("/", (req, res) => {
+    res.send("Hello, world!");
+  });
 
-    return app;
-}
+  //   app.use("/users", userRoute);
+  //   app.use("/prompts", promptRoute);
+
+  return app;
+};
