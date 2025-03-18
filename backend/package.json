@@ -2,19 +2,23 @@
   "name": "backend",
   "packageManager": "yarn@4.7.0",
   "type": "module",
+  "scripts": {
+    "start": "node --loader ts-node/esm --no-warnings src/server.ts"
+  },
   "dependencies": {
     "@prisma/client": "^6.5.0",
     "express": "^5.0.1",
     "pg": "^8.14.0",
-    "prisma": "^6.5.0",
     "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
     "@types/node": "^22.13.10",
     "@types/pg": "^8.11.11",
+    "@types/uuid": "^10.0.0",
     "dotenv": "^16.4.7",
     "nodemon": "^3.1.9",
+    "prisma": "^6.5.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
   }
