@@ -20,7 +20,7 @@ const navLinks: NavLink[] = [
 const Nav = () => {
   return (
     <nav className="text-background bg-muted-foreground flex w-full items-center justify-between py-6">
-      <Container className="w-full flex-row justify-between">
+      <Container className="flex-row justify-between">
         <div className="flex items-center gap-4">
           <span className="text-4xl font-bold lowercase">Prompto</span>
         </div>
