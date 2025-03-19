@@ -1,11 +1,10 @@
 import {configApp} from "./config/settings.js";
 import prisma from "./prisma.js";
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
 export const app = configApp()
 console.log("index.ts")
-
 
 const startApp = async (): Promise<void> => {
     try {
