@@ -1,5 +1,3 @@
-import { Stars } from 'lucide-react';
-
 import { Button } from './ui/button';
 
 interface NavLink {
@@ -13,14 +11,6 @@ const navLinks: NavLink[] = [
     text: 'Home',
   },
   {
-    href: '/template',
-    text: 'Template',
-  },
-  {
-    href: '/history',
-    text: 'History',
-  },
-  {
     href: '/about',
     text: 'About',
   },
@@ -28,20 +18,25 @@ const navLinks: NavLink[] = [
 
 const Nav = () => {
   return (
-    <nav className="text-background flex w-full items-center justify-between bg-neutral-700 p-6">
+    <nav className="text-background bg-muted-foreground flex w-full items-center justify-between p-6 px-12">
       <div className="flex items-center gap-4">
-        <Stars />
-        <span className="text-lg font-bold uppercase">Prompto</span>
+        <span className="text-4xl font-bold lowercase">Prompto</span>
       </div>
       <div className="flex items-center gap-14">
-        <ul className="flex items-center gap-8 text-lg">
+        <ul className="flex items-center gap-12 text-2xl">
           {navLinks.map((link) => (
             <li key={link.text}>
               <a href={link.href}>{link.text}</a>
             </li>
           ))}
         </ul>
-        <Button>Sign Up</Button>
+        <Button
+          variant="outline"
+          size="lg"
+          className="text-foreground cursor-pointer py-6 text-2xl"
+        >
+          Sign In
+        </Button>
       </div>
     </nav>
   );
