@@ -60,10 +60,10 @@ const roles = Array.from(new Set(teamMembers.map((member) => member.role)));
 
 const Footer = () => {
   return (
-    <footer className="text-background bg-muted-foreground w-full py-6">
+    <footer className="text-background bg-muted-foreground w-full py-16">
       <Container className="flex-row justify-between">
         <div className="flex items-center gap-4">
-          <span className="text-7xl font-bold lowercase">Prompto</span>
+          <span className="text-7xl font-keania-one lowercase">Prompto</span>
         </div>
         <ul className="flex flex-col gap-4 text-lg">
           {roles.map((role) => (
