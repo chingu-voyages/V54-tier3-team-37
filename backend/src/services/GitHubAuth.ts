@@ -12,7 +12,7 @@ import {
 
 import { extractCode } from "../utils/index.ts";
 
-class GitHubAPIError extends Error {
+export class GitHubAPIError extends Error {
   constructor(message: string) {
     // Call the constructor of the base class `Error`
     // And set the error name to the custom error class name
@@ -23,7 +23,7 @@ class GitHubAPIError extends Error {
   }
 }
 
-const throwGitHubError = (error: any) => {
+export const throwGitHubError = (error: any) => {
   throw new GitHubAPIError(
     error instanceof Error ? error.message : String(error)
   );
