@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "target": "ESNext" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
-    "module": "node16" /* Specify what module code is generated. */,
-    "moduleResolution": "node16" /* Specify how TypeScript looks up a file from a given module specifier. */,
+    "module": "NodeNext" /* Specify what module code is generated. */,
+    "moduleResolution": "NodeNext" /* Specify how TypeScript looks up a file from a given module specifier. */,
     "typeRoots": ["./node_modules/@types"],
     "outDir": "./dist" /* Specify an output folder for all emitted files. */,
     "allowSyntheticDefaultImports": true /* Allow 'import x from y' when a module doesn't have a default export. */,
