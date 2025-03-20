@@ -74,8 +74,8 @@ const AboutWhat = () => {
                 many more.
               </strong>{' '}
               With Prompto's structured prompt generating model, users can quickly generate
-              well-crafted prompts, eliminating the hassle of writer's blockm trial-and-error, and
-              inconsistencies, By using Prompto, individuals can boost their productivity,
+              well-crafted prompts, eliminating the hassle of writer's block, trial-and-error, and
+              inconsistencies. By using Prompto, individuals can boost their productivity,
               creativity, and efficiency, ensuring that they get the best possible results from AI
               models in a fraction of the time.
             </p>
@@ -108,7 +108,7 @@ const AboutFeatures = () => {
     {
       heading: 'Save History',
       description:
-        'Save an revisit your past prompts in your personal profile to track your progress, reuse successful queries, and build a library of optimized prompts for future use.',
+        'Save and revisit your past prompts in your personal profile to track your progress, reuse successful queries, and build a library of optimized prompts for future use.',
       imgSrc: '',
     },
   ];
@@ -184,23 +184,6 @@ const AboutWhy = () => {
 };
 
 const AboutHow = () => {
-  const reasons = [
-    {
-      heading: 'Simplified Prompt Creation',
-      description: 'No more guessing. Generate prompts that align with your goals instantly.',
-    },
-    {
-      heading: 'Consistency & Quality',
-      description:
-        "Ensure your AI's outputs are predictable, relevant, and of high quality, every time.",
-    },
-    {
-      heading: 'Save Time & Boost Productivity',
-      description:
-        'Focus on what matters most—innovation—while we handle the prompt crafting for you.',
-    },
-  ];
-
   const steps = [
     {
       step: 1,
