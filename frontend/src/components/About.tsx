@@ -12,15 +12,15 @@ import { Separator } from './ui/separator';
 const About = () => {
   return (
     <div className="w-full">
-      <AboutWhatIs />
-      <AboutKeyFeatures />
+      <AboutWhat />
+      <AboutFeatures />
     </div>
   );
 };
 
 export default About;
 
-const AboutWhatIs = () => {
+const AboutWhat = () => {
   const personas = [
     {
       name: 'Students',
@@ -81,7 +81,7 @@ const AboutWhatIs = () => {
   );
 };
 
-const AboutKeyFeatures = () => {
+const AboutFeatures = () => {
   const cards = [
     {
       heading: 'Customizable Options',
