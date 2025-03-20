@@ -21,6 +21,25 @@ const About = () => {
 export default About;
 
 const AboutWhatIs = () => {
+  const personas = [
+    {
+      name: 'Students',
+      imgSrc: '',
+    },
+    {
+      name: 'Creatives',
+      imgSrc: '',
+    },
+    {
+      name: 'Developers',
+      imgSrc: '',
+    },
+    {
+      name: 'Businesses',
+      imgSrc: '',
+    },
+  ];
+
   return (
     <section className="w-full">
       <Container className="gap-32 pt-16 pb-32">
@@ -29,7 +48,16 @@ const AboutWhatIs = () => {
           <Separator className="border-foreground mx-auto mt-4 max-w-1/2 border-2" />
         </div>
         <div className="grid grid-cols-2 tracking-tighter">
-          <div className="">Images here</div>
+          <div className="grid w-fit h-fit grid-cols-2 text-center tracking-tighter">
+            {personas.map((persona, index) => (
+              <div
+                key={persona.name}
+                className={cn(`bg-muted size-40 flex flex-col justify-end p-8`, index % 2 === 0 && 'self-end mt-8 mr-8')}
+              >
+                <span className="text-xl">{persona.name}</span>
+              </div>
+            ))}
+          </div>
           <div className="flex flex-col gap-8">
             <h3 className="text-2xl font-bold">What is Prompto?</h3>
             <p className="text-lg leading-loose">
