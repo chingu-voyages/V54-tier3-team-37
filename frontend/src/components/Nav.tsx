@@ -35,7 +35,7 @@ const Nav = () => {
           <Button
             variant="outline"
             size="lg"
-            className="text-foreground cursor-pointer py-6 text-2xl"
+            className="text-foreground cursor-pointer py-6 rounded-2xl text-2xl"
           >
             Sign In
           </Button>
