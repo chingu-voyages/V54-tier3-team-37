@@ -14,6 +14,7 @@ const About = () => {
     <div className="w-full">
       <AboutWhat />
       <AboutFeatures />
+      <AboutWhy />
     </div>
   );
 };
@@ -128,6 +129,49 @@ const AboutFeatures = () => {
               <CardContent>{card.description}</CardContent>
             </Card>
           ))}
+        </div>
+      </Container>
+    </section>
+  );
+};
+
+const AboutWhy = () => {
+  const reasons = [
+    {
+      heading: 'Simplified Prompt Creation',
+      description: 'No more guessing. Generate prompts that align with your goals instantly.'
+    },
+    {
+      heading: 'Consistency & Quality',
+      description: 'Ensure your AI\'s outputs are predictable, relevant, and of high quality, every time.'
+    },
+    {
+      heading: 'Save Time & Boost Productivity',
+      description: 'Focus on what matters most—innovation—while we handle the prompt crafting for you.'
+    },
+  ];
+
+  return (
+    <section className="w-full">
+      <Container className="gap-32 pt-16 pb-32">
+        <div>
+          <h2 className="text-3xl font-bold uppercase">Why Choose Our AI Prompt Generator</h2>
+          <Separator className="border-foreground mx-auto mt-4 max-w-1/2 border-2" />
+        </div>
+        <div className="grid grid-cols-2 tracking-tighter gap-32">
+          <div className="flex flex-col gap-16 tracking-tighter">
+            {reasons.map((reason) => (
+              <div
+                key={reason.heading}
+                className="text-lg"
+              >
+                <h3 className="inline font-bold">{reason.heading}: </h3>
+                <p className="inline">{reason.description}</p>
+              </div>
+            ))}
+          </div>
+          <div className="h-full w-full bg-muted">
+          </div>
         </div>
       </Container>
     </section>
