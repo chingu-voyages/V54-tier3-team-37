@@ -11,7 +11,7 @@ import { Separator } from './ui/separator';
 
 const About = () => {
   return (
-    <div className="w-full text-muted-foreground">
+    <div className="text-muted-foreground w-full">
       <AboutWhat />
       <AboutFeatures />
       <AboutWhy />
@@ -46,10 +46,10 @@ const AboutWhat = () => {
     <section className="w-full">
       <Container className="gap-32 pt-16 pb-32">
         <div>
-          <h2 className="text-3xl font-bold uppercase">Welcome to Prompto</h2>
+          <h2 className="text-center text-3xl font-bold uppercase">Welcome to Prompto</h2>
           <Separator className="border-muted-foreground mx-auto mt-4 max-w-1/2 border-2" />
         </div>
-        <div className="grid grid-cols-2 tracking-tighter">
+        <div className="tracking-tighter max-sm:flex max-sm:flex-col max-sm:gap-16 sm:grid sm:grid-cols-2">
           <div className="grid h-fit w-fit grid-cols-2 text-center tracking-tighter">
             {personas.map((persona, index) => (
               <div
@@ -114,13 +114,13 @@ const AboutFeatures = () => {
   ];
 
   return (
-    <section className="from-muted to-background w-full bg-gradient-to-b from-50% to-50%">
+    <section className="max-sm:bg-muted sm:from-muted sm:to-background w-full sm:bg-gradient-to-b sm:from-50% sm:to-50%">
       <Container className="gap-24 pt-16 pb-48">
         <div>
-          <h2 className="text-3xl font-bold">Key Features</h2>
+          <h2 className="text-center text-3xl font-bold">Key Features</h2>
           <Separator className="border-muted-foreground mx-auto mt-4 max-w-1/2 border-2" />
         </div>
-        <div className="grid h-112 w-full grid-cols-4 gap-8 text-center tracking-tighter">
+        <div className="w-full gap-8 text-center tracking-tighter max-sm:flex max-sm:flex-col max-sm:gap-16 sm:grid sm:h-112 sm:grid-cols-4">
           {cards.map((card, index) => (
             <Card
               key={card.heading}
@@ -161,10 +161,12 @@ const AboutWhy = () => {
     <section className="w-full">
       <Container className="gap-32 pt-16 pb-32">
         <div>
-          <h2 className="text-3xl font-bold uppercase">Why Choose Our AI Prompt Generator</h2>
+          <h2 className="text-center text-3xl font-bold uppercase">
+            Why Choose Our AI Prompt Generator
+          </h2>
           <Separator className="border-muted-foreground mx-auto mt-4 max-w-1/2 border-2" />
         </div>
-        <div className="grid grid-cols-2 gap-32 tracking-tighter">
+        <div className="tracking-tighter max-sm:flex max-sm:flex-col-reverse max-sm:gap-16 sm:grid sm:grid-cols-2 sm:gap-32">
           <div className="space-y-16 tracking-tighter">
             {reasons.map((reason) => (
               <div
@@ -176,7 +178,7 @@ const AboutWhy = () => {
               </div>
             ))}
           </div>
-          <div className="bg-muted h-full w-full"></div>
+          <div className="bg-muted w-full max-sm:h-48 sm:h-full"></div>
         </div>
       </Container>
     </section>
@@ -314,7 +316,7 @@ const AboutHow = () => {
           {steps.map((step) => (
             <li
               key={step.step}
-              className="grid grid-cols-2 justify-between gap-32 tracking-tighter"
+              className="justify-between tracking-tighter max-sm:flex max-sm:flex-col-reverse max-sm:gap-16 sm:grid sm:grid-cols-2 sm:gap-32"
             >
               <div className="space-y-4">
                 <h3 className="font-bold">
@@ -335,7 +337,7 @@ const AboutHow = () => {
                   step.items[0].description
                 )}
               </div>
-              <div className="bg-muted mt-12 h-full w-full"></div>
+              <div className="bg-muted mt-12 h-full w-full max-sm:h-48"></div>
             </li>
           ))}
         </ol>
