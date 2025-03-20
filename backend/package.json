@@ -7,8 +7,12 @@
     "test": "jest --config jest.config.js"
   },
   "dependencies": {
+    "@octokit/auth-oauth-app": "^8.1.3",
     "@prisma/client": "^6.5.0",
     "express": "^5.0.1",
+    "express-session": "^1.18.1",
+    "jsonwebtoken": "^9.0.2",
+    "octokit": "^4.1.2",
     "uuid": "^11.1.0"
   },
   "devDependencies": {
@@ -16,10 +20,13 @@
     "@babel/preset-env": "^7.26.9",
     "@babel/preset-typescript": "^7.26.0",
     "@jest/globals": "^29.7.0",
+    "@octokit/tsconfig": "^4.0.0",
     "@types/babel__core": "^7",
     "@types/babel__preset-env": "^7",
     "@types/express": "^5.0.0",
+    "@types/express-session": "^1.18.1",
     "@types/jest": "^29.5.14",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.13.10",
     "@types/supertest": "^6.0.2",
     "babel-jest": "^29.7.0",
