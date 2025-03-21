@@ -8,4 +8,8 @@ export const authRoute: Router = Router({});
 authRoute.get("/auth/github", authController.githubSignIn);
 authRoute.get("/github-callback", authController.githubCallback);
 
+// Google OAuth
+authRoute.get("/auth/google", authController.googleSignIn);
+authRoute.get("/google-callback", authController.googleCallback);
+
 authRoute.post("/logout", authController.logout);
