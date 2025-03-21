@@ -1,5 +1,5 @@
 import { CookieOptions, Request, Response } from "express";
-import { githubAuth } from "../services/index.ts";
+import { githubAuth, googleAuth } from "../services/index.ts";
 
 import {
   LOGGED_IN_REACT_ADDRESS,
@@ -75,6 +75,17 @@ export const githubSignIn = async (req: Request, res: Response) => {
 
 export const githubCallback = async (req: Request, res: Response) => {
   handleCallback(req, res, githubAuth, "githubAuthState");
+};
+
+// =======================================
+// Google
+// =======================================
+export const googleSignIn = async (req: Request, res: Response) => {
+  handleSignIn(req, res, googleAuth, "googleAuthState");
+};
+
+export const googleCallback = async (req: Request, res: Response) => {
+  handleCallback(req, res, googleAuth, "googleAuthState");
 };
 
 // =======================================
