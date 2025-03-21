@@ -57,11 +57,13 @@ class GitHubAuth {
       // We can be confident that the token is valid
       const access_token = await this.getAccessToken(String(code));
       req.session.token = access_token;
+      // Get name, email and avatar url
       const user = await this.getUserInfo(access_token);
       if (!user) return;
       // INTERACT WITH DATABASE HERE  <-----------------------------------
       // interactWithDatabase(user);  <-----------------------------------
-      return user;
+      const { email, name } = user;
+      return { email, name };
     } catch (error) {
       console.error(error);
       throwGitHubError(error);
@@ -83,12 +85,12 @@ class GitHubAuth {
     try {
       const octokit = new Octokit({ auth: token });
       const { data: user } = await octokit.rest.users.getAuthenticated();
-      const name = user.name;
+      const { name, avatar_url } = user;
       const { data: emails } =
         await octokit.rest.users.listEmailsForAuthenticatedUser();
       const email = emails.find((obj) => obj.primary)?.email;
       if (name && email) {
-        return { name, email };
+        return { name, email, avatar_url };
       }
       return;
     } catch (error) {
