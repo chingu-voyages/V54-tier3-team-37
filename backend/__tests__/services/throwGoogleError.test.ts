@@ -1,5 +1,5 @@
-import { GoogleAPIError, throwGoogleError } from "../../../src/services/index";
-import { errorMessages } from "../../../__mocks__/mockErrorMessges";
+import { GoogleAPIError, throwGoogleError } from "../../src/services/index.ts";
+import { errorMessages } from "../../__mocks__/mockErrorMessges.ts";
 
 describe("throwGitHubError", () => {
   test("throws GitHubAPIError with provided message", () => {
