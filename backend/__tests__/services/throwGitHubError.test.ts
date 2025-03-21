@@ -1,10 +1,5 @@
 import { GitHubAPIError, throwGitHubError } from "../../src/services/index";
-
-const errorMessages = [
-  "Error message",
-  "foo bar",
-  "Jest encountered an unexpected token",
-];
+import { errorMessages } from "../../__mocks__/mockErrorMessges";
 
 describe("throwGitHubError", () => {
   test("throws GitHubAPIError with provided message", () => {

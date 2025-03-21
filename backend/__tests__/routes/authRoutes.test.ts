@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import request from "supertest";
-import { describe, expect, beforeEach, jest, it } from "@jest/globals";
+import { describe, expect, beforeEach, jest } from "@jest/globals";
 
 import { authRoute } from "../../src/routes/authRoutes.ts";
 import {
@@ -11,6 +11,12 @@ import {
 
 jest.mock("../../src/controllers/index", () => ({
   authController: {
+    googleSignIn: jest.fn((req: Request, res: Response) =>
+      res.redirect("/mock-google-redirect")
+    ),
+    googleCallback: jest.fn((req: Request, res: Response) =>
+      res.send("Google callback")
+    ),
     githubSignIn: jest.fn((req: Request, res: Response) =>
       res.redirect("/mock-github-redirect")
     ),
