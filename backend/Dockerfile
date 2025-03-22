@@ -7,7 +7,6 @@ WORKDIR /src
 # Enable Corepack and install the correct Yarn version
 RUN corepack enable && corepack prepare yarn@4.7.0 --activate
 
-ENV NODE_ENV=development
 
 # Copy dependency files and install using Yarn
 COPY package.json ./
@@ -24,4 +23,4 @@ EXPOSE 3000
 
 # Start your application
 # Use "yarn dev" if it's a development server
-CMD ["yarn", "dev"]
+CMD ["yarn", "start"]
