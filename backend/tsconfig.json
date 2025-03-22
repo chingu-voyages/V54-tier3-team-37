@@ -11,8 +11,10 @@
 
     "strict": true /* Enable all stsrict type-checking options. */,
     // "noUnusedParameters": true /* Raise an error when a function parameter isn't read. */,
-    "skipLibCheck": true /* Skip type checking all .d.ts files. */
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */,
+    "allowImportingTsExtensions": true,
+    "noEmit": true
   },
-  "include": ["src/**/*.ts", "src/types.d.ts"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "__tests__"]
 }
