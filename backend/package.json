@@ -3,8 +3,7 @@
   "packageManager": "yarn@4.7.0",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --watch src --exec ts-node-esm src/server.ts",
-    "start": "ts-node-esm src/server.ts",
+    "start": "nodemon",
     "test": "jest --config jest.config.js"
   },
   "dependencies": {
