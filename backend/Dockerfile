@@ -10,7 +10,7 @@ RUN corepack enable && corepack prepare yarn@4.7.0 --activate
 
 # Copy dependency files and install using Yarn
 COPY package.json ./
-RUN yarn install
+RUN yarn install --production
 
 # Copy the rest of the backend source code
 COPY . .
