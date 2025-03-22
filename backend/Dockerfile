@@ -24,4 +24,4 @@ EXPOSE 3000
 
 # Start your application
 # Use "yarn dev" if it's a development server
-CMD ["node", "--max-old-space-size=1024", "--loader", "ts-node/esm", "--no-warnings", "src/server.ts"]
+CMD ["node", "--max-old-space-size=512", "--loader", "ts-node/esm", "--no-warnings", "src/server.ts"]
