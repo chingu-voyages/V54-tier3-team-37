@@ -11,7 +11,7 @@ ENV NODE_ENV=production
 
 # Copy dependency files and install using Yarn
 COPY package.json ./
-RUN yarn install
+RUN yarn install --mode=skip-build
 
 # Copy the rest of the backend source code
 COPY . .
