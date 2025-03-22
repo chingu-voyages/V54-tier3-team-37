@@ -1,6 +1,6 @@
 import { type Auth, google } from "googleapis";
 
-import { extractCode } from "../utils/extractQueryCode.ts";
+import { extractCode } from "../utils/extractQueryCode.js";
 import {
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
