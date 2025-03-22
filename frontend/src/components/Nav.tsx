@@ -1,10 +1,7 @@
+import { NavLink } from '@/types/types';
+
 import Container from './Container';
 import { Button } from './ui/button';
-
-interface NavLink {
-  href: string;
-  text: string;
-}
 
 const navLinks: NavLink[] = [
   {

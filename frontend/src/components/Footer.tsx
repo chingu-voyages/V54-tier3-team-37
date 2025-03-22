@@ -3,9 +3,11 @@ import {
   Linkedin,
 } from 'lucide-react';
 
+import { TeamMember } from '@/types/types';
+
 import Container from './Container';
 
-const teamMembers = [
+const teamMembers: TeamMember[] = [
   {
     name: 'Sarita Jha',
     role: 'Product Owner',

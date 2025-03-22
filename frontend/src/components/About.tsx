@@ -1,4 +1,10 @@
 import { cn } from '@/lib/utils';
+import {
+  AboutFeatureCard,
+  AboutPersona,
+  AboutReason,
+  AboutStep,
+} from '@/types/types';
 
 import Container from './Container';
 import {
@@ -23,7 +29,7 @@ const About = () => {
 export default About;
 
 const AboutWhat = () => {
-  const personas = [
+  const personas: AboutPersona[] = [
     {
       name: 'Students',
       imgSrc: '',
@@ -87,7 +93,7 @@ const AboutWhat = () => {
 };
 
 const AboutFeatures = () => {
-  const cards = [
+  const cards: AboutFeatureCard[] = [
     {
       heading: 'Customizable Options',
       description: 'Tailor prompts to your unique needs with our easy-to-use, dynamic interface.',
@@ -140,7 +146,7 @@ const AboutFeatures = () => {
 };
 
 const AboutWhy = () => {
-  const reasons = [
+  const reasons: AboutReason[] = [
     {
       heading: 'Simplified Prompt Creation',
       description: 'No more guessing. Generate prompts that align with your goals instantly.',
@@ -186,7 +192,7 @@ const AboutWhy = () => {
 };
 
 const AboutHow = () => {
-  const steps = [
+  const steps: AboutStep[] = [
     {
       step: 1,
       name: 'Login or Sign Up',
