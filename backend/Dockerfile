@@ -7,10 +7,11 @@ WORKDIR /src
 # Enable Corepack and install the correct Yarn version
 RUN corepack enable && corepack prepare yarn@4.7.0 --activate
 
+ENV NODE_ENV=production
 
 # Copy dependency files and install using Yarn
 COPY package.json ./
-RUN yarn install --production
+RUN yarn install
 
 # Copy the rest of the backend source code
 COPY . .
