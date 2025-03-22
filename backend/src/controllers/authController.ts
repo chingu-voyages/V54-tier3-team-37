@@ -1,5 +1,5 @@
 import { CookieOptions, Request, Response } from "express";
-import { githubAuth, googleAuth } from "../services/index.ts";
+import { githubAuth, googleAuth } from "../services/index.js";
 
 import {
   LOGGED_IN_REACT_ADDRESS,

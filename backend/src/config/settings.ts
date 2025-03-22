@@ -1,6 +1,6 @@
 import express from "express";
 import session from "express-session";
-import { userRoute, authRoute } from "../routes/index.ts";
+import { userRoute, authRoute } from "../routes/index.js";
 
 export const configApp = () => {
   const app = express();
