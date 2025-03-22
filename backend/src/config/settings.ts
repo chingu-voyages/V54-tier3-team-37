@@ -1,14 +1,18 @@
 import express from "express";
-import {userRoute} from "../routes/userRoutes.js";
-
-
+import session from "express-session";
+import { userRoute, authRoute } from "../routes/index.ts";
 
 export const configApp = () => {
-    const app = express()
+  const app = express();
 
-    app.use(express.json())
+  const sessionSecret = String(process.env.SESSION_SECRET);
+  app.use(
+    session({ secret: sessionSecret, resave: false, saveUninitialized: true })
+  );
+  app.use(express.json());
 
-    app.use('/users', userRoute);
+  app.use("/", authRoute);
+  app.use("/users", userRoute);
 
-    return app;
-}
+  return app;
+};

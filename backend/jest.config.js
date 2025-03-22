@@ -4,4 +4,9 @@ export default {
     "^.+\\.(js|jsx|ts|tsx)$": "babel-jest",
   },
   extensionsToTreatAsEsm: [".ts", ".tsx"],
+  // Do not remove or edit transformIgnorePatterns
+  // Transforming is crucial for testing
+  transformIgnorePatterns: [
+    "node_modules/(?!(octokit|@octokit|before-after-hook|universal-user-agent)/)",
+  ],
 };
