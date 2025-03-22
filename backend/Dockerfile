@@ -22,4 +22,4 @@ EXPOSE 3000
 
 # Start your application
 # Use "yarn dev" if it's a development server
-CMD ["yarn", "start"]
+CMD ["yarn", "dev"]

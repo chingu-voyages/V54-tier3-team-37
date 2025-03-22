@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "start": "nodemon",
+    "dev": "ts-node-esm src/server.ts",
     "test": "jest --config jest.config.js"
   },
   "dependencies": {
