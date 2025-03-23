@@ -1,24 +1,23 @@
-import {configApp} from "./config/settings.js";
 import prisma from "./prisma.js";
+import "dotenv/config.js";
 
-import dotenv from 'dotenv';
-dotenv.config();
+import { configApp } from "./config/index.ts";
 
 const port = process.env.PORT || 4000;
 
-export const app = configApp()
+export const app = configApp();
 
 const startApp = async (): Promise<void> => {
-    try {
-        await prisma.$connect();
+  try {
+    await prisma.$connect();
 
-        app.listen(port, () => {
-            console.log(`Example app listening on port ${port}`);
-        });
-    } catch (error) {
-        console.error("Error starting the app:", error);
-        process.exit(1);
-    }
-}
+    app.listen(port, () => {
+      console.log(`Example app listening on port ${port}`);
+    });
+  } catch (error) {
+    console.error("Error starting the app:", error);
+    process.exit(1);
+  }
+};
 
 startApp();
