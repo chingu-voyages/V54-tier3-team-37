@@ -13,6 +13,7 @@
   "scripts": {
     "test:e2e": "yarn playwright test --project='UI Tests'",
     "test:api": "yarn playwright test --project='API Tests'",
-    "test:ui:unit": "yarn workspace frontend test"
+    "test:ui:unit": "yarn workspace frontend test",
+    "test:codegen": "yarn playwright codegen --channel=chrome http://localhost:5173"
   }
 }
