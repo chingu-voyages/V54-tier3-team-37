@@ -2768,6 +2768,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@radix-ui/react-separator@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "@radix-ui/react-separator@npm:1.1.2"
+  dependencies:
+    "@radix-ui/react-primitive": "npm:2.0.2"
+  peerDependencies:
+    "@types/react": "*"
+    "@types/react-dom": "*"
+    react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+  checksum: 10c0/9efffd4319ab25210702cbacd5a3fe15f22ab9e29afe407b778112056e6a2e1e43847f1ad5f5b73bff5d604722a4fdabd66816216e7ad8f627f7b4c20a19174e
+  languageName: node
+  linkType: hard
+
 "@radix-ui/react-slider@npm:^1.2.3":
   version: 1.2.3
   resolution: "@radix-ui/react-slider@npm:1.2.3"
@@ -5779,6 +5798,7 @@ __metadata:
     "@eslint/js": "npm:^9.21.0"
     "@radix-ui/react-label": "npm:^2.1.2"
     "@radix-ui/react-select": "npm:^2.1.6"
+    "@radix-ui/react-separator": "npm:^1.1.2"
     "@radix-ui/react-slider": "npm:^1.2.3"
     "@radix-ui/react-slot": "npm:^1.1.2"
     "@tailwindcss/vite": "npm:^4.0.12"
