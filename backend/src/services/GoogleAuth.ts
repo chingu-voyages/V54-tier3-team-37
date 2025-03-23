@@ -6,7 +6,7 @@ import {
   GOOGLE_CLIENT_SECRET,
   GOOGLE_CALLBACK_URL,
   GOOGLE_OAUTH_SCOPES,
-} from "../config/authConfig.ts";
+} from "../config/authConfig.js";
 
 export class GoogleAPIError extends Error {
   constructor(message: string) {

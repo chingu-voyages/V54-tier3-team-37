@@ -4,9 +4,9 @@ import { githubAuth, googleAuth } from "../services/index.js";
 import {
   LOGGED_IN_REACT_ADDRESS,
   HOME_REACT_ADDRESS,
-} from "../config/index.ts";
-import { generateToken, generateRandomHexString } from "../utils/index.ts";
-import { GSession, UserPayload } from "../types/index.ts";
+} from "../config/index.js";
+import { generateToken, generateRandomHexString } from "../utils/index.js";
+import { GSession, UserPayload } from "../types/index.js";
 
 const cookieOptions: CookieOptions = {
   httpOnly: true,
