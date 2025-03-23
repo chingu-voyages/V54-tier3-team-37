@@ -8,9 +8,9 @@ import {
   GITHUB_CLIENT_SECRET,
   GITHUB_CLIENT_ID,
   GITHUB_REDIRECT_URL,
-} from "../config/authConfig.ts";
+} from "../config/authConfig.js";
 
-import { extractCode } from "../utils/index.ts";
+import { extractCode } from "../utils/index.js";
 
 export class GitHubAPIError extends Error {
   constructor(message: string) {

@@ -1,2 +1,2 @@
-export * from "./GitHubAuth.ts";
-export * from "./GoogleAuth.ts";
+export * from "./GitHubAuth.js";
+export * from "./GoogleAuth.js";

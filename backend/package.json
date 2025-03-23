@@ -2,9 +2,10 @@
   "name": "backend",
   "packageManager": "yarn@4.7.0",
   "type": "module",
-  "scripts": {
+  "scripts": { 
     "start": "nodemon",
-    "test": "jest --config jest.config.js"
+    "test": "jest --config jest.config.js",
+    "build": "tsc -p tsconfig.build.json"
   },
   "dependencies": {
     "@octokit/auth-oauth-app": "^8.1.3",
