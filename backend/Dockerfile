@@ -1,6 +1,8 @@
 # Stage 1: Build stage
 FROM node:20 AS builder
 
+RUN apt-get update -y && apt-get install -y openssl
+
 WORKDIR /app
 
 RUN corepack enable && corepack prepare yarn@4.7.0 --activate
@@ -14,7 +16,7 @@ COPY . .
 
 
 # Generate Prisma client and build the app
-RUN yarn dlx prisma generate
+RUN yarn dlx prisma generate --schema=./prisma/schema.prisma
 RUN yarn build
 
 # Stage 2: Production image
