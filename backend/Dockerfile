@@ -1,27 +1,34 @@
-# Use official Node.js LTS base image
-FROM node:20
+# Stage 1: Build stage
+FROM node:20 AS builder
 
-# Set working directory inside the container
-WORKDIR /src
+WORKDIR /app
 
-# Enable Corepack and install the correct Yarn version
 RUN corepack enable && corepack prepare yarn@4.7.0 --activate
+
+# Copy only needed files for install and build
+COPY package.json ./
+RUN yarn install
+
+# Copy full backend source code
+COPY . .
+
+
+# Generate Prisma client and build the app
+RUN yarn dlx prisma generate
+RUN yarn build
+
+# Stage 2: Production image
+FROM node:20-slim
+
+WORKDIR /app
+
+# Copy only what's needed to run the app
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./
 
 ENV NODE_ENV=production
 
-# Copy dependency files and install using Yarn
-COPY package.json ./
-RUN yarn install --mode=skip-build
-
-# Copy the rest of the backend source code
-COPY . .
-
-# Generate the Prisma client (if using Prisma)
-RUN yarn dlx prisma generate
-
-# Expose the port your app runs on
 EXPOSE 3000
 
-# Start your application
-# Use "yarn dev" if it's a development server
-CMD ["node", "--max-old-space-size=512", "--loader", "ts-node/esm", "--no-warnings", "src/server.ts"]
+CMD ["node", "--max-old-space-size=512", "dist/server.js"]
