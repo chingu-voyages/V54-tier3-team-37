@@ -3,17 +3,7 @@
 
 set +e
 
-# git diff HEAD --quiet -- backend
-# echo "Checking for changes in the backend directory..."
-# git diff HEAD --quiet -- backend
-
-# if [ $? -ne 0 ]; then
-#   echo "Please commit the changes before a push."
-#   exit 1
-# fi
 cd backend
-
-
 
 # Compile TypeScript
 echo "Compiling TypeScript.."
