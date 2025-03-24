@@ -2,12 +2,12 @@ import express, { Request, Response } from "express";
 import request from "supertest";
 import { describe, expect, beforeEach, jest } from "@jest/globals";
 
-import { authRoute } from "../../src/routes/authRoutes.ts";
+import { authRoute } from "../../src/routes/authRoutes";
 import {
   authServices,
   callbacks,
   invalidRoutes,
-} from "../../__mocks__/mockRoutes.ts";
+} from "../../__mocks__/mockRoutes.js";
 
 jest.mock("../../src/controllers/index", () => ({
   authController: {
