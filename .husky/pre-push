@@ -1,0 +1,47 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+set +e
+
+# git diff HEAD --quiet -- backend
+# echo "Checking for changes in the backend directory..."
+# git diff HEAD --quiet -- backend
+
+# if [ $? -ne 0 ]; then
+#   echo "Please commit the changes before a push."
+#   exit 1
+# fi
+cd backend
+
+
+
+# Compile TypeScript
+echo "Compiling TypeScript.."
+yarn tsc
+
+# Check if Prisma is generated (required for Prisma tests)
+echo "Checking Prisma client initialization..."
+if ! node --loader ts-node/esm -e "import { PrismaClient } from '@prisma/client';"; then
+  echo "Prisma client not generated. Generating now..."
+  yarn prisma generate
+    # Check if the Prisma client was generated successfully
+  if [ $? -ne 0 ]; then
+    echo "Failed to generate Prisma client. Exiting."
+    exit 1
+  fi
+fi
+
+# Run tests
+echo "Running tests.."
+yarn test
+
+TEST_EXIT_CODE=$?
+
+# Check if tests passed
+if [ $TEST_EXIT_CODE -ne 0 ]; then
+  echo "Tests failed! Please fix the issues before pushing."
+  exit 1
+fi
+
+echo "Tests passed successfully. Pushing.."
+
