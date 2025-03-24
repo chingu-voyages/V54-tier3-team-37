@@ -1,7 +1,7 @@
 import { describe, expect, test, jest } from "@jest/globals";
 
-import { generateToken } from "../../src/utils/index.ts";
-import { mockUsers } from "../../__mocks__/mockUsers.ts";
+import { generateToken } from "../../src/utils/index";
+import { mockUsers } from "../../__mocks__/mockUsers";
 
 jest.mock("jsonwebtoken", () => ({
   sign: jest.fn().mockImplementation(() => "foo_bar"),

@@ -9,4 +9,7 @@ export default {
   transformIgnorePatterns: [
     "node_modules/(?!(octokit|@octokit|before-after-hook|universal-user-agent)/)",
   ],
+  moduleNameMapper: {
+    "^(\\.{1,2}/.*)\\.js$": "$1",
+  },
 };
