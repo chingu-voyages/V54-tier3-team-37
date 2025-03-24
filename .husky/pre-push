@@ -21,7 +21,7 @@ yarn tsc
 
 # Check if Prisma is generated (required for Prisma tests)
 echo "Checking Prisma client initialization..."
-if ! node --loader ts-node/esm -e "import { PrismaClient } from '@prisma/client';"; then
+if ! node ts-node/esm "import { PrismaClient } from '@prisma/client';"; then
   echo "Prisma client not generated. Generating now..."
   yarn prisma generate
     # Check if the Prisma client was generated successfully
