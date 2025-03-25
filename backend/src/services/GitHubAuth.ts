@@ -1,3 +1,4 @@
+import { Request } from "express";
 import { Octokit } from "octokit";
 import {
   type OAuthAppAuthInterface,
@@ -9,25 +10,11 @@ import {
   GITHUB_CLIENT_ID,
   GITHUB_REDIRECT_URL,
 } from "../config/authConfig.js";
-
+import { findOrCreateUserId } from "../controllers/index.js";
 import { extractCode } from "../utils/index.js";
-
-export class GitHubAPIError extends Error {
-  constructor(message: string) {
-    // Call the constructor of the base class `Error`
-    // And set the error name to the custom error class name
-    super(message);
-    this.name = "GitHubAPIError";
-    // Set the prototype explicitly to maintain the correct prototype chain
-    Object.setPrototypeOf(this, GitHubAPIError.prototype);
-  }
-}
-
-export const throwGitHubError = (error: any) => {
-  throw new GitHubAPIError(
-    error instanceof Error ? error.message : String(error)
-  );
-};
+import { throwGitHubError } from "./errors.js";
+import { GSession } from "../types/types.js";
+// import { GSession } from "../types/types.js";
 
 class GitHubAuth {
   private auth: OAuthAppAuthInterface;
@@ -49,24 +36,22 @@ class GitHubAuth {
     return `${this.redirectUrl}client_id=${this.clientId}&scope=${this.scope}&state=${state}`;
   };
 
-  authenticate = async (req: any) => {
+  authenticate = async (req: Request) => {
     try {
       // Extract authorization code that will be exchanged for user tokens
-      const code = extractCode(req, req.session.githubAuthState);
+      const code = extractCode(req, (req.session as GSession).githubAuthState);
       // Because we are communicating directly with a GitHub server,
       // We can be confident that the token is valid
       const access_token = await this.getAccessToken(String(code));
-      req.session.token = access_token;
+      (req.session as GSession).token = access_token;
       // Get name, email and avatar url
       const user = await this.getUserInfo(access_token);
       if (!user) return;
-      // INTERACT WITH DATABASE HERE  <-----------------------------------
-      // interactWithDatabase(user);  <-----------------------------------
-      const { email, name } = user;
-      return { email, name };
+      const userId = await findOrCreateUserId(user);
+      return { id: userId, displayName: user.displayName, email: user.email };
     } catch (error) {
       console.error(error);
-      throwGitHubError(error);
+      throwGitHubError(String(error));
     }
   };
 
@@ -85,16 +70,16 @@ class GitHubAuth {
     try {
       const octokit = new Octokit({ auth: token });
       const { data: user } = await octokit.rest.users.getAuthenticated();
-      const { name, avatar_url } = user;
+      const { name: displayName, avatar_url } = user;
       const { data: emails } =
         await octokit.rest.users.listEmailsForAuthenticatedUser();
       const email = emails.find((obj) => obj.primary)?.email;
-      if (name && email) {
-        return { name, email, avatar_url };
+      if (displayName && email) {
+        return { displayName, email, avatar_url };
       }
       return;
     } catch (error) {
-      throwGitHubError(error);
+      throwGitHubError(String(error));
     }
   };
 }
