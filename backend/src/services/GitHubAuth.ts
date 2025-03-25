@@ -15,7 +15,6 @@ import { findOrCreateUserId } from "../controllers/index.js";
 import { extractCode } from "../utils/index.js";
 import { throwGitHubError } from "./errors.js";
 import { GSession } from "../types/types.js";
-// import { GSession } from "../types/types.js";
 
 class GitHubAuth {
   private auth: OAuthAppAuthInterface;
