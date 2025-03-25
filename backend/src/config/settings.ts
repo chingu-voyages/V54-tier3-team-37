@@ -7,7 +7,7 @@ export const configApp = () => {
   const app = express();
 
   // Serve static files
-  const __dirname = import.meta.dirname;
+  const __dirname = path.resolve();
   app.use(express.static(path.join(__dirname, "..", "static")));
 
   const sessionSecret = String(process.env.SESSION_SECRET);
