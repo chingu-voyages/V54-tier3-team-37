@@ -1,26 +1,18 @@
 export const mockUsers = {
   validUser: [
+    { id: "13456-skldfjawe-9fo233", email: "foo@bar.dev", displayName: "Foo" },
     {
-      email: "foo@bar.dev",
-      name: "Foo",
-    },
-    {
+      id: "12345-sdfnhsdfn-37u023",
       email: "hello@world.dev",
-      name: "Hello",
+      displayName: "Hello",
     },
   ],
   invalidUser: [
-    {
-      email: "",
-      name: "Foo",
-    },
-    {
-      email: "foo@bar.dev",
-      name: "",
-    },
-    {
-      email: "",
-      name: "",
-    },
+    { id: "", email: "", displayName: "" },
+    { id: "12345", email: "", displayName: "" },
+    { id: "12345", email: "foo@bar.dev", displayName: "" },
+    { id: "", email: "", displayName: "Foo" },
+    { id: "", email: "hello@world.dev", displayName: "Bar" },
+    { id: "12345", email: "", displayName: "Foo" },
   ],
 };
