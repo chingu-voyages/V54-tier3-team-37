@@ -1,4 +1,4 @@
-import { GoogleAPIError, throwGoogleError } from "../../src/services/index";
+import { GoogleAPIError, throwGoogleError } from "../../src/services/errors";
 import { errorMessages } from "../../__mocks__/mockErrorMessges";
 
 describe("throwGitHubError", () => {
