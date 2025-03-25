@@ -1,0 +1,28 @@
+# Node and build artifacts
+node_modules
+dist
+coverage
+
+# Config and env
+Dockerfile
+.dockerignore
+.env*
+.git
+.gitignore
+
+# IDE/editor
+.vscode
+.idea
+
+# Logs and docs
+*.log
+*.md
+
+# Tests
+__tests__/
+__mocks__/
+
+
+# Only ignore .ts test files, keep code
+*.spec.ts
+*.test.ts

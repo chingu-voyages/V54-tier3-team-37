@@ -1,6 +1,6 @@
 import jwt, { SignOptions } from "jsonwebtoken";
 
-import { APP_NAME } from "../config/index.ts";
+import { APP_NAME } from "../config/index.js";
 
 export const generateToken = ({
   email,

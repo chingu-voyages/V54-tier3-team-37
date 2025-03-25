@@ -1,9 +1,14 @@
 import express from "express";
+import path from "path";
 import session from "express-session";
-import { userRoute, authRoute } from "../routes/index.ts";
+import { userRoute, authRoute } from "../routes/index.js";
 
 export const configApp = () => {
   const app = express();
+
+  // Serve static files
+  const __dirname = path.resolve();
+  app.use(express.static(path.join(__dirname, "..", "static")));
 
   const sessionSecret = String(process.env.SESSION_SECRET);
   app.use(

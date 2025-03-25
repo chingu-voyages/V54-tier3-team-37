@@ -1,3 +1,3 @@
-export * from "./userRoutes.ts";
-export * from "./promptRoutes.ts";
-export * from "./authRoutes.ts";
+export * from "./userRoutes.js";
+export * from "./promptRoutes.js";
+export * from "./authRoutes.js";
