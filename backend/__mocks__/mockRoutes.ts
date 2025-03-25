@@ -27,7 +27,7 @@ export const callbacks = [
     mockResponse: "Google callback",
   },
   {
-    path: "/github-callback",
+    path: "/auth/github-callback",
     controller: authController.githubCallback,
     mockResponse: "GitHub callback",
   },
