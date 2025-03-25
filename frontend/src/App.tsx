@@ -1,7 +1,10 @@
+import { Provider } from 'react-redux';
+
 import About from './components/About';
 import Footer from './components/Footer';
 import Hero from './components/Hero';
 import Nav from './components/Nav';
+import { store } from './store';
 
 // import PromptGenMockup from './components/PromptGenMockup';
 
@@ -9,12 +12,13 @@ function App() {
   // let user;
 
   return (
-    <div className="flex h-screen w-screen flex-col items-center justify-start">
-      <header className="w-full">
-        <Nav />
-      </header>
-      <Hero />
-      {/* {user ? (
+    <Provider store={store}>
+      <div className="flex h-screen w-screen flex-col items-center justify-start">
+        <header className="w-full">
+          <Nav />
+        </header>
+        <Hero />
+        {/* {user ? (
         <PromptGenMockup />
       ) : (
         <div className="bg-muted w-full p-16">
@@ -23,9 +27,10 @@ function App() {
           </p>
         </div>
       )} */}
-      <About />
-      <Footer />
-    </div>
+        <About />
+        <Footer />
+      </div>
+    </Provider>
   );
 }
 
