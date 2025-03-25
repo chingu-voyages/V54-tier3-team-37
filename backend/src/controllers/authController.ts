@@ -6,7 +6,7 @@ import {
   HOME_REACT_ADDRESS,
 } from "../config/index.js";
 import { generateToken, generateRandomHexString } from "../utils/index.js";
-import { GSession, UserPayload } from "../types/index.js";
+import { GSession, User } from "../types/index.js";
 
 const cookieOptions: CookieOptions = {
   httpOnly: true,
@@ -17,7 +17,7 @@ const cookieOptions: CookieOptions = {
 const handleSignIn = async (
   req: Request,
   res: Response,
-  authService: any,
+  authService: typeof googleAuth | typeof githubAuth,
   sessionState: string
 ) => {
   try {
@@ -36,7 +36,7 @@ const handleSignIn = async (
 const handleCallback = async (
   req: Request,
   res: Response,
-  authService: any,
+  authService: typeof googleAuth | typeof githubAuth,
   sessionState: string
 ) => {
   try {
@@ -91,11 +91,11 @@ export const googleCallback = async (req: Request, res: Response) => {
 // =======================================
 // Send cookie and redirect to React
 // =======================================
-const sendCookieAndRedirect = (res: Response, user: UserPayload) => {
+const sendCookieAndRedirect = (res: Response, user: User) => {
   try {
     const token = generateToken(user);
     res.cookie("token", token, cookieOptions);
-    res.redirect(LOGGED_IN_REACT_ADDRESS);
+    res.redirect(`${LOGGED_IN_REACT_ADDRESS}?userId=${user.id}`);
   } catch (error) {
     throw new Error(error instanceof Error ? error.message : String(error));
   }
