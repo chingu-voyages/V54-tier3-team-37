@@ -1,0 +1,36 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+set +e
+
+cd backend
+
+# Compile TypeScript
+echo "Compiling TypeScript.."
+yarn tsc
+
+# Check if Prisma is generated (required for Prisma tests)
+echo "Checking Prisma client initialization..."
+if ! node -e "import('@prisma/client').catch(() => process.exit(1))"; then
+  echo "Prisma client not generated. Generating now..."
+  yarn prisma generate
+    # Check if the Prisma client was generated successfully
+  if [ $? -ne 0 ]; then
+    echo "Failed to generate Prisma client. Exiting."
+    exit 1
+  fi
+fi
+
+# Run tests
+echo "Running tests.."
+yarn test
+
+# Check if tests passed
+TEST_EXIT_CODE=$?
+if [ $TEST_EXIT_CODE -ne 0 ]; then
+  echo "Tests failed! Please fix the issues before pushing."
+  exit 1
+fi
+
+echo "Tests passed successfully. Pushing.."
+
