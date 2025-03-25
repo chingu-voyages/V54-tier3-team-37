@@ -2,6 +2,7 @@ import { NavLink } from '@/types/types';
 
 import Container from './Container';
 import { Button } from './ui/button';
+import { Link } from 'react-router-dom';
 
 const navLinks: NavLink[] = [
   {
@@ -19,7 +20,12 @@ const Nav = () => {
     <nav className="text-background bg-muted-foreground flex w-full items-center justify-between py-8">
       <Container className="flex-row justify-between">
         <div className="flex items-center gap-4">
-          <span className="text-4xl lowercase font-keania-one">Prompto</span>
+          <Link
+            to={'/'}
+            className="font-keania-one text-4xl lowercase"
+          >
+            Prompto
+          </Link>
         </div>
         <div className="flex items-center gap-14">
           <ul className="flex items-center gap-12 text-2xl">
@@ -32,9 +38,9 @@ const Nav = () => {
           <Button
             variant="outline"
             size="lg"
-            className="text-foreground cursor-pointer py-6 rounded-2xl text-2xl"
+            className="text-foreground cursor-pointer rounded-2xl py-6 text-2xl"
           >
-            Sign In
+            <Link to="/auth">Sign In</Link>
           </Button>
         </div>
       </Container>

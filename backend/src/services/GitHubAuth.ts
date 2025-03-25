@@ -9,6 +9,7 @@ import {
   GITHUB_CLIENT_SECRET,
   GITHUB_CLIENT_ID,
   GITHUB_REDIRECT_URL,
+  GITHUB_CALLBACK_URL,
 } from "../config/authConfig.js";
 import { findOrCreateUserId } from "../controllers/index.js";
 import { extractCode } from "../utils/index.js";
@@ -22,7 +23,8 @@ class GitHubAuth {
   constructor(
     private readonly clientId: string,
     private readonly clientSecret: string,
-    private readonly redirectUrl: string
+    private readonly redirectUrl: string,
+    private readonly callbackUrl: string
   ) {
     // Initialize the OAuth2 client for Google authentication
     // This handles sign-in, token exchange, and token refreshing
@@ -33,7 +35,7 @@ class GitHubAuth {
   }
 
   generateAuthUrl = (state: string) => {
-    return `${this.redirectUrl}client_id=${this.clientId}&scope=${this.scope}&state=${state}`;
+    return `${this.redirectUrl}client_id=${this.clientId}&redirect_uri=${this.callbackUrl}&scope=${this.scope}&state=${state}`;
   };
 
   authenticate = async (req: Request) => {
@@ -87,5 +89,6 @@ class GitHubAuth {
 export const githubAuth = new GitHubAuth(
   String(GITHUB_CLIENT_ID),
   String(GITHUB_CLIENT_SECRET),
-  GITHUB_REDIRECT_URL
+  GITHUB_REDIRECT_URL,
+  GITHUB_CALLBACK_URL
 );
