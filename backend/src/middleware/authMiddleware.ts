@@ -43,9 +43,8 @@ export const authMiddleware = async (
       return;
     }
 
-    // Attach user id to the request
-    req.userId = userId;
-    console.info("Attaching user id to the request: ", userId);
+    // Attach user id to the request parameters
+    req.params.userId = userId;
 
     next();
   } catch (error) {
