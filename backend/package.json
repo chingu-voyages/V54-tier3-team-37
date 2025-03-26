@@ -11,6 +11,7 @@
   "dependencies": {
     "@octokit/auth-oauth-app": "^8.1.3",
     "@prisma/client": "^6.5.0",
+    "cors": "^2.8.5",
     "express": "^5.0.1",
     "express-session": "^1.18.1",
     "googleapis": "^148.0.0",
@@ -27,6 +28,7 @@
     "@octokit/tsconfig": "^4.0.0",
     "@types/babel__core": "^7",
     "@types/babel__preset-env": "^7",
+    "@types/cors": "^2",
     "@types/express": "^5.0.0",
     "@types/express-session": "^1.18.1",
     "@types/jest": "^29.5.14",
