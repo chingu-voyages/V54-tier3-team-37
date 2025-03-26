@@ -1,10 +1,11 @@
 import { Request } from "express";
+import { Request } from "express";
 import { Octokit } from "octokit";
 import {
   type OAuthAppAuthInterface,
   createOAuthAppAuth,
 } from "@octokit/auth-oauth-app";
-
+import { GSession } from "../types/types.js";
 import {
   GITHUB_CLIENT_SECRET,
   GITHUB_CLIENT_ID,

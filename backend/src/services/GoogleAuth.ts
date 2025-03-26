@@ -1,6 +1,6 @@
 import { Request } from "express";
 import { type Auth, google } from "googleapis";
-
+import { Request } from "express";
 import { extractCode } from "../utils/extractQueryCode.js";
 import {
   GOOGLE_CLIENT_ID,
