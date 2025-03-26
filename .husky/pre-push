@@ -33,11 +33,10 @@ echo "Running tests.."
 yarn test
 
 # Check if tests passed
-TEST_EXIT_CODE=$?
-if [ $TEST_EXIT_CODE -ne 0 ]; then
-  echo "Tests failed! Please fix the issues before pushing."
+if [ $? -ne 0 ]; then
+  echo "❌ Tests failed! Please fix the issues before pushing."
   exit 1
 fi
 
-echo "Tests passed successfully. Pushing.."
+echo "✅ Tests passed successfully. Pushing.."
 
