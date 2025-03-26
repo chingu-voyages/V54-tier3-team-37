@@ -1,5 +1,5 @@
-import prisma from "../prisma.js";
-import { UserPayload } from "../types/userTypes.js";
+import prisma from "../prisma.ts";
+import { UserPayload } from "../types/userTypes.ts";
 
 export const findOrCreateUserId = async (
   user: UserPayload
