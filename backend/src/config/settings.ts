@@ -2,9 +2,19 @@ import express from "express";
 import path from "path";
 import session from "express-session";
 import { userRoute, authRoute } from "../routes/index.js";
+import cors from "cors";
 
 export const configApp = () => {
   const app = express();
+
+  app.use(
+      cors({
+        origin: [
+          "http://localhost:5173",
+        ],
+        credentials: true,
+      })
+  );
 
   // Serve static files
   const __dirname = path.resolve();
