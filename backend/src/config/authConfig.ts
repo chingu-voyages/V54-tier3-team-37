@@ -4,7 +4,7 @@ export const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 
 export const GITHUB_REDIRECT_URL = `https://github.com/login/oauth/authorize?`;
 export const GITHUB_CALLBACK_URL =
-  "https://v54-tier3-team-37.onrender.com/github-callback";
+  "https://v54-tier3-team-37.onrender.com/auth/github-callback";
 
 // Google OAuth variables
 export const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
