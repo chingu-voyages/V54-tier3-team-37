@@ -25,6 +25,7 @@ const handleSignIn = async (
     (req.session as GSession)[sessionState] = state;
     // Generate a url that asks permissions defined scopes
     const authorizationUrl = authService.generateAuthUrl(state);
+    if (!authorizationUrl) return;
     // Redirect the user to authorizationUrl
     res.redirect(authorizationUrl);
   } catch (error) {
