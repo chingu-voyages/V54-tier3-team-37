@@ -1,7 +1,16 @@
+import { Provider } from 'react-redux';
+import {
+  Route,
+  Routes,
+} from 'react-router-dom';
+
 import About from './components/About';
+import AboutPage from './components/AboutPage';
+import Auth from './components/Auth';
 import Footer from './components/Footer';
 import Hero from './components/Hero';
 import Nav from './components/Nav';
+import { store } from './store';
 
 // import PromptGenMockup from './components/PromptGenMockup';
 
@@ -9,12 +18,18 @@ function App() {
   // let user;
 
   return (
-    <div className="flex h-screen w-screen flex-col items-center justify-start">
-      <header className="w-full">
-        <Nav />
-      </header>
-      <Hero />
-      {/* {user ? (
+    <Provider store={store}>
+      <div className="flex h-screen w-screen flex-col items-center justify-start">
+        <header className="w-full">
+          <Nav />
+        </header>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+                <Hero />
+                {/* {user ? (
         <PromptGenMockup />
       ) : (
         <div className="bg-muted w-full p-16">
@@ -23,9 +38,23 @@ function App() {
           </p>
         </div>
       )} */}
-      <About />
-      <Footer />
-    </div>
+                <About />
+            </>
+          }
+        />
+        <Route
+          path="/about"
+          element={<AboutPage />}
+        />
+        <Route
+          path="/auth"
+          element={<Auth />}
+        />
+      </Routes>
+
+        <Footer />
+      </div>
+    </Provider>
   );
 }
 
