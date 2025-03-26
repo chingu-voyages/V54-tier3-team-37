@@ -17,7 +17,7 @@ const cookieOptions: CookieOptions = {
 const handleSignIn = async (
   req: Request,
   res: Response,
-  authService: any,
+  authService: typeof googleAuth | typeof githubAuth,
   sessionState: string
 ) => {
   try {
@@ -36,7 +36,7 @@ const handleSignIn = async (
 const handleCallback = async (
   req: Request,
   res: Response,
-  authService: any,
+  authService: typeof googleAuth | typeof githubAuth,
   sessionState: string
 ) => {
   try {

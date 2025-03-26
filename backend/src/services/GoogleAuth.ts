@@ -1,5 +1,5 @@
 import { type Auth, google } from "googleapis";
-
+import { Request } from "express";
 import { extractCode } from "../utils/extractQueryCode.js";
 import {
   GOOGLE_CLIENT_ID,
@@ -7,7 +7,7 @@ import {
   GOOGLE_CALLBACK_URL,
   GOOGLE_OAUTH_SCOPES,
 } from "../config/authConfig.js";
-
+import { GSession } from "../types/types.js";
 export class GoogleAPIError extends Error {
   constructor(message: string) {
     // Call the constructor of the base class `Error`
@@ -19,10 +19,11 @@ export class GoogleAPIError extends Error {
   }
 }
 
-export const throwGoogleError = (error: any) => {
-  throw new GoogleAPIError(
-    error instanceof Error ? error.message : String(error)
-  );
+export const throwGoogleError = (error: unknown): never => {
+  if (error instanceof Error) {
+    throw new GoogleAPIError(error.message);
+  }
+  throw new GoogleAPIError(String(error));
 };
 
 class GoogleAuth {
@@ -63,10 +64,10 @@ class GoogleAuth {
     });
   };
 
-  authenticate = async (req: any) => {
+  authenticate = async (req: Request) => {
     try {
       // Extract authorization code that will be exchanged for user tokens
-      const code = extractCode(req, req.session.googleAuthState);
+      const code = extractCode(req, (req.session as GSession).googleAuthState);
       // Because we are communicating directly with a Google server,
       // We can be confident that the token is valid
       const { tokens } = await this.getToken(code);
