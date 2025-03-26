@@ -1,9 +1,11 @@
+import { Request } from "express";
+
 // We exchange the authorization code for an access and ID token
 // by making a post request to Google’s access token endpoint
-export const extractCode = (req: any, state: string) => {
+export const extractCode = (req: Request, state: string) => {
   // Parse the URL to extract necessary parameters
   const url = new URL(req.url, `http://${req.headers.host}`);
-  let q = Object.fromEntries(url.searchParams.entries());
+  const q = Object.fromEntries(url.searchParams.entries());
   if (!q.code) throw new Error("no code to extract from the request query");
   try {
     if (q.error) {
@@ -16,6 +18,8 @@ export const extractCode = (req: any, state: string) => {
     }
     return q.code;
   } catch (error) {
-    throw new Error("failed to extract code from the request query");
+    throw new Error(
+      `failed to extract code from the request query: ${error instanceof Error ? error.message : String(error)}`
+    );
   }
 };
