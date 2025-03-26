@@ -24,10 +24,7 @@
     "lucide-react": "^0.479.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-<<<<<<< HEAD
-=======
     "react-redux": "^9.2.0",
->>>>>>> 84784c98258d97c6b01c3a30924fb3ed6d12cbd6
     "react-router-dom": "^7.4.0",
     "tailwind-merge": "^3.0.2",
     "tailwindcss": "^4.0.12",
