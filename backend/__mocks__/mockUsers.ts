@@ -1,4 +1,11 @@
 export const mockUsers = {
+  unregisteredUser: [
+    { email: "foo@bar.dev", displayName: "Foo" },
+    {
+      email: "hello@world.dev",
+      displayName: "Hello",
+    },
+  ],
   validUser: [
     { id: "13456-skldfjawe-9fo233", email: "foo@bar.dev", displayName: "Foo" },
     {
