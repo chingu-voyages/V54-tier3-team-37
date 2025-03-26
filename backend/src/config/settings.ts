@@ -7,11 +7,11 @@ import cors from "cors";
 export const configApp = () => {
   const app = express();
 
+  const allowedOrigins = [process.env.CLIENT_URL || "http://localhost:5173"];
+
   app.use(
       cors({
-        origin: [
-          "http://localhost:5173",
-        ],
+        origin: allowedOrigins,
         credentials: true,
       })
   );
