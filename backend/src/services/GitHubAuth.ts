@@ -1,9 +1,10 @@
+import { Request } from "express";
 import { Octokit } from "octokit";
 import {
   type OAuthAppAuthInterface,
   createOAuthAppAuth,
 } from "@octokit/auth-oauth-app";
-
+import { GSession } from "../types/types.js";
 import {
   GITHUB_CLIENT_SECRET,
   GITHUB_CLIENT_ID,
@@ -24,10 +25,11 @@ export class GitHubAPIError extends Error {
   }
 }
 
-export const throwGitHubError = (error: any) => {
-  throw new GitHubAPIError(
-    error instanceof Error ? error.message : String(error)
-  );
+export const throwGitHubError = (error: unknown): never => {
+  if (error instanceof Error) {
+    throw new GitHubAPIError(error.message);
+  }
+  throw new GitHubAPIError(String(error));
 };
 
 class GitHubAuth {
@@ -51,14 +53,14 @@ class GitHubAuth {
     return `${this.redirectUrl}client_id=${this.clientId}&redirect_uri=${this.callbackUrl}&scope=${this.scope}&state=${state}`;
   };
 
-  authenticate = async (req: any) => {
+  authenticate = async (req: Request) => {
     try {
       // Extract authorization code that will be exchanged for user tokens
-      const code = extractCode(req, req.session.githubAuthState);
+      const code = extractCode(req, (req.session as GSession).githubAuthState);
       // Because we are communicating directly with a GitHub server,
       // We can be confident that the token is valid
       const access_token = await this.getAccessToken(String(code));
-      req.session.token = access_token;
+      (req.session as GSession).token = access_token;
       // Get name, email and avatar url
       const user = await this.getUserInfo(access_token);
       if (!user) return;
