@@ -19,11 +19,11 @@ fi
 # Check if Prisma is generated (required for Prisma tests)
 echo "Checking Prisma client initialization..."
 if ! node -e "import('@prisma/client').catch(() => process.exit(1))"; then
-  echo "Prisma client not generated. Generating now..."
+  echo "⚠️ Prisma client not generated. Generating now..."
   yarn prisma generate
     # Check if the Prisma client was generated successfully
   if [ $? -ne 0 ]; then
-    echo "Failed to generate Prisma client. Exiting."
+    echo "❌ Failed to generate Prisma client. Exiting."
     exit 1
   fi
 fi
