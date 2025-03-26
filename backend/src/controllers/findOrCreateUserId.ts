@@ -1,5 +1,5 @@
-import prisma from "../prisma.ts";
-import { UserPayload } from "../types/userTypes.ts";
+import prisma from "../prisma.js";
+import { UserPayload } from "../types/userTypes.js";
 
 export const findOrCreateUserId = async (
   user: UserPayload
@@ -24,5 +24,5 @@ export const findUserById = async (userId: string) => {
     where: { id: userId },
   });
 
-  if (user) return user.id;
+  if (user) return user;
 };

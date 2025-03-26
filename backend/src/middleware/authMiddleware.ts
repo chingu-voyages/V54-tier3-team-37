@@ -37,14 +37,14 @@ export const authMiddleware = async (
     }
 
     // Find user - decoded.sub is user id
-    const userId = await findUserById(String(decoded.sub));
-    if (!userId) {
+    const user = await findUserById(String(decoded.sub));
+    if (!user) {
       res.status(401).json({ error: "User not found" });
       return;
     }
 
     // Attach user id to the request parameters
-    req.params.userId = userId;
+    req.params.userId = user.id;
 
     next();
   } catch (error) {
