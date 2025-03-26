@@ -10,6 +10,12 @@ cd backend
 echo "Compiling TypeScript.."
 yarn tsc
 
+# Check if tests passed
+if [ $? -ne 0 ]; then
+  echo "❌ Found type errors! Please fix the errors before pushing."
+  exit 1
+fi
+
 # Check if Prisma is generated (required for Prisma tests)
 echo "Checking Prisma client initialization..."
 if ! node -e "import('@prisma/client').catch(() => process.exit(1))"; then
