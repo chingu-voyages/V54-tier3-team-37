@@ -1,8 +1,5 @@
 import { Provider } from 'react-redux';
-import {
-  Route,
-  Routes,
-} from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import About from './components/About';
 import AboutPage from './components/AboutPage';
@@ -11,7 +8,6 @@ import Footer from './components/Footer';
 import Hero from './components/Hero';
 import Nav from './components/Nav';
 import { store } from './store';
-
 // import PromptGenMockup from './components/PromptGenMockup';
 
 function App() {
@@ -23,11 +19,13 @@ function App() {
         <header className="w-full">
           <Nav />
         </header>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <Hero />
+                {/* {user ? (
                 <Hero />
                 {/* {user ? (
         <PromptGenMockup />
@@ -39,18 +37,18 @@ function App() {
         </div>
       )} */}
                 <About />
-            </>
-          }
-        />
-        <Route
-          path="/about"
-          element={<AboutPage />}
-        />
-        <Route
-          path="/auth"
-          element={<Auth />}
-        />
-      </Routes>
+              </>
+            }
+          />
+          <Route
+            path="/about"
+            element={<AboutPage />}
+          />
+          <Route
+            path="/auth"
+            element={<Auth />}
+          />
+        </Routes>
 
         <Footer />
       </div>

@@ -1,5 +1,5 @@
-import { type Auth, google } from "googleapis";
 import { Request } from "express";
+import { type Auth, google } from "googleapis";
 import { extractCode } from "../utils/extractQueryCode.js";
 import {
   GOOGLE_CLIENT_ID,
@@ -7,24 +7,9 @@ import {
   GOOGLE_CALLBACK_URL,
   GOOGLE_OAUTH_SCOPES,
 } from "../config/authConfig.js";
-import { GSession } from "../types/types.js";
-export class GoogleAPIError extends Error {
-  constructor(message: string) {
-    // Call the constructor of the base class `Error`
-    // And set the error name to the custom error class name
-    super(message);
-    this.name = "GoogleAPIError";
-    // Set the prototype explicitly to maintain the correct prototype chain
-    Object.setPrototypeOf(this, GoogleAPIError.prototype);
-  }
-}
-
-export const throwGoogleError = (error: unknown): never => {
-  if (error instanceof Error) {
-    throw new GoogleAPIError(error.message);
-  }
-  throw new GoogleAPIError(String(error));
-};
+import { findOrCreateUserId } from "../controllers/index.js";
+import { throwGoogleError } from "./errors.js";
+import { GSession } from "../types/index.ts";
 
 class GoogleAuth {
   private authClient: Auth.OAuth2Client;
@@ -63,7 +48,6 @@ class GoogleAuth {
         // Include the state parameter to reduce the risk of CSRF attacks.
         state,
       });
-      console.warn(`Redirecting to: ${redirectUrl}`);
       return redirectUrl;
     } catch (error: unknown) {
       console.error(error);
@@ -90,13 +74,12 @@ class GoogleAuth {
         // Get user email, name and picture
         const user = await this.getUserInfo();
         if (!user) return;
-        // interactWithDatabase(user);
-        const { email, name } = user;
-        return { email, name };
+        const userId = await findOrCreateUserId(user);
+        return { id: userId, displayName: user.displayName, email: user.email };
       }
     } catch (error) {
       console.error(error);
-      throwGoogleError(error);
+      throwGoogleError(String(error));
     }
   };
 
@@ -109,13 +92,13 @@ class GoogleAuth {
   getUserInfo = async () => {
     try {
       const { data } = await this.oauth2.userinfo.get();
-      const { email, name, picture } = data;
-      if (name && email) {
-        return { email, name, picture };
+      const { email, name: displayName, picture } = data;
+      if (displayName && email) {
+        return { email, displayName, picture };
       }
       return;
     } catch (error) {
-      throwGoogleError(error);
+      throwGoogleError(String(error));
     }
   };
 }
