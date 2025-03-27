@@ -1,4 +1,4 @@
-import { isProduction } from "./settings.js";
+export const isProduction = process.env.NODE_ENV === "production";
 
 // GitHub OAuth variables
 export const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
