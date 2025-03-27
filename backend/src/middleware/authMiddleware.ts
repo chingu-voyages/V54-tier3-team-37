@@ -9,7 +9,7 @@ export const authMiddleware = async (
   next: NextFunction
 ) => {
   // Extract the token from cookies
-  const token = req.cookies.authorization;
+  const token = req.cookies.token;
 
   if (!token) {
     res
@@ -19,25 +19,16 @@ export const authMiddleware = async (
   }
 
   try {
-    // Decode the token
-    const decoded = jwt.verify(
-      token,
-      String(process.env.JWT_SECRET)
-    ) as jwt.JwtPayload;
-
-    // Check if the token is expired
-    // Since 'exp' is in seconds we multiply by 1000 to compare with Date.now()
-    const expiration = (decoded.exp || 0) * 1000;
-    if (Date.now() > expiration) {
-      // The user must refresh their token or log in again
+    const verifiedToken = await verifyJWT(token);
+    if (!verifiedToken) {
       res
         .status(401)
-        .json({ error: "Access denied", message: "Token is expired" });
+        .json({ error: "Access denied", message: "Token is not verified" });
       return;
     }
 
     // Find user - decoded.sub is user id
-    const user = await findUserById(String(decoded.sub));
+    const user = await findUserById(String(verifiedToken.sub));
     if (!user) {
       res.status(401).json({ error: "User not found" });
       return;
@@ -48,11 +39,44 @@ export const authMiddleware = async (
 
     next();
   } catch (error) {
-    if (error instanceof jwt.JsonWebTokenError) {
-      console.error("JWT verification error:", error);
-      res.status(401).json({ error: "JWT verification error", message: error });
-    }
-
-    res.status(401).json({ error: "Unknown JsonWebToken error" });
+    console.error("Authentication error:", error);
+    res.status(500).json({
+      error: "Authentication failed",
+      message: "An unexpected error occurred during authentication",
+    });
+    return;
   }
+};
+
+const verifyJWT = async (token: string) => {
+  const decoded = decode(token);
+  if (decoded && tokenIsVerified(decoded)) return decoded;
+};
+
+const decode = (token: string) => {
+  try {
+    // Decode the token
+    const decoded = jwt.verify(
+      token,
+      String(process.env.JWT_SECRET)
+    ) as jwt.JwtPayload;
+
+    return decoded;
+  } catch (error: unknown) {
+    console.error(
+      `Failed to extract JWT token with the provided secret: ${error}`
+    );
+  }
+};
+
+const tokenIsVerified = (decoded: jwt.JwtPayload) => {
+  // Check if the token is expired
+  // Since 'exp' is in seconds we multiply by 1000 to compare with Date.now()
+  const expiration = (decoded.exp || 0) * 1000;
+  if (Date.now() > expiration) {
+    // The user must refresh their token or log in again
+    console.error("Token is expired.");
+    return false;
+  }
+  return true;
 };
