@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { decode, tokenIsVerified } from "../../src/utils/verifyJWT";
 import { mockUsers } from "../../__mocks__/mockUsers";
+import { JWT_SECRET, getSignedTestJWT } from "../getSignedTestJWT";
 
 // Do not print errors to console
 jest.spyOn(console, "error").mockImplementation(() => {});
@@ -11,8 +12,6 @@ jest.mock("../../src/controllers/authController", () => ({
 }));
 
 describe("Decode and isTokenVerified functions", () => {
-  const JWT_SECRET = "testJWTsecret";
-
   beforeAll(() => {
     process.env.JWT_SECRET = JWT_SECRET;
   });
@@ -21,10 +20,9 @@ describe("Decode and isTokenVerified functions", () => {
     test("decodes valid token", () => {
       const validMockUsers = mockUsers.validUser;
       for (const mockUser of validMockUsers) {
-        const { id, displayName, email } = mockUser;
-        const token = jwt.sign({ sub: id, email, displayName }, JWT_SECRET);
-        const result = decode(token);
-        expect(result).toHaveProperty("sub", id);
+        const testToken = getSignedTestJWT(mockUser);
+        const result = decode(testToken);
+        expect(result).toHaveProperty("sub", mockUser.id);
       }
     });
 
