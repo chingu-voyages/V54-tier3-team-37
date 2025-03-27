@@ -4,7 +4,7 @@ export interface UserPayload {
 }
 
 export interface User extends UserPayload {
-  id: string;
+  id?: string;
   picture?: string | null;
   avatar_url?: string | null;
 }
