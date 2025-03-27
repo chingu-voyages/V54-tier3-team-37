@@ -1,8 +1,9 @@
 import {User} from "@prisma/client";
 
 /**
- * Represents the shape of user data returned to the client.
- *
+ * Maps a full User object to a PublicUser DTO.
+ * @param user - The Prisma User object.
+ * @returns A PublicUser object suitable for API responses.
  */
 export type PublicUser = {
     id: string;
