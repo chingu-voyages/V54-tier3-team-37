@@ -1,34 +1,30 @@
-import {Request, Response} from 'express';
-import {PrismaClient, User} from '@prisma/client';
+import {NextFunction, Request, Response} from 'express';
 import {mapUserToPublic} from "../types/mappers/userMapper.js";
+import prisma from "../prisma.js";
+import {User} from "@prisma/client";
 
-const prisma = new PrismaClient();
 
 /**
  * GET /users/:userId
- * Retrieves a user profile by user ID.
+ * Retrieves a user profile by user ID (email).
  * Returns 404 if the user is not found.
  */
-export const getUserProfile = async (
-    req: Request,
-    res: Response
-): Promise<void> => {
+export const getUserProfile = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const {userId} = req.params;
 
         const user = await prisma.user.findUnique({
-            where: {id: userId},
+            where: {email: userId},
         });
 
         if (!user) {
-            res.status(404).json({error: "User not found"});
+            res.status(404).json({message: "User not found"});
             return;
         }
 
         const publicUser = mapUserToPublic(user as User);
         res.status(200).json(publicUser);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({error: "Something went wrong"});
+        next(error);
     }
 };
