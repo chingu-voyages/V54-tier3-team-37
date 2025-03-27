@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { decode, tokenIsVerified } from "../../src/utils/verifyJWT";
 import { mockUsers } from "../../__mocks__/mockUsers";
-import { JWT_SECRET, getSignedTestJWT } from "../getSignedTestJWT";
+import { JWT_SECRET, getSignedTestJWT } from "../../__mocks__/getSignedTestJWT";
 
 // Do not print errors to console
 jest.spyOn(console, "error").mockImplementation(() => {});
