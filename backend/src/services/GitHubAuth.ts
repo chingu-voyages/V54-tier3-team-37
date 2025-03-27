@@ -36,7 +36,6 @@ class GitHubAuth {
   generateAuthUrl = (state: string) => {
     try {
       const redirectUrl = `${this.redirectUrl}client_id=${this.clientId}&redirect_uri=${this.callbackUrl}&scope=${this.scope}&state=${state}`;
-      console.warn(`Redirecting to: ${redirectUrl}`);
       return redirectUrl;
     } catch (error: unknown) {
       console.error(error);

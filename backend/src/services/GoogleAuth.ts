@@ -48,7 +48,6 @@ class GoogleAuth {
         // Include the state parameter to reduce the risk of CSRF attacks.
         state,
       });
-      console.warn(`Redirecting to: ${redirectUrl}`);
       return redirectUrl;
     } catch (error: unknown) {
       console.error(error);
