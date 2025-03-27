@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
 
 import { findUserById } from "../controllers/index.js";
+import { verifyJWT } from "../utils/index.js";
 
 export const authMiddleware = async (
   req: Request,
@@ -46,37 +46,4 @@ export const authMiddleware = async (
     });
     return;
   }
-};
-
-const verifyJWT = async (token: string) => {
-  const decoded = decode(token);
-  if (decoded && tokenIsVerified(decoded)) return decoded;
-};
-
-const decode = (token: string) => {
-  try {
-    // Decode the token
-    const decoded = jwt.verify(
-      token,
-      String(process.env.JWT_SECRET)
-    ) as jwt.JwtPayload;
-
-    return decoded;
-  } catch (error: unknown) {
-    console.error(
-      `Failed to extract JWT token with the provided secret: ${error}`
-    );
-  }
-};
-
-const tokenIsVerified = (decoded: jwt.JwtPayload) => {
-  // Check if the token is expired
-  // Since 'exp' is in seconds we multiply by 1000 to compare with Date.now()
-  const expiration = (decoded.exp || 0) * 1000;
-  if (Date.now() > expiration) {
-    // The user must refresh their token or log in again
-    console.error("Token is expired.");
-    return false;
-  }
-  return true;
 };
