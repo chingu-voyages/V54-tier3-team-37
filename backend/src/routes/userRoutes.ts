@@ -1,12 +1,13 @@
-import {RequestHandler, Router} from "express";
+import {Router} from "express";
 
 import {userController} from "../controllers/index.js";
+import {authMiddleware} from "../middleware/authMiddleware.js";
 
 
 export const userRoute: Router = Router({});
 
-// GET /users/:userId → Fetch user profile by ID
-userRoute.get("/:userId", userController.getUserProfile as RequestHandler);
+// Route to retrieve a user profile by userId (email)
+userRoute.get("/:userId", authMiddleware, userController.getUserProfile as any);
 
 
 
