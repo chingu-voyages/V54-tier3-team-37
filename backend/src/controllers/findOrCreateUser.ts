@@ -5,7 +5,7 @@ export const findOrCreateUserId = async (user: User): Promise<string> => {
   const existingUser = await prisma.user.findUnique({
     where: { email: user.email },
   });
-  console.log(existingUser);
+
   if (existingUser) return existingUser.id;
 
   // Save user image
