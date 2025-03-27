@@ -5,6 +5,8 @@ import session from "express-session";
 import { userRoute, authRoute } from "../routes/index.js";
 import cors from "cors";
 
+export const isProduction = process.env.NODE_ENV === "production";
+
 export const configApp = () => {
   const app = express();
 
