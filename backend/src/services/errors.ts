@@ -9,10 +9,11 @@ export class GoogleAPIError extends Error {
   }
 }
 
-export const throwGoogleError = (error: Error | string) => {
-  throw new GoogleAPIError(
-    error instanceof Error ? error.message : String(error)
-  );
+export const throwGoogleError = (error: unknown): never => {
+  if (error instanceof Error) {
+    throw new GoogleAPIError(error.message);
+  }
+  throw new GoogleAPIError(String(error));
 };
 
 export class GitHubAPIError extends Error {
@@ -26,8 +27,9 @@ export class GitHubAPIError extends Error {
   }
 }
 
-export const throwGitHubError = (error: Error | string) => {
-  throw new GitHubAPIError(
-    error instanceof Error ? error.message : String(error)
-  );
+export const throwGitHubError = (error: unknown): never => {
+  if (error instanceof Error) {
+    throw new GitHubAPIError(error.message);
+  }
+  throw new GitHubAPIError(String(error));
 };
