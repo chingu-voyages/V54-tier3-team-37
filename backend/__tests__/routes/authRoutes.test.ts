@@ -10,7 +10,7 @@ import {
   callbacks,
   invalidRoutes,
 } from "../../__mocks__/mockRoutes";
-import { getSignedTestJWT, JWT_SECRET } from "../getSignedTestJWT";
+import { getSignedTestJWT, JWT_SECRET } from "../../__mocks__/getSignedTestJWT";
 
 jest.mock("../../src/controllers/index", () => ({
   authController: {
