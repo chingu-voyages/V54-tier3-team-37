@@ -1,43 +1,28 @@
 import {Router, Request, Response} from "express";
-import prisma from "../prisma.js";
+import {authMiddleware} from "../middleware/index.js";
+import {getUserById} from "../controllers/userController.js";
+import {mapUserToPublic} from "../types/mapper/userMapper.js";
 
 export const userRoute: Router = Router({});
 
-userRoute.post("/", async (req, res) => {
-    try {
-        const { email, displayName } = req.body;
-        const newUser = await prisma.user.create({
-            data: { email, displayName },
-        });
-        res.status(201).json(newUser);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Something went wrong" });
-    }
-});
 
-userRoute.get("/:userId", async (req: Request, res: Response) => {
+userRoute.get("/me", authMiddleware, async (req: Request, res: Response): Promise<void> => {
     try {
-        const { userId } = req.params;
+        const userId = req.userId;
 
-        const user = await prisma.user.findUnique({
-            where: { id: userId },
-            include: { prompts: true },
-        });
+        const user = await getUserById(userId);
 
         if (!user) {
             res.status(404).json({ error: "User not found" });
-            return
+            return;
         }
 
-        res.status(200).json(user);
-        return
-
+        res.status(200).json({ user: mapUserToPublic(user) });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Something went wrong" });
+        res.status(500).json({error: "Internal server error"});
     }
 });
+
 
 
 
