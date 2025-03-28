@@ -1,15 +1,10 @@
 import jwt, { SignOptions } from "jsonwebtoken";
 
 import { APP_NAME } from "../config/index.js";
+import { User } from "../types/index.js";
 
-export const generateToken = ({
-  email,
-  name,
-}: {
-  email: string;
-  name: string;
-}): string => {
-  if (!email || !name) {
+export const generateToken = ({ email, displayName, id }: User): string => {
+  if (!email || !displayName || !id) {
     throw new Error("missing credentials");
   }
   const options: SignOptions = {
@@ -18,7 +13,7 @@ export const generateToken = ({
     issuer: APP_NAME,
   };
   const token = jwt.sign(
-    { id: email, username: name },
+    { sub: id, email, displayName },
     String(process.env.JWT_SECRET),
     options
   );

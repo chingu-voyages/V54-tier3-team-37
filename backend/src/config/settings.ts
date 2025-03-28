@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import cookieParser from "cookie-parser";
 import session from "express-session";
 import {authRoute, userRoute} from "../routes/index.js";
 import cors from "cors";
@@ -11,9 +12,9 @@ export const configApp = () => {
     app.use(express.json());
 
     setupSwagger(app);
-
     const allowedOrigin = process.env.CLIENT_URL || 'http://localhost:5173';
 
+    app.use(cookieParser());
     app.use(
         cors({
             origin: allowedOrigin,
