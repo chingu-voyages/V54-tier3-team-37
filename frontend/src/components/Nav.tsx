@@ -1,27 +1,37 @@
-import { NavLink } from '@/types/types';
-
+import { NavLink } from '@/types/ui';
 import Container from './Container';
 import { Button } from './ui/button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAppSelector, useAppDispatch } from '@/store/hooks';
+import { logout } from '@/store/slices/authSlice';
+import { logoutUser } from '@/api/auth';
 
 const navLinks: NavLink[] = [
-  {
-    href: '/',
-    text: 'Home',
-  },
-  {
-    href: '/about',
-    text: 'About',
-  },
+  { href: '/', text: 'Home' },
+  { href: '/about', text: 'About' },
 ];
 
 const Nav = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { isLoggedIn } = useAppSelector((state) => state.auth);
+
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+      dispatch(logout());
+      navigate('/');
+    } catch (err) {
+      console.error('Logout failed:', err);
+    }
+  };
+
   return (
     <nav className="text-background bg-muted-foreground flex w-full items-center justify-between py-8">
       <Container className="flex-row justify-between">
         <div className="flex items-center gap-4">
           <Link
-            to={'/'}
+            to="/"
             className="font-keania-one text-4xl lowercase"
           >
             Prompto
@@ -35,13 +45,25 @@ const Nav = () => {
               </li>
             ))}
           </ul>
-          <Button
-            variant="outline"
-            size="lg"
-            className="text-foreground cursor-pointer rounded-2xl py-6 text-2xl"
-          >
-            <Link to="/auth">Sign In</Link>
-          </Button>
+
+          {isLoggedIn ? (
+            <Button
+              variant="outline"
+              size="lg"
+              className="text-foreground cursor-pointer rounded-2xl py-6 text-2xl"
+              onClick={handleLogout}
+            >
+              Log out
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              size="lg"
+              className="text-foreground cursor-pointer rounded-2xl py-6 text-2xl"
+            >
+              <Link to="/auth">Sign In</Link>
+            </Button>
+          )}
         </div>
       </Container>
     </nav>
