@@ -2,6 +2,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Github } from 'lucide-react';
 import { FcGoogle } from 'react-icons/fc';
+import { API_BASE_URL } from './constants';
+import { OAuthButtonProps } from '@/types';
 
 export default function Auth() {
   return (
@@ -19,23 +21,17 @@ export default function Auth() {
           <OAuthButton
             icon={<FcGoogle size={20} />}
             label="Continue with Google"
-            href="http://localhost:8000/auth/google"
+            href={`${API_BASE_URL}/auth/google`}
           />
           <OAuthButton
             icon={<Github size={20} />}
             label="Continue with GitHub"
-            href="http://localhost:8000/auth/github"
+            href={`${API_BASE_URL}/auth/github`}
           />
         </CardContent>
       </Card>
     </div>
   );
-}
-
-interface OAuthButtonProps {
-  icon: React.ReactNode;
-  label: string;
-  href: string;
 }
 
 const OAuthButton = ({ icon, label, href }: OAuthButtonProps) => (
