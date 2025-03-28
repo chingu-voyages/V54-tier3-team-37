@@ -15,6 +15,11 @@
     "allowImportingTsExtensions": true,
     "noEmit": true
   },
+  "ts-node": {
+    "experimentalSpecifierResolution": "node",
+    "transpileOnly": true,
+    "esm": true
+  },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "__tests__"]
 }
