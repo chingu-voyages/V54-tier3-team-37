@@ -1,5 +1,5 @@
-import prisma from "../prisma.ts";
-import { User } from "../types/userTypes.ts";
+import prisma from "../prisma.js";
+import { User } from "../types/userTypes.js";
 
 export const findOrCreateUserId = async (user: User): Promise<string> => {
   const existingUser = await prisma.user.findUnique({

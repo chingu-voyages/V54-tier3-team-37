@@ -2,7 +2,7 @@ import express from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
 import session from "express-session";
-import { userRoute, authRoute } from "../routes/index.js";
+import {userRoute, authRoute, promptRoute} from "../routes/index.js";
 import cors from "cors";
 
 export const configApp = () => {
@@ -28,6 +28,7 @@ export const configApp = () => {
 
   app.use("/", authRoute);
   app.use("/users", userRoute);
+  app.use("/outputs", promptRoute);
 
   return app;
 };
