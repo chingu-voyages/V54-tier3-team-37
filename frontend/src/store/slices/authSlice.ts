@@ -1,8 +1,4 @@
-import {
-  createAsyncThunk,
-  createSlice,
-  PayloadAction,
-} from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface AuthState {
   user: { id: string; name: string } | null;
@@ -17,6 +13,20 @@ const initialState: AuthState = {
   isLoading: false,
   error: null,
 };
+
+export const fetchUser = createAsyncThunk('auth/fetchUser', async (_, { rejectWithValue }) => {
+  try {
+    const response = await fetch('http://localhost:8000/users/me', {
+      credentials: 'include',
+    });
+
+    if (!response.ok) throw new Error('Not authenticated');
+
+    return await response.json();
+  } catch (error) {
+    return rejectWithValue(error instanceof Error ? error.message : 'Failed to fetch user');
+  }
+});
 
 export const loginUser = createAsyncThunk(
   'auth/login',
@@ -51,18 +61,38 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(loginUser.pending, (state) => {
+      .addCase(fetchUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(loginUser.fulfilled, (state, action: PayloadAction<{ id: string; name: string }>) => {
+      .addCase(fetchUser.fulfilled, (state, action: PayloadAction<User>) => {
         state.isLoading = false;
         state.isLoggedIn = true;
         state.user = action.payload;
       })
+      .addCase(fetchUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isLoggedIn = false;
+        state.user = null;
+        state.error = action.payload as string;
+      });
+
+    builder
+      .addCase(loginUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(
+        loginUser.fulfilled,
+        (state, action: PayloadAction<{ id: string; name: string }>) => {
+          state.isLoading = false;
+          state.isLoggedIn = true;
+          state.user = action.payload;
+        }
+      )
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload as string || 'Unknown error';
+        state.error = (action.payload as string) || 'Unknown error';
       });
   },
 });
