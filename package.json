@@ -1,0 +1,20 @@
+{
+  "name": "V54-tier3-team-37",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "packageManager": "yarn@4.7.0",
+  "devDependencies": {
+    "@playwright/test": "^1.51.0",
+    "@types/node": "^22.13.10",
+    "husky": "^8.0.0"
+  },
+  "scripts": {
+    "test:e2e": "yarn playwright test --project='UI Tests'",
+    "test:api": "yarn playwright test --project='API Tests'",
+    "test:ui:unit": "yarn workspace frontend test",
+    "test:codegen": "yarn playwright codegen --channel=chrome http://localhost:5173"
+  }
+}
