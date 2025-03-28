@@ -1,11 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface AuthState {
-  user: { id: string; name: string } | null;
-  isLoggedIn: boolean;
-  isLoading: boolean;
-  error: string | null;
-}
+import { getUserById } from '@/api/auth';
+import type { User, AuthState } from '@/types';
 
 const initialState: AuthState = {
   user: null,
@@ -14,37 +9,14 @@ const initialState: AuthState = {
   error: null,
 };
 
-export const fetchUser = createAsyncThunk('auth/fetchUser', async (_, { rejectWithValue }) => {
-  try {
-    const response = await fetch('http://localhost:8000/users/me', {
-      credentials: 'include',
-    });
-
-    if (!response.ok) throw new Error('Not authenticated');
-
-    return await response.json();
-  } catch (error) {
-    return rejectWithValue(error instanceof Error ? error.message : 'Failed to fetch user');
-  }
-});
-
-export const loginUser = createAsyncThunk(
-  'auth/login',
-  async (credentials: { username: string; password: string }, { rejectWithValue }) => {
+export const fetchUser = createAsyncThunk(
+  'auth/fetchUser',
+  async (userId: string, { rejectWithValue }) => {
     try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(credentials),
-      });
-
-      if (!response.ok) {
-        throw new Error('Login failed');
-      }
-
-      return await response.json();
+      const user = await getUserById(userId);
+      return user;
     } catch (error) {
-      return rejectWithValue(error instanceof Error ? error.message : 'Login failed');
+      return rejectWithValue(error instanceof Error ? error.message : 'Failed to fetch user');
     }
   }
 );
@@ -67,32 +39,14 @@ const authSlice = createSlice({
       })
       .addCase(fetchUser.fulfilled, (state, action: PayloadAction<User>) => {
         state.isLoading = false;
-        state.isLoggedIn = true;
         state.user = action.payload;
+        state.isLoggedIn = true;
       })
       .addCase(fetchUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.isLoggedIn = false;
-        state.user = null;
         state.error = action.payload as string;
-      });
-
-    builder
-      .addCase(loginUser.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(
-        loginUser.fulfilled,
-        (state, action: PayloadAction<{ id: string; name: string }>) => {
-          state.isLoading = false;
-          state.isLoggedIn = true;
-          state.user = action.payload;
-        }
-      )
-      .addCase(loginUser.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = (action.payload as string) || 'Unknown error';
+        state.user = null;
+        state.isLoggedIn = false;
       });
   },
 });
