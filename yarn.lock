@@ -4656,6 +4656,7 @@ __metadata:
     cookie-parser: "npm:^1.4.7"
     cors: "npm:^2.8.5"
     dotenv: "npm:^16.4.7"
+    esbuild: "npm:^0.25.1"
     eslint: "npm:^9.23.0"
     eslint-config-prettier: "npm:^10.1.1"
     eslint-plugin-prettier: "npm:^5.2.4"
@@ -5655,7 +5656,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:>=0.12 <1, esbuild@npm:^0.25.0":
+"esbuild@npm:>=0.12 <1, esbuild@npm:^0.25.0, esbuild@npm:^0.25.1":
   version: 0.25.1
   resolution: "esbuild@npm:0.25.1"
   dependencies:

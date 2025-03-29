@@ -5,7 +5,7 @@
   "scripts": {
     "start": "nodemon",
     "test": "jest --config jest.config.js",
-    "build": "tsc -p tsconfig.build.json",
+    "build": "node esbuild.config.js",
     "prepare": "cd .. && husky install backend/.husky"
   },
   "dependencies": {
@@ -43,6 +43,7 @@
     "@types/swagger-ui-express": "^4.1.8",
     "babel-jest": "^29.7.0",
     "dotenv": "^16.4.7",
+    "esbuild": "^0.25.1",
     "eslint": "^9.23.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-prettier": "^5.2.4",
