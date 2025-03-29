@@ -2,7 +2,7 @@ import {build} from 'esbuild';
 
 build({
     entryPoints: ['./src/server.ts'],
-    bundle: true,
+    bundle: false,
     platform: 'node',
     target: ['node20'],
     format: 'esm',
