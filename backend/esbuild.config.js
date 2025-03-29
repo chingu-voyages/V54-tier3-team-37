@@ -9,8 +9,7 @@ build({
     outdir: 'dist',
     sourcemap: true,
     outExtension: {'.js': '.js'},
-    tsconfig: './tsconfig.build.json',
-    external: ['fs', 'path', 'os'],
+    tsconfig: './tsconfig.build.json'
 }).catch((err) => {
     console.error('Build failed:', err);
     process.exit(1);
