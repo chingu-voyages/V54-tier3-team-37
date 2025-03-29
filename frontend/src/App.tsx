@@ -7,14 +7,16 @@ import Auth from './components/Auth';
 import Footer from './components/Footer';
 import Hero from './components/Hero';
 import Nav from './components/Nav';
+import PromptGenPage from './pages/PromptGenPage';
+import PrivateRoute from './components/PrivateRoute';
+import AuthWrapper from './components/AuthWrapper';
+
 import { store } from './store';
-// import PromptGenMockup from './components/PromptGenMockup';
 
 function App() {
-  // let user;
-
   return (
     <Provider store={store}>
+      <AuthWrapper />
       <div className="flex h-screen w-screen flex-col items-center justify-start">
         <header className="w-full">
           <Nav />
@@ -25,17 +27,6 @@ function App() {
             element={
               <>
                 <Hero />
-                {/* {user ? (
-                <Hero />
-                {/* {user ? (
-        <PromptGenMockup />
-      ) : (
-        <div className="bg-muted w-full p-16">
-          <p className="text-center max-w-xl mx-auto">
-            💫 Oh no you're not logged in ahhh you can't see the prompt creator hurry up and log in you know you want to get this show on the road yeah? 🐕
-          </p>
-        </div>
-      )} */}
                 <About />
               </>
             }
@@ -48,8 +39,15 @@ function App() {
             path="/auth"
             element={<Auth />}
           />
+          <Route
+            path="/generate"
+            element={
+              <PrivateRoute>
+                <PromptGenPage />
+              </PrivateRoute>
+            }
+          />
         </Routes>
-
         <Footer />
       </div>
     </Provider>

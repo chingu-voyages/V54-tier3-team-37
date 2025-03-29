@@ -1,18 +1,8 @@
 import { cn } from '@/lib/utils';
-import {
-  AboutFeatureCard,
-  AboutPersona,
-  AboutReason,
-  AboutStep,
-} from '@/types/types';
+import { AboutFeatureCard, AboutPersona, AboutReason, AboutStep } from '@/types/ui';
 
 import Container from './Container';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from './ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Separator } from './ui/separator';
 
 const About = () => {

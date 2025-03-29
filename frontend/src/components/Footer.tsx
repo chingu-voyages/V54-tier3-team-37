@@ -1,9 +1,6 @@
-import {
-  Github,
-  Linkedin,
-} from 'lucide-react';
+import { Github, Linkedin } from 'lucide-react';
 
-import { TeamMember } from '@/types/types';
+import { TeamMember } from '@/types/ui';
 
 import Container from './Container';
 
