@@ -1,43 +1,65 @@
-import {Router, Request, Response} from "express";
-import prisma from "../prisma.js";
+import {Request, Response, Router} from "express";
+import {authMiddleware} from "../middleware/index.js";
+import {getUserById} from "../controllers/userController.js";
+import {mapUserToPublic} from "../types/mapper/userMapper.js";
 
 export const userRoute: Router = Router({});
 
-userRoute.post("/", async (req, res) => {
+/**
+ * @swagger
+ * /users/me:
+ *   get:
+ *     summary: Get current authenticated user's profile
+ *     tags: [Users]
+ *     security:
+ *       - cookieAuth: []
+ *     responses:
+ *       200:
+ *         description: User profile successfully retrieved
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                     email:
+ *                       type: string
+ *                     displayName:
+ *                       type: string
+ *                     imageUrl:
+ *                       type: string
+ *                       nullable: true
+ *                     createdAt:
+ *                       type: string
+ *                       format: date-time
+ *       401:
+ *         description: Unauthorized - Token not provided or invalid
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+userRoute.get("/me", authMiddleware, async (req: Request, res: Response): Promise<void> => {
     try {
-        const { email, displayName } = req.body;
-        const newUser = await prisma.user.create({
-            data: { email, displayName },
-        });
-        res.status(201).json(newUser);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Something went wrong" });
-    }
-});
+        const userId = req.userId;
 
-userRoute.get("/:userId", async (req: Request, res: Response) => {
-    try {
-        const { userId } = req.params;
-
-        const user = await prisma.user.findUnique({
-            where: { id: userId },
-            include: { prompts: true },
-        });
+        const user = await getUserById(userId);
 
         if (!user) {
-            res.status(404).json({ error: "User not found" });
-            return
+            res.status(404).json({error: "User not found"});
+            return;
         }
 
-        res.status(200).json(user);
-        return
-
+        res.status(200).json({user: mapUserToPublic(user)});
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Something went wrong" });
+        res.status(500).json({error: "Internal server error"});
     }
 });
+
 
 
 

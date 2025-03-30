@@ -46,3 +46,9 @@ export type TeamMember = {
   linkedin: string;
   github: string;
 };
+
+export type OAuthButtonProps = {
+  icon: React.ReactNode;
+  label: string;
+  href: string;
+};
