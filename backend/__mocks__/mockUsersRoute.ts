@@ -24,20 +24,5 @@ export const createMockUser = (): MockUser => ({
     createdAt: new Date("2024-01-01T00:00:00Z"),
 });
 
-/**
- * Generate JWT token based on a mock user
- */
-export const createMockToken = (user: MockUser): string => {
-    return generateToken(user);
-};
-
-/**
- * Generate both mock user and token
- */
-export const createMockUserAndToken = () => {
-    const user = createMockUser();
-    const token = createMockToken(user);
-    return { user, token };
-};
 
 
