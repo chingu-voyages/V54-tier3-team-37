@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import request from "supertest";
 import cookieParser from "cookie-parser";
+import prisma from "../../src/prisma";
 import { describe, expect, beforeEach, jest } from "@jest/globals";
 import { authRoute } from "../../src/routes/authRoutes";
 
@@ -12,7 +13,7 @@ import {
 } from "../../__mocks__/mockRoutes";
 import { getSignedTestJWT, JWT_SECRET } from "../../__mocks__/getSignedTestJWT";
 
-jest.mock("../../src/controllers/index", () => ({
+jest.mock("../../src/controllers", () => ({
   authController: {
     googleSignIn: jest.fn((req: Request, res: Response) =>
       res.redirect("/mock-google-redirect")
@@ -36,26 +37,44 @@ jest.mock("../../src/controllers/index", () => ({
       res.status(200).json({ message: "Logged out successfully" });
     }),
   },
-  findUserById: jest.fn(async (userId: string) => {
-    if (userId === mockUsers.validUser[0].id) return mockUsers.validUser[0];
-  }),
+  getUserById: jest.fn(),
 }));
 
 describe("Router", () => {
+  let newUser;
   let app: express.Express;
-  const mockUser = mockUsers.validUser[0];
-  const testToken = getSignedTestJWT(mockUser);
 
-  beforeEach(() => {
+  beforeEach(async () => {
     app = express();
     app.use(cookieParser());
-    app.use(authRoute);
 
+    app.use(authRoute);
+    const mockUser = mockUsers.unregisteredUser[0];
+    // console.log("about to create user:");
+    // console.log(mockUser);
+    newUser = await prisma.user.create({
+      data: {
+        email: mockUser.email,
+        displayName: mockUser.displayName,
+      },
+    });
+    if (!newUser) throw Error("failed to create a test user");
+
+    // console.log("created newUser:");
+    // console.log(newUser);
+    const testToken = getSignedTestJWT(newUser);
     app.get("/set-test-cookie", (req, res) => {
       res.cookie("token", testToken);
       res.send("Cookies set");
     });
     process.env.JWT_SECRET = JWT_SECRET;
+  });
+
+  afterEach(async () => {
+    const deleted = await prisma.user.delete({
+      where: { id: newUser.id },
+    });
+    expect(deleted.id).toBe(newUser.id);
   });
 
   test("clears authentication token", async () => {
