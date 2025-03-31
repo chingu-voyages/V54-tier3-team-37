@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
-import { findUserById } from "../controllers/index.js";
-import { verifyJWT } from "../utils/index.js";
+import { getUserById } from "../controllers/userController.js";
+import { verifyJWT } from "../utils/verifyJWT.js";
 
 export const authMiddleware = async (
   req: Request,
@@ -28,7 +28,7 @@ export const authMiddleware = async (
     }
 
     // Find user - decoded.sub is user id
-    const user = await findUserById(String(verifiedToken.sub));
+    const user = await getUserById(String(verifiedToken.sub));
     if (!user) {
       res.status(401).json({ error: "User not found" });
       return;
