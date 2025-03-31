@@ -7,10 +7,14 @@ export const mockUsers = {
     },
   ],
   validUser: [
-    { id: "13456-skldfjawe-9fo233", email: "foo@bar.dev", displayName: "Foo" },
     {
-      id: "12345-sdfnhsdfn-37u023",
-      email: "hello@world.dev",
+      id: "f81d4fae-7dec-11d0-a765-00a0c91e6bf6",
+      email: "hello@bar.dev",
+      displayName: "Foo",
+    },
+    {
+      id: "550e8400-e29b-41d4-a716-446655440000",
+      email: "world@world.dev",
       displayName: "Hello",
     },
   ],
