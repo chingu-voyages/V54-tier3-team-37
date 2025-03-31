@@ -11,12 +11,12 @@ export const configApp = () => {
     app.use(express.json());
 
     setupSwagger(app);
-    const allowedOrigin = process.env.CLIENT_URL || 'http://localhost:5173';
+    const allowedOrigins = process.env.HOME_REACT_ADDRESS?.split(',') || ['http://localhost:5173'];
 
     app.use(cookieParser());
     app.use(
         cors({
-            origin: allowedOrigin,
+            origin: allowedOrigins,
             credentials: true,
         })
     );
