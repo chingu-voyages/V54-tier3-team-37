@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
-import { findUserById } from "../controllers/index.js";
-import { verifyJWT } from "../utils/index.js";
+import { findUserById } from "../controllers/findOrCreateUser.js";
+import { verifyJWT } from "../utils/verifyJWT.js";
 
 export const authMiddleware = async (
   req: Request,
