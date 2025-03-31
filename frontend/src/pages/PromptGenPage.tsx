@@ -1,4 +1,7 @@
-import PromptGen from '@/components/PromptGen';
+import {
+  PromptGenForm,
+  PromptGenResult,
+} from '@/components/PromptGen';
 
 const PromptGenPage = () => {
   return (
@@ -7,7 +10,8 @@ const PromptGenPage = () => {
         <h1 className="text-2xl">Create Effective Prompts for AI Systems with Our Intuitive Generator</h1>
         <p>Fill in the details below to generate a clear, well-structured, and effective prompt tailored to your needs.</p>
       </div>
-      <PromptGen />
+      <PromptGenForm />
+      <PromptGenResult />
     </section>
   );
 };
