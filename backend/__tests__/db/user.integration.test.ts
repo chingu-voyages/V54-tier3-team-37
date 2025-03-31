@@ -28,12 +28,12 @@ describe("Prisma User Model", () => {
     it('should throw a unique constraint error when using duplicate email', async () => {
         testEmail = generateUniqueEmail('duplicate');
 
-        await createTestUser({ email: testEmail });
+        await createTestUser({email: testEmail});
 
         let errorCaught = false;
 
         try {
-            await createTestUser({ email: testEmail });
+            await createTestUser({email: testEmail});
         } catch (error: any) {
             errorCaught = true;
             expect(error.code).toBe('P2002'); // Prisma's unique constraint error

@@ -1,5 +1,11 @@
+enum Language {
+  EN
+  ES
+  FR
+}
+
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "debian-openssl-1.1.x"]
 }
 
@@ -8,19 +14,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model PromptOutput {
-  id          String   @id @default(uuid()) @db.Uuid
-  promptId    String   @db.Uuid
-  userId      String   @db.Uuid
-  content     String   @db.Text
-  metadata    Json?    @db.JsonB
-  version     Int      @default(1)
-  createdAt   DateTime @default(now()) @db.Timestamp(0)
+  id        String   @id @default(uuid()) @db.Uuid
+  promptId  String   @db.Uuid
+  userId    String   @db.Uuid
+  content   String   @db.Text
+  metadata  Json?    @db.JsonB
+  version   Int      @default(1)
+  createdAt DateTime @default(now()) @db.Timestamp(0)
 
-
-  prompt      Prompt   @relation(fields: [promptId], references: [id], onDelete: Cascade)
-  user        User     @relation(fields: [userId], references: [id])
+  prompt Prompt @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id])
 
   @@map("prompt_outputs")
 }
@@ -29,11 +33,11 @@ model User {
   id          String   @id @default(uuid()) @db.Uuid
   email       String   @unique @db.VarChar(255)
   displayName String   @db.VarChar(32)
-  imageUrl    String? @db.VarChar(255)
+  imageUrl    String?  @db.VarChar(255)
   createdAt   DateTime @default(now()) @db.Timestamp(0)
 
-  prompts     Prompt[]
-  outputs     PromptOutput[]
+  prompts Prompt[]
+  outputs PromptOutput[]
 
   @@map("users")
 }
@@ -41,20 +45,19 @@ model User {
 model Prompt {
   id           String   @id @default(uuid()) @db.Uuid
   userId       String   @db.Uuid
-  title        String   @default("Untitled") @db.VarChar(50)
-  persona      String   @db.VarChar(256)
-  context      String   @db.VarChar(256)
-  task         String   @db.VarChar(256)
-  output       String   @db.VarChar(256)
-  constraints  String   @db.VarChar(256)
+  role         String   @db.VarChar(256)
+  context      String   @db.Text
+  output       String   @db.Text
+  task         String   @db.Text
+  constraints  String   @db.Text
+  language     Language @default(EN)
   score        Int      @default(0)
   isBookmarked Boolean  @default(false)
   createdAt    DateTime @default(now()) @db.Timestamp(0)
 
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  outputs      PromptOutput[]
+  user    User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  outputs PromptOutput[]
 
   @@index([userId])
   @@map("prompts")
 }
-
