@@ -5,7 +5,6 @@ import session from "express-session";
 import {authRoute, userRoute} from "../routes/index.js";
 import cors from "cors";
 import {setupSwagger} from "../swagger.js";
-import {router} from "../routes/testRouter.js";
 
 export const configApp = () => {
     const app = express();
@@ -34,7 +33,6 @@ export const configApp = () => {
 
     app.use("/", authRoute);
     app.use("/users", userRoute);
-    app.use("/hello", router);
 
     return app;
 };

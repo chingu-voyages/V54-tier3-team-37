@@ -12,6 +12,20 @@ const options = {
             version: '1.0.0',
             description: 'Swagger documentation for Prompto project',
         },
+        components: {
+            securitySchemes: {
+                cookieAuth: {
+                    type: 'apiKey',
+                    in: 'cookie',
+                    name: 'token',
+                },
+            },
+        },
+        security: [
+            {
+                cookieAuth: [],
+            },
+        ],
     },
     apis: isProd ? ['./dist/routes/**/*.js'] : ['./src/routes/**/*.ts'],
 };
