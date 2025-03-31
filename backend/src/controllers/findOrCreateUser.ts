@@ -20,11 +20,3 @@ export const findOrCreateUserId = async (user: User): Promise<string> => {
   });
   return newUser.id;
 };
-
-export const findUserById = async (userId: string) => {
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-  });
-
-  if (user) return user;
-};
