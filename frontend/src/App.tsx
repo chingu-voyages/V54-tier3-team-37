@@ -13,6 +13,7 @@ import Footer from './components/Footer';
 import Hero from './components/Hero';
 import Nav from './components/Nav';
 import PrivateRoute from './components/PrivateRoute';
+import PromptHistory from './components/PromptHistory';
 import PromptGenPage from './pages/PromptGenPage';
 import { store } from './store';
 
@@ -60,7 +61,7 @@ function App() {
             />
             <Route
               path="history"
-              element={<div>HISTORY</div>}
+              element={<PromptHistory />}
             />
           </Route>
         </Routes>
