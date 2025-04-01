@@ -1,4 +1,3 @@
-// tests/prompt.test.ts
 import { afterAll, beforeAll, describe, expect, it } from '@jest/globals';
 import {
     createTestPrompt,

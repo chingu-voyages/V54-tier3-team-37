@@ -41,6 +41,7 @@ describe("Prisma User Model", () => {
         }
 
         expect(errorCaught).toBe(true);
+        await deleteUserByEmail(testEmail);
     });
     it("should find user by email", async () => {
         const email = generateUniqueEmail("find-by-email");
@@ -81,21 +82,21 @@ describe("Prisma User Model", () => {
             data: [
                 {
                     userId: user.id,
-                    title: "Prompt 1",
-                    persona: "Dev",
+                    role: "Prompt 1",
                     context: "Project",
+                    output: "Dev",
                     task: "Code",
-                    output: "Snippet",
                     constraints: "None",
+                    language: "EN",
                 },
                 {
                     userId: user.id,
-                    title: "Prompt 2",
-                    persona: "Tester",
-                    context: "QA",
-                    task: "Test",
-                    output: "Report",
-                    constraints: "5 min",
+                    role: "Prompt 2",
+                    context: "Project",
+                    output: "Dev",
+                    task: "Code",
+                    constraints: "None",
+                    language: "EN",
                 },
             ],
         });
@@ -106,7 +107,7 @@ describe("Prisma User Model", () => {
         });
 
         expect(userWithPrompts?.prompts.length).toBe(2);
-        expect(userWithPrompts?.prompts.map(p => p.title)).toEqual(["Prompt 1", "Prompt 2"]);
+        expect(userWithPrompts?.prompts.map(p => p.role)).toEqual(["Prompt 1", "Prompt 2"]);
 
         await prisma.prompt.deleteMany({where: {userId: user.id}});
         await prisma.user.delete({where: {id: user.id}});
