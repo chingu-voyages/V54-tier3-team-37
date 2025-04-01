@@ -18,3 +18,18 @@ export type LanguageOption = {
   value: 'EN' | 'ES' | 'FR';
   text: 'English' | 'Spanish' | 'French';
 };
+
+export type PromptResponse = {
+  role: string;
+  context: string;
+  task: string;
+  output: string;
+  constraints: string;
+  language: 'EN' | 'ES' | 'FR';
+  apiResponse: string;
+  id: string;
+  userId: string;
+  createdAt: string;
+  score: number;
+  isBookmarked: boolean;
+};

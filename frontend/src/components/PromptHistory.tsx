@@ -12,6 +12,8 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+import { PromptResponse } from '@/types/prompt';
+
 import {
   Accordion,
   AccordionContent,
@@ -33,10 +35,10 @@ import {
 
 const PromptHistory = () => {
   // We will fix the type once we are clearer on what it is
-  const [promptList, setPromptList] = useState<unknown[]>([]);
+  const [promptList, setPromptList] = useState<PromptResponse[]>([]);
 
   useEffect(() => {
-    const mockPrompt = {
+    const mockPrompt: PromptResponse = {
       role: 'Developer',
       context: 'A new feature request',
       task: 'Write unit tests',
