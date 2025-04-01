@@ -1,49 +1,9 @@
-// Grid layout with prompto logo cell, dashboard header with user profile, sidebar, main area
-
 import {
   Link,
   Outlet,
-  Route,
-  Routes,
 } from 'react-router-dom';
 
-import PromptGenPage from '@/pages/PromptGenPage';
-
 import Container from './Container';
-
-// Sidebar with Prompt and History w/ icons
-
-// Subroutes for main body area
-
-// Generate Prompt section
-
-// Heading: Create Effective Prompts for AI Systems with Our Intuitive Generator
-// Subheading: Fill in the details below to generate a clear, well-structured, and effective prompt tailored to your needs.
-
-// AI Prompt Generator Form Card with tooltips: 2cols
-// Role
-// Output Language
-// Context
-// Output
-// Task
-// Constraints
-
-// Generate/Regenerate button // Local generated state needed
-
-// Generated Prompts Card:
-// Placeholder: Your generated prompts will appear here
-// Display, rating, save, copy
-
-// History section
-// Sort by date created and rating asc/desc
-// + Create New Prompt
-
-// Cards list as accordion with first line displayed in title
-
-// Created on line
-
-// Rating line
-// Delete and edit
 
 const Dashboard = () => {
   return (
