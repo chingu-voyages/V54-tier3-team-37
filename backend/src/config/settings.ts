@@ -1,16 +1,20 @@
-import express from "express";
+import express, {Express} from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import {authRoute, promptRoute, userRoute} from "../routes/index.js";
 import cors from "cors";
-import {setupSwagger} from "../swagger.js";
 
-export const configApp = () => {
+
+export const configApp = async () => {
     const app = express();
     app.use(express.json());
 
-    setupSwagger(app);
+    if (process.env.NODE_ENV !== "test") {
+        const swaggerModule = await import("../swagger.js") as unknown as { setupSwagger: (app: Express) => void };
+        swaggerModule.setupSwagger(app);
+    }
+
     const allowedOrigins = process.env.HOME_REACT_ADDRESS?.split(',') || ['http://localhost:5173'];
 
     app.use(cookieParser());

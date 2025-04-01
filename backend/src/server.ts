@@ -5,10 +5,11 @@ import {configApp} from "./config/index.js";
 
 const port = process.env.PORT || 4000;
 
-export const app = configApp();
 
 const startApp = async (): Promise<void> => {
     try {
+
+        const app = await configApp();
         await prisma.$connect();
 
         app.listen(port, () => {
