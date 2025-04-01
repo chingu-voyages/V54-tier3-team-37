@@ -3835,6 +3835,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/js-yaml@npm:^4":
+  version: 4.0.9
+  resolution: "@types/js-yaml@npm:4.0.9"
+  checksum: 10c0/24de857aa8d61526bbfbbaa383aa538283ad17363fcd5bb5148e2c7f604547db36646440e739d78241ed008702a8920665d1add5618687b6743858fae00da211
+  languageName: node
+  linkType: hard
+
 "@types/jsdom@npm:^20.0.0":
   version: 20.0.1
   resolution: "@types/jsdom@npm:20.0.1"
@@ -4655,6 +4662,7 @@ __metadata:
     "@types/express": "npm:^5.0.0"
     "@types/express-session": "npm:^1.18.1"
     "@types/jest": "npm:^29.5.14"
+    "@types/js-yaml": "npm:^4"
     "@types/jsonwebtoken": "npm:^9.0.9"
     "@types/node": "npm:^22.13.10"
     "@types/supertest": "npm:^6.0.2"
@@ -4673,6 +4681,7 @@ __metadata:
     googleapis: "npm:^148.0.0"
     husky: "npm:^8.0.0"
     jest: "npm:^29.7.0"
+    js-yaml: "npm:^4.1.0"
     jsonwebtoken: "npm:^9.0.2"
     lint-staged: "npm:^15.5.0"
     nodemon: "npm:^3.1.9"

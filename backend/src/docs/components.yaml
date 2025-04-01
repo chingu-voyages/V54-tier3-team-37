@@ -15,7 +15,7 @@ components:
           example: Developer
         context:
           type: string
-          example: A feature request
+          example: A new feature request
         task:
           type: string
           example: Write unit tests
@@ -38,11 +38,9 @@ components:
             id:
               type: string
               format: uuid
-              example: 123e4567-e89b-12d3-a456-426614174000
             userId:
               type: string
               format: uuid
-              example: user-id-abc
             createdAt:
               type: string
               format: date-time
