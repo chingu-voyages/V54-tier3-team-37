@@ -1,0 +1,11 @@
+export type CreatePromptInput = {
+    role: string;
+    context: string;
+    task: string;
+    output: string;
+    constraints: string;
+    language: 'EN' | 'ES' | 'FR';
+    score?: number;
+    isBookmarked?: boolean;
+};
+
