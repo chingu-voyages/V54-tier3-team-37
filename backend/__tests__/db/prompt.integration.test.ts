@@ -1,5 +1,19 @@
 import { afterAll, beforeAll, describe, expect, it } from '@jest/globals';
-import { createTestUser, createTestPrompt, prisma, deleteTestUser } from '../utils/prismaTestUtils';
+import {
+    createTestPrompt,
+    prisma,
+    deleteTestUser,
+    createTestUser,
+} from '../utils/prismaTestUtils';
+
+const defaultPromptData = {
+    role: 'Test Role',
+    context: 'Test context',
+    task: 'Test task',
+    output: 'Test output',
+    constraints: 'None',
+    language: 'EN' as const,
+};
 
 describe('Prisma Prompt Model', () => {
     let userId: string;
@@ -10,14 +24,17 @@ describe('Prisma Prompt Model', () => {
     });
 
     afterAll(async () => {
-        await prisma.prompt.deleteMany({ where: { userId } });
-        await deleteTestUser(userId);
-        await prisma.$disconnect();
+        await Promise.all([
+            prisma.prompt.deleteMany({ where: { userId } }),
+            deleteTestUser(userId),
+            prisma.$disconnect(),
+        ]);
     });
 
     it('should create and fetch a prompt for the user', async () => {
         const createdPrompt = await createTestPrompt(userId, {
-            title: 'Sample Prompt',
+            ...defaultPromptData,
+            role: 'Sample Role',
         });
 
         const foundPrompt = await prisma.prompt.findUnique({
@@ -25,37 +42,40 @@ describe('Prisma Prompt Model', () => {
         });
 
         expect(foundPrompt).not.toBeNull();
-        expect(foundPrompt?.title).toBe('Sample Prompt');
+        expect(foundPrompt?.role).toBe('Sample Role');
         expect(foundPrompt?.userId).toBe(userId);
     });
 
     it('should apply default values for score and isBookmarked', async () => {
         const prompt = await createTestPrompt(userId, {
-            title: 'Defaults Test',
+            ...defaultPromptData,
         });
 
         expect(prompt.score).toBe(0);
         expect(prompt.isBookmarked).toBe(false);
     });
 
-    it('should update the title and score of a prompt', async () => {
-        const createdPrompt = await createTestPrompt(userId);
+    it('should update the role and score of a prompt', async () => {
+        const createdPrompt = await createTestPrompt(userId, {
+            ...defaultPromptData,
+        });
 
         const updatedPrompt = await prisma.prompt.update({
             where: { id: createdPrompt.id },
             data: {
-                title: 'Updated Title',
-                score: 10,
+                role: 'Updated Role',
+                score: 4,
             },
         });
 
-        expect(updatedPrompt.title).toBe('Updated Title');
-        expect(updatedPrompt.score).toBe(10);
+        expect(updatedPrompt.role).toBe('Updated Role');
+        expect(updatedPrompt.score).toBe(4);
     });
 
     it('should delete a prompt and confirm it no longer exists', async () => {
         const prompt = await createTestPrompt(userId, {
-            title: 'To Be Deleted',
+            ...defaultPromptData,
+            role: 'To Be Deleted',
         });
 
         await prisma.prompt.delete({ where: { id: prompt.id } });
@@ -68,27 +88,23 @@ describe('Prisma Prompt Model', () => {
     });
 
     it('should delete prompts when the user is deleted (cascade)', async () => {
-        const user = await createTestUser(`cascade-${Date.now()}@qmail.com`);
+        const user = await createTestUser({
+            email: `cascade-${Date.now()}@qmail.com`,
+            displayName: 'Cascade Test User',
+        });
 
         await prisma.prompt.createMany({
             data: [
                 {
                     userId: user.id,
-                    title: 'Cascade Prompt 1',
-                    persona: 'Cascade',
-                    context: 'User delete',
-                    task: 'Delete test 1',
-                    output: 'Output 1',
-                    constraints: 'None',
+                    ...defaultPromptData,
+                    role: 'Cascade Role 1',
                 },
                 {
                     userId: user.id,
-                    title: 'Cascade Prompt 2',
-                    persona: 'Cascade',
-                    context: 'User delete',
-                    task: 'Delete test 2',
-                    output: 'Output 2',
-                    constraints: 'None',
+                    ...defaultPromptData,
+                    role: 'Cascade Role 2',
+                    language: 'FR',
                 },
             ],
         });
