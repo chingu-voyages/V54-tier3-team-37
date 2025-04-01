@@ -18,6 +18,7 @@ COPY . .
 # Generate Prisma client and build the app
 RUN yarn dlx prisma generate --schema=./prisma/schema.prisma
 RUN yarn build
+RUN mkdir -p dist/docs && cp -r src/docs/* dist/docs/
 
 # Stage 2: Production image
 FROM node:20-slim
