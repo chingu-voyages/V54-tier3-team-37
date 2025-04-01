@@ -43,7 +43,7 @@ const PromptGenResult = ({
         <CardTitle className="text-2xl">Generated Prompt</CardTitle>
       </CardHeader>
       <CardContent className="min-h-32 px-16 py-8">
-        <p className="whitespace-pre-line text-start text-pretty bg-background p-4 border-muted-foreground border rounded-lg">
+        <p className={cn("whitespace-pre-line", generatedPrompt && "text-start text-pretty bg-background p-4 border-muted-foreground border rounded-lg")}>
           {generatedPrompt || 'Your generated prompts will appear here'}
         </p>
       </CardContent>
