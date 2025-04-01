@@ -20,7 +20,11 @@ const handleSignIn = async (
     (req.session as GSession)[sessionState] = state;
     // Generate a url that asks permissions defined scopes
     const authorizationUrl = authService.generateAuthUrl(state);
-    if (!authorizationUrl) return;
+    if (!authorizationUrl) {
+      res.status(500).json({ error: "Failed to redirect to OAuth interface" });
+      return;
+    }
+
     // Redirect the user to authorizationUrl
     res.redirect(authorizationUrl);
   } catch (error) {
