@@ -1,4 +1,8 @@
 import { Info } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Button } from './ui/button';
 import {
@@ -7,7 +11,14 @@ import {
   CardHeader,
   CardTitle,
 } from './ui/card';
-import { Label } from './ui/label';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from './ui/form';
 import {
   Select,
   SelectContent,
@@ -24,9 +35,21 @@ import {
   TooltipTrigger,
 } from './ui/tooltip';
 
+const formSchema = z.object({
+  role: z.string().trim().min(1, { message: 'A defined role is required' }),
+  context: z.string().trim().min(1, { message: 'Background context is required' }),
+  task: z.string().trim().min(1, { message: 'A clear task is required' }),
+  output: z.string().trim().min(1, { message: 'A specified output is required' }),
+  constraints: z.string().trim().min(1, { message: 'Constraints and limits are required' }),
+  language: z.string().default('EN'),
+});
+
+type FormValues = z.infer<typeof formSchema>;
+
 export const PromptGenForm = () => {
   const pentagramFields = [
     {
+      name: 'role',
       label: 'Role',
       type: 'textarea',
       placeholder:
@@ -35,6 +58,7 @@ export const PromptGenForm = () => {
       required: true,
     },
     {
+      name: 'context',
       label: 'Context',
       type: 'textarea',
       placeholder:
@@ -43,6 +67,7 @@ export const PromptGenForm = () => {
       required: true,
     },
     {
+      name: 'task',
       label: 'Task',
       type: 'textarea',
       placeholder:
@@ -51,6 +76,7 @@ export const PromptGenForm = () => {
       required: true,
     },
     {
+      name: 'output',
       label: 'Output',
       type: 'textarea',
       placeholder:
@@ -59,6 +85,7 @@ export const PromptGenForm = () => {
       required: true,
     },
     {
+      name: 'constraints',
       label: 'Constraints',
       type: 'textarea',
       placeholder:
@@ -69,114 +96,183 @@ export const PromptGenForm = () => {
   ];
 
   const languageSelect = {
+    name: 'language',
     label: 'Language',
     type: 'select',
     options: [
       {
-        value: 'english',
+        value: 'EN',
         text: 'English',
       },
       {
-        value: 'spanish',
+        value: 'ES',
         text: 'Spanish',
       },
       {
-        value: 'french',
+        value: 'FR',
         text: 'French',
       },
     ],
   };
 
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      role: '',
+      context: '',
+      task: '',
+      output: '',
+      constraints: '',
+      language: 'EN',
+    },
+  });
+
+  const onSubmit = (values: FormValues) => {
+    // Handle form submission here
+    console.log(values);
+  };
+
   return (
     <div className="flex w-full flex-col items-center gap-16">
-      <Card className="w-full">
-        <CardContent>
-          <h3 className="mb-8 text-center text-2xl">AI Prompt Generator Form</h3>
-          <div className="grid grid-cols-2 gap-8">
-            <Label className="flex flex-col items-start">
-              <div className="flex items-start gap-2">
-                <span className="text-lg">{pentagramFields[0].label}</span>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Info size={16} />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>{pentagramFields[0].tooltip}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
-              <Textarea
-                placeholder={pentagramFields[0].placeholder}
-                className="h-24 resize-none"
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col items-center gap-16"
+        >
+          <Card className="w-full">
+            <CardHeader>
+              <CardTitle className="text-center text-2xl">AI Prompt Generator Form</CardTitle>
+            </CardHeader>
+            <CardContent className="grid grid-cols-2 gap-8 pb-8">
+              {/* 'Role' field is separated from others due to layout */}
+              <FormField
+                control={form.control}
+                name={pentagramFields[0].name as keyof FormValues}
+                render={({ field }) => (
+                  <FormItem className="relative">
+                    <FormLabel className="flex flex-col items-start">
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">{pentagramFields[0].label}</span>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Info size={16} />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>{pentagramFields[0].tooltip}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder={pentagramFields[0].placeholder}
+                        className="h-24 resize-none"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="absolute -bottom-6 left-0" />
+                  </FormItem>
+                )}
               />
-            </Label>
-            <Label className="flex flex-col items-start self-start">
-              <span className="text-lg">{languageSelect.label}</span>
-              <Select>
-                <SelectTrigger className="min-w-[180px] text-lg">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {languageSelect.options.map((option) => (
-                      <SelectItem
-                        key={option.value}
-                        value={option.value}
-                        className="text-lg"
-                      >
-                        {option.text}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </Label>
-            {pentagramFields.slice(1).map((field) => (
-              <Label
-                key={field.label}
-                className="flex flex-col items-start"
-              >
-                <div className="flex items-start gap-2">
-                  <span className="text-lg">{field.label}</span>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Info size={16} />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>{field.tooltip}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-                <Textarea
-                  placeholder={field.placeholder}
-                  className="h-24 resize-none"
+
+              {/* 'Language' field is different input type */}
+              <FormField
+                control={form.control}
+                name={languageSelect.name as keyof FormValues}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex flex-col items-start self-start">
+                      <span className="text-lg">{languageSelect.label}</span>
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="min-w-[180px] text-lg">
+                          <SelectValue placeholder="Select a language" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectGroup>
+                          {languageSelect.options.map((option) => (
+                            <SelectItem
+                              key={option.value}
+                              value={option.value}
+                              className="text-lg"
+                            >
+                              {option.text}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Rest of the the pentagram fields */}
+              {pentagramFields.slice(1).map((pentagramField) => (
+                <FormField
+                  key={pentagramField.name}
+                  control={form.control}
+                  name={pentagramField.name as keyof FormValues}
+                  render={({ field }) => (
+                    <FormItem className="relative">
+                      <FormLabel className="flex flex-col items-start">
+                        <div className="flex items-center gap-2">
+                          <span className="text-lg">{pentagramField.label}</span>
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Info size={16} />
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>{pentagramField.tooltip}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </div>
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder={pentagramField.placeholder}
+                          className="h-24 resize-none"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className="absolute -bottom-6 left-0" />
+                    </FormItem>
+                  )}
                 />
-              </Label>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-      <Button
-        size="lg"
-        className="cursor-pointer p-8 text-xl"
-      >
-        Generate
-      </Button>
+              ))}
+            </CardContent>
+          </Card>
+          <Button
+            size="lg"
+            className="cursor-pointer p-8 text-xl"
+            type="submit"
+          >
+            Generate
+          </Button>
+        </form>
+      </Form>
     </div>
   );
 };
 
 export const PromptGenResult = () => {
   return (
-    <Card className="text-center w-full">
+    <Card className="w-full text-center">
       <CardHeader>
         <CardTitle>Generated Prompt</CardTitle>
       </CardHeader>
-      <CardContent className="min-h-32 flex items-center justify-center">Your generated prompts will appear here</CardContent>
+      <CardContent className="flex min-h-32 items-center justify-center">
+        Your generated prompts will appear here
+      </CardContent>
     </Card>
   );
 };
