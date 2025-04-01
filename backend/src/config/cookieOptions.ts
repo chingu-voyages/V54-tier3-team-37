@@ -1,6 +1,6 @@
 import { CookieOptions } from "express";
 
-import { isProduction } from "./authConfig.js";
+import { isProduction } from "./isProduction.js";
 
 export const cookieOptions: CookieOptions = {
   httpOnly: true,
