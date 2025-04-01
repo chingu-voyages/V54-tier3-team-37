@@ -7,6 +7,13 @@ const promptRoute: Router = Router();
 
 /**
  * @swagger
+ * tags:
+ *   - name: Prompts
+ *     description: Prompt management
+ */
+
+/**
+ * @swagger
  * /prompts:
  *   post:
  *     summary: Create a new prompt
@@ -21,41 +28,17 @@ const promptRoute: Router = Router();
  *             type: object
  *             properties:
  *               prompt:
- *                 type: object
- *                 required:
- *                   - role
- *                   - context
- *                   - task
- *                   - output
- *                   - constraints
- *                   - language
- *                 properties:
- *                   role:
- *                     type: string
- *                     example: Developer
- *                   context:
- *                     type: string
- *                     example: Building a full-stack app
- *                   task:
- *                     type: string
- *                     example: Generate unit tests
- *                   output:
- *                     type: string
- *                     example: List of Jest test cases
- *                   constraints:
- *                     type: string
- *                     example: Use only TypeScript
- *                   language:
- *                     type: string
- *                     enum: [EN, ES, FR]
- *                     example: EN
+ *                 $ref: '#/components/schemas/PromptInput'
  *     responses:
  *       201:
  *         description: Prompt created
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Prompt'
+ *               type: object
+ *               properties:
+ *                 prompt:
+ *                   $ref: '#/components/schemas/Prompt'
  *       400:
  *         description: Invalid request
  *       401:

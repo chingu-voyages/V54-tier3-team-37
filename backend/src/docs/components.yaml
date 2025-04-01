@@ -1,0 +1,54 @@
+components:
+  schemas:
+    PromptInput:
+      type: object
+      required:
+        - role
+        - context
+        - task
+        - output
+        - constraints
+        - language
+      properties:
+        role:
+          type: string
+          example: Developer
+        context:
+          type: string
+          example: A feature request
+        task:
+          type: string
+          example: Write unit tests
+        output:
+          type: string
+          example: Jest test cases
+        constraints:
+          type: string
+          example: Use mocking
+        language:
+          type: string
+          enum: [EN, ES, FR]
+          example: EN
+
+    Prompt:
+      allOf:
+        - $ref: '#/components/schemas/PromptInput'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              example: 123e4567-e89b-12d3-a456-426614174000
+            userId:
+              type: string
+              format: uuid
+              example: user-id-abc
+            createdAt:
+              type: string
+              format: date-time
+            score:
+              type: integer
+              example: 0
+            isBookmarked:
+              type: boolean
+              example: false
