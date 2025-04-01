@@ -1,3 +1,5 @@
+'use client';
+
 import { Info } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -46,7 +48,21 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-export const PromptGenForm = () => {
+type PromptGenFormProps = {
+  setGeneratedPrompt: (prompt: string | null) => void;
+  setIsLoading: (loading: boolean) => void;
+  setIsGenerated: (generated: boolean) => void;
+  isLoading: boolean;
+  isGenerated: boolean;
+};
+
+const PromptGenForm = ({
+  setGeneratedPrompt,
+  setIsLoading,
+  setIsGenerated,
+  isLoading,
+  isGenerated,
+}: PromptGenFormProps) => {
   const pentagramFields = [
     {
       name: 'role',
@@ -127,23 +143,49 @@ export const PromptGenForm = () => {
     },
   });
 
-  const onSubmit = (values: FormValues) => {
-    // Handle form submission here
-    console.log(values);
+  const onSubmit = async (values: FormValues) => {
+    setIsLoading(true);
+    setIsGenerated(false);
+
+    // Simulate loading
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    let prompt: string = '';
+    switch (values.language) {
+      case 'EN':
+        prompt = `As a ${values.role}, create a compelling message related to ${values.context}.
+              Your task is to ${values.task}, ensuring the output is ${values.output}. Please adhere to the following constraints: ${values.constraints}.`;
+        break;
+      case 'ES':
+        prompt = `Como ${values.role}, crea un mensaje convincente relacionado con ${values.context}.
+              Tu tarea es ${values.task}, asegurando que el resultado sea ${values.output}. Por favor, respeta las siguientes restricciones: ${values.constraints}.`;
+        break;
+      case 'FR':
+        prompt = `En tant que ${values.role}, créez un message captivant lié à ${values.context}.
+              Votre tâche est de ${values.task}, en veillant à ce que le résultat soit ${values.output}. Veuillez respecter les contraintes suivantes : ${values.constraints}.`;
+        break;
+      default:
+        prompt = `As a ${values.role}, create a compelling message related to ${values.context}.
+              Your task is to ${values.task}, ensuring the output is ${values.output}. Please adhere to the following constraints: ${values.constraints}.`;
+    }
+
+    setGeneratedPrompt(prompt);
+    setIsLoading(false);
+    setIsGenerated(true);
   };
 
   return (
-    <div className="flex w-full flex-col items-center gap-16">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col items-center gap-16"
+          className="flex flex-col items-center gap-16 w-full"
         >
           <Card className="w-full">
             <CardHeader>
               <CardTitle className="text-center text-2xl">AI Prompt Generator Form</CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-2 gap-8 pb-8">
+
               {/* 'Role' field is separated from others due to layout */}
               <FormField
                 control={form.control}
@@ -255,24 +297,13 @@ export const PromptGenForm = () => {
             size="lg"
             className="cursor-pointer p-8 text-xl"
             type="submit"
+            disabled={isLoading}
           >
-            Generate
+            {isLoading ? 'Wait...' : isGenerated ? 'Regenerate' : 'Generate'}
           </Button>
         </form>
       </Form>
-    </div>
   );
 };
 
-export const PromptGenResult = () => {
-  return (
-    <Card className="w-full text-center">
-      <CardHeader>
-        <CardTitle>Generated Prompt</CardTitle>
-      </CardHeader>
-      <CardContent className="flex min-h-32 items-center justify-center">
-        Your generated prompts will appear here
-      </CardContent>
-    </Card>
-  );
-};
+export default PromptGenForm;
