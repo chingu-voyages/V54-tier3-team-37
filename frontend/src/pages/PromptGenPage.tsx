@@ -28,7 +28,7 @@ const PromptGenPage = () => {
       />
       <PromptGenResult
         generatedPrompt={generatedPrompt}
-        setGeneratedPrompt={setGeneratedPrompt}
+        // setGeneratedPrompt={setGeneratedPrompt}
       />
     </section>
   );
