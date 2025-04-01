@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import { authController } from "../controllers/index.js";
+import { authMiddleware } from "../middleware/index.js";
 
 export const authRoute: Router = Router({});
 
@@ -12,4 +13,4 @@ authRoute.get("/auth/github-callback", authController.githubCallback);
 authRoute.get("/auth/google", authController.googleSignIn);
 authRoute.get("/google-callback", authController.googleCallback);
 
-authRoute.post("/logout", authController.logout);
+authRoute.post("/logout", authMiddleware, authController.logout);

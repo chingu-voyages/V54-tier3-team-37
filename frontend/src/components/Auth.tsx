@@ -1,9 +1,48 @@
-function Auth() {
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Github } from 'lucide-react';
+import { FcGoogle } from 'react-icons/fc';
+import { API_BASE_URL } from './constants';
+import { OAuthButtonProps } from '@/types';
+
+export default function Auth() {
   return (
-    <div className="flex flex-col items-center justify-center p-8">
-      <h2 className="mb-4 text-2xl">Sign In Page</h2>
+    <div
+      className="flex min-h-screen w-screen items-center justify-center"
+      style={{ backgroundColor: '#f7f7f7' }}
+    >
+      <Card className="border-border w-full max-w-md rounded-2xl border shadow-2xl">
+        <CardHeader>
+          <CardTitle className="text-center text-2xl font-semibold">
+            Sign in to your account
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <OAuthButton
+            icon={<FcGoogle size={20} />}
+            label="Continue with Google"
+            href={`${API_BASE_URL}/auth/google`}
+          />
+          <OAuthButton
+            icon={<Github size={20} />}
+            label="Continue with GitHub"
+            href={`${API_BASE_URL}/auth/github`}
+          />
+        </CardContent>
+      </Card>
     </div>
   );
 }
 
-export default Auth;
+const OAuthButton = ({ icon, label, href }: OAuthButtonProps) => (
+  <Button
+    variant="outline"
+    className="w-full justify-start gap-3 border"
+    asChild
+  >
+    <a href={href}>
+      <span className="flex items-center">{icon}</span>
+      {label}
+    </a>
+  </Button>
+);

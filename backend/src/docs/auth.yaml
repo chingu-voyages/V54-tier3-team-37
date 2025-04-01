@@ -1,0 +1,172 @@
+paths:
+  /auth/github:
+    get:
+      tags: [OAuth]
+      summary: Initiate GitHub OAuth flow
+      description: Redirects to GitHub's authorization page
+      responses:
+        302:
+          description: Redirect to GitHub OAuth
+          headers:
+            Location:
+              schema:
+                type: string
+                example: >
+                  https://github.com/login/oauth/authorize?
+                  client_id=abc123&
+                  redirect_uri=https://v54-tier3-team-37.onrender.com/auth/github-callback&
+                  scope=qwe456&
+                  state=edf234
+        500:
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Failed to redirect to OAuth interface"
+
+  /auth/github-callback:
+    get:
+      tags: [OAuth]
+      summary: GitHub OAuth callback
+      description: |
+        GitHub redirects here after authentication.
+        On success, sets HTTP-only cookie and redirects to React app.
+      parameters:
+        - in: query
+          name: code
+          required: true
+          schema:
+            type: string
+          description: GitHub authorization code
+        - in: query
+          name: state
+          required: true
+          schema:
+            type: string
+          description: State parameter for CSRF protection
+      responses:
+        302:
+          description: |
+            On success - Redirects to React app with JWT cookie.
+            On failure - Redirects with error query parameter.
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                success:
+                  value: "https://https://prompto37.netlify.app/?userId=123"
+                access_denied:
+                  value: "https://prompto37.netlify.app/?error=access_denied"
+            Set-Cookie:
+              schema:
+                type: string
+                example: >-
+                  token=eyJ.eyJ1c.ABC;
+                  Path=/;
+                  Expires=Fri, 31 Mar 2023 12:00:00 GMT;
+                  Max-Age=86400;
+                  HttpOnly;
+                  Secure;
+                  SameSite=Lax
+
+  /auth/google:
+    get:
+      tags: [OAuth]
+      summary: Initiate Google OAuth flow
+      description: Redirects to Google's authorization page
+      responses:
+        302:
+          description: Redirect to Google OAuth
+          headers:
+            Location:
+              schema:
+                type: string
+                example: >
+                  https://accounts.google.com/o/oauth2/v2/auth?
+                  response_type=code&
+                  client_id=qwe123&
+                  redirect_uri=https://v54-tier3-team-37.onrender.com/google-callback&
+                  scope=email%20profile%20openid&
+                  access_type=offline&
+                  include_granted_scopes=true&
+                  state=abc123
+        500:
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Failed to redirect to OAuth interface"
+
+  /google-callback:
+    get:
+      tags: [OAuth]
+      summary: Google OAuth callback
+      description: |
+        Google redirects here after authentication.
+        On success, sets HTTP-only cookie and redirects to React app.
+      parameters:
+        - in: query
+          name: code
+          required: true
+          schema:
+            type: string
+          description: Google authorization code
+        - in: query
+          name: state
+          required: true
+          schema:
+            type: string
+          description: State parameter for CSRF protection
+      responses:
+        302:
+          description: |
+            On success - Redirects to React app with JWT cookie.
+            On failure - Redirects with error query parameter.
+          headers:
+            Location:
+              schema:
+              examples:
+                success:
+                  value: "https://https://prompto37.netlify.app/?userId=123"
+                access_denied:
+                  value: "https://prompto37.netlify.app/?error=access_denied"
+            Set-Cookie:
+              schema:
+                type: string
+                example: >-
+                  token=eyJ.eyJ1c.ABC;
+                  Path=/;
+                  Expires=Fri, 31 Mar 2023 12:00:00 GMT;
+                  Max-Age=86400;
+                  HttpOnly;
+                  Secure;
+                  SameSite=Lax
+
+  /logout:
+    post:
+      tags: [OAuth]
+      summary: Logout user
+      description: Clears the authentication cookie
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: Successfully logged out
+          content:
+            application/json:
+              schema:
+              example: "Logged out successfully"
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: "token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+              example: "Access denied"

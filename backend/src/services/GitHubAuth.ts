@@ -1,4 +1,5 @@
 import { Request } from "express";
+
 import { Octokit } from "octokit";
 import {
   type OAuthAppAuthInterface,
@@ -11,26 +12,9 @@ import {
   GITHUB_REDIRECT_URL,
   GITHUB_CALLBACK_URL,
 } from "../config/authConfig.js";
-
+import { findOrCreateUserId } from "../controllers/index.js";
 import { extractCode } from "../utils/index.js";
-
-export class GitHubAPIError extends Error {
-  constructor(message: string) {
-    // Call the constructor of the base class `Error`
-    // And set the error name to the custom error class name
-    super(message);
-    this.name = "GitHubAPIError";
-    // Set the prototype explicitly to maintain the correct prototype chain
-    Object.setPrototypeOf(this, GitHubAPIError.prototype);
-  }
-}
-
-export const throwGitHubError = (error: unknown): never => {
-  if (error instanceof Error) {
-    throw new GitHubAPIError(error.message);
-  }
-  throw new GitHubAPIError(String(error));
-};
+import { throwGitHubError } from "./errors.js";
 
 class GitHubAuth {
   private auth: OAuthAppAuthInterface;
@@ -52,7 +36,6 @@ class GitHubAuth {
   generateAuthUrl = (state: string) => {
     try {
       const redirectUrl = `${this.redirectUrl}client_id=${this.clientId}&redirect_uri=${this.callbackUrl}&scope=${this.scope}&state=${state}`;
-      console.warn(`Redirecting to: ${redirectUrl}`);
       return redirectUrl;
     } catch (error: unknown) {
       console.error(error);
@@ -71,13 +54,11 @@ class GitHubAuth {
       // Get name, email and avatar url
       const user = await this.getUserInfo(access_token);
       if (!user) return;
-      // INTERACT WITH DATABASE HERE  <-----------------------------------
-      // interactWithDatabase(user);  <-----------------------------------
-      const { email, name } = user;
-      return { email, name };
+      const userId = await findOrCreateUserId(user);
+      return { id: userId, displayName: user.displayName, email: user.email };
     } catch (error) {
       console.error(error);
-      throwGitHubError(error);
+      throwGitHubError(String(error));
     }
   };
 
@@ -96,16 +77,16 @@ class GitHubAuth {
     try {
       const octokit = new Octokit({ auth: token });
       const { data: user } = await octokit.rest.users.getAuthenticated();
-      const { name, avatar_url } = user;
+      const { name: displayName, avatar_url } = user;
       const { data: emails } =
         await octokit.rest.users.listEmailsForAuthenticatedUser();
       const email = emails.find((obj) => obj.primary)?.email;
-      if (name && email) {
-        return { name, email, avatar_url };
+      if (displayName && email) {
+        return { displayName, email, avatar_url };
       }
       return;
     } catch (error) {
-      throwGitHubError(error);
+      throwGitHubError(String(error));
     }
   };
 }

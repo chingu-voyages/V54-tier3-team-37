@@ -1,18 +1,13 @@
-import { CookieOptions, Request, Response } from "express";
+import { Request, Response } from "express";
 import { githubAuth, googleAuth } from "../services/index.js";
 
 import {
   LOGGED_IN_REACT_ADDRESS,
   HOME_REACT_ADDRESS,
+  cookieOptions,
 } from "../config/index.js";
 import { generateToken, generateRandomHexString } from "../utils/index.js";
-import { GSession, UserPayload } from "../types/index.js";
-
-const cookieOptions: CookieOptions = {
-  httpOnly: true,
-  secure: true,
-  sameSite: "lax",
-};
+import { GSession, User } from "../types/index.js";
 
 const handleSignIn = async (
   req: Request,
@@ -25,7 +20,11 @@ const handleSignIn = async (
     (req.session as GSession)[sessionState] = state;
     // Generate a url that asks permissions defined scopes
     const authorizationUrl = authService.generateAuthUrl(state);
-    if (!authorizationUrl) return;
+    if (!authorizationUrl) {
+      res.status(500).json({ error: "Failed to redirect to OAuth interface" });
+      return;
+    }
+
     // Redirect the user to authorizationUrl
     res.redirect(authorizationUrl);
   } catch (error) {
@@ -92,11 +91,11 @@ export const googleCallback = async (req: Request, res: Response) => {
 // =======================================
 // Send cookie and redirect to React
 // =======================================
-const sendCookieAndRedirect = (res: Response, user: UserPayload) => {
+const sendCookieAndRedirect = (res: Response, user: User) => {
   try {
     const token = generateToken(user);
     res.cookie("token", token, cookieOptions);
-    res.redirect(LOGGED_IN_REACT_ADDRESS);
+    res.redirect(`${LOGGED_IN_REACT_ADDRESS}?userId=${user.id}`);
   } catch (error) {
     throw new Error(error instanceof Error ? error.message : String(error));
   }

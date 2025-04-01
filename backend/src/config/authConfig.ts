@@ -1,3 +1,5 @@
+export const isProduction = process.env.NODE_ENV === "production";
+
 // GitHub OAuth variables
 export const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 export const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
@@ -13,8 +15,7 @@ export const GOOGLE_CALLBACK_URL_DEV = "http://localhost:8000/google-callback";
 export const GOOGLE_CALLBACK_URL_PROD =
   "https://v54-tier3-team-37.onrender.com/google-callback";
 
-const production = process.env.NODE_ENV === "production";
-export const GOOGLE_CALLBACK_URL = production
+export const GOOGLE_CALLBACK_URL = isProduction
   ? GOOGLE_CALLBACK_URL_PROD
   : GOOGLE_CALLBACK_URL_DEV;
 
