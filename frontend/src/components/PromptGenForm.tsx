@@ -4,6 +4,10 @@ import { Info } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import {
+  LanguageSelect,
+  PentagramField,
+} from '@/types/prompt';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Button } from './ui/button';
@@ -63,7 +67,7 @@ const PromptGenForm = ({
   isLoading,
   isGenerated,
 }: PromptGenFormProps) => {
-  const pentagramFields = [
+  const pentagramFields: PentagramField[] = [
     {
       name: 'role',
       label: 'Role',
@@ -111,7 +115,7 @@ const PromptGenForm = ({
     },
   ];
 
-  const languageSelect = {
+  const languageSelect: LanguageSelect = {
     name: 'language',
     label: 'Language',
     type: 'select',
@@ -175,33 +179,104 @@ const PromptGenForm = ({
   };
 
   return (
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col items-center gap-16 w-full"
-        >
-          <Card className="w-full">
-            <CardHeader>
-              <CardTitle className="text-center text-2xl">AI Prompt Generator Form</CardTitle>
-            </CardHeader>
-            <CardContent className="grid grid-cols-2 gap-8 pb-8">
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex w-full flex-col items-center gap-16"
+      >
+        <Card className="w-full">
+          <CardHeader>
+            <CardTitle className="text-center text-2xl">AI Prompt Generator Form</CardTitle>
+          </CardHeader>
+          <CardContent className="grid grid-cols-2 gap-8 pb-8">
+            {/* 'Role' field is separated from others due to layout */}
+            <FormField
+              control={form.control}
+              name={pentagramFields[0].name as keyof FormValues}
+              render={({ field }) => (
+                <FormItem className="relative">
+                  <FormLabel className="flex flex-col items-start">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg">{pentagramFields[0].label}</span>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Info size={16} />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{pentagramFields[0].tooltip}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </div>
+                  </FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder={pentagramFields[0].placeholder}
+                      className="h-24 resize-none"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="absolute -bottom-6 left-0" />
+                </FormItem>
+              )}
+            />
 
-              {/* 'Role' field is separated from others due to layout */}
+            {/* 'Language' field is different input type */}
+            <FormField
+              control={form.control}
+              name={languageSelect.name as keyof FormValues}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="flex flex-col items-start self-start">
+                    <span className="text-lg">{languageSelect.label}</span>
+                  </FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="min-w-[180px] text-lg">
+                        <SelectValue placeholder="Select a language" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectGroup>
+                        {languageSelect.options.map((option) => (
+                          <SelectItem
+                            key={option.value}
+                            value={option.value}
+                            className="text-lg"
+                          >
+                            {option.text}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Rest of the the pentagram fields */}
+            {pentagramFields.slice(1).map((pentagramField) => (
               <FormField
+                key={pentagramField.name}
                 control={form.control}
-                name={pentagramFields[0].name as keyof FormValues}
+                name={pentagramField.name as keyof FormValues}
                 render={({ field }) => (
                   <FormItem className="relative">
                     <FormLabel className="flex flex-col items-start">
                       <div className="flex items-center gap-2">
-                        <span className="text-lg">{pentagramFields[0].label}</span>
+                        <span className="text-lg">{pentagramField.label}</span>
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
                               <Info size={16} />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>{pentagramFields[0].tooltip}</p>
+                              <p>{pentagramField.tooltip}</p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
@@ -209,7 +284,7 @@ const PromptGenForm = ({
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder={pentagramFields[0].placeholder}
+                        placeholder={pentagramField.placeholder}
                         className="h-24 resize-none"
                         {...field}
                       />
@@ -218,91 +293,19 @@ const PromptGenForm = ({
                   </FormItem>
                 )}
               />
-
-              {/* 'Language' field is different input type */}
-              <FormField
-                control={form.control}
-                name={languageSelect.name as keyof FormValues}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="flex flex-col items-start self-start">
-                      <span className="text-lg">{languageSelect.label}</span>
-                    </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="min-w-[180px] text-lg">
-                          <SelectValue placeholder="Select a language" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectGroup>
-                          {languageSelect.options.map((option) => (
-                            <SelectItem
-                              key={option.value}
-                              value={option.value}
-                              className="text-lg"
-                            >
-                              {option.text}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Rest of the the pentagram fields */}
-              {pentagramFields.slice(1).map((pentagramField) => (
-                <FormField
-                  key={pentagramField.name}
-                  control={form.control}
-                  name={pentagramField.name as keyof FormValues}
-                  render={({ field }) => (
-                    <FormItem className="relative">
-                      <FormLabel className="flex flex-col items-start">
-                        <div className="flex items-center gap-2">
-                          <span className="text-lg">{pentagramField.label}</span>
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <Info size={16} />
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <p>{pentagramField.tooltip}</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-                        </div>
-                      </FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder={pentagramField.placeholder}
-                          className="h-24 resize-none"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage className="absolute -bottom-6 left-0" />
-                    </FormItem>
-                  )}
-                />
-              ))}
-            </CardContent>
-          </Card>
-          <Button
-            size="lg"
-            className="cursor-pointer p-8 text-xl"
-            type="submit"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Wait...' : isGenerated ? 'Regenerate' : 'Generate'}
-          </Button>
-        </form>
-      </Form>
+            ))}
+          </CardContent>
+        </Card>
+        <Button
+          size="lg"
+          className="cursor-pointer p-8 text-xl"
+          type="submit"
+          disabled={isLoading}
+        >
+          {isLoading ? 'Wait...' : isGenerated ? 'Regenerate' : 'Generate'}
+        </Button>
+      </form>
+    </Form>
   );
 };
 
