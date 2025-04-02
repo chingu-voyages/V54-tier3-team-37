@@ -1,4 +1,3 @@
-import {Request, Response} from "express";
 import {CreatePromptInput} from "../types/promptTypes.js";
 import {createPromptService, savePromptOutputService} from "../services/promptService.js";
 import {generateGeminiResponse} from "../services/geminiService.js";
@@ -69,3 +68,30 @@ export const createPrompt = async (req: Request, res: Response): Promise<void> =
         res.status(500).json({error: "Something went wrong"});
     }
 };
+
+import { Request, Response } from "express";
+import { getPromptService } from "../services/promptService"; // adjust path if needed
+
+export const getPrompt = async (req: Request, res: Response) => {
+    try {
+        const userId = req.userId;
+
+        const promptId = req.params.promptId;
+
+        if (!userId || !promptId) {
+            return res.status(400).json({ message: "Missing userId or promptId" });
+        }
+
+        const prompt = await getPromptService(userId, promptId);
+
+        if (!prompt) {
+            return res.status(404).json({ message: "Prompt not found" });
+        }
+
+        return res.status(200).json({ prompt });
+    } catch (error) {
+        console.error("Error in getPrompt controller:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
