@@ -1,7 +1,6 @@
 import {
   createTestUser,
   deleteTestUser,
-  prisma,
 } from "../../__mocks__/prismaTestUtils";
 import { findOrCreateUserId } from "../../src/controllers/findOrCreateUser";
 import { mockUsers } from "../../__mocks__/mockUsers";
