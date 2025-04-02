@@ -49,3 +49,13 @@ export const savePromptOutputService = async (
         throw new Error("Failed to save prompt output");
     }
 };
+
+// services/promptService.ts
+export const deletePromptService = async (userId: string, promptId: string) => {
+    return await prisma.prompt.deleteMany({
+        where: {
+            id: promptId,
+            userId: userId,
+        },
+    });
+};
