@@ -1,6 +1,11 @@
 import {Request, Response} from "express";
 import {CreatePromptInput} from "../types/promptTypes.js";
-import {createPromptService, deletePromptService, savePromptOutputService} from "../services/promptService.js";
+import {
+    createPromptService,
+    deleteAllPromptsService,
+    deletePromptService,
+    savePromptOutputService
+} from "../services/promptService.js";
 import {generateGeminiResponse} from "../services/geminiService.js";
 import {formatPromptForAI} from "../utils/formatPromptForAI.js";
 
@@ -90,6 +95,24 @@ export const deletePrompt = async (req: Request, res: Response): Promise<void> =
         res.status(204).send();
     } catch (error) {
         console.error("Prompt deletion error:", error);
+        res.status(500).json({ error: "Something went wrong" });
+    }
+};
+
+export const deleteAllPrompts = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const userId = req.userId;
+
+        if (!userId) {
+            res.status(400).json({ error: "Missing userId" });
+            return;
+        }
+
+        await deleteAllPromptsService(userId);
+
+        res.status(204).send();
+    } catch (error) {
+        console.error("Error deleting all prompts:", error);
         res.status(500).json({ error: "Something went wrong" });
     }
 };

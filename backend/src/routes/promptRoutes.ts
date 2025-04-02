@@ -48,7 +48,10 @@ const promptRoute: Router = Router();
  */
 promptRoute.post("/", authMiddleware, promptController.createPrompt);
 
+promptRoute.delete("/", authMiddleware, promptController.deleteAllPrompts);
+
 promptRoute.delete("/:promptId", authMiddleware, promptController.deletePrompt);
+
 
 
 export {promptRoute};

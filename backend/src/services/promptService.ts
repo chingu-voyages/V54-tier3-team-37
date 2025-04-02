@@ -50,12 +50,18 @@ export const savePromptOutputService = async (
     }
 };
 
-// services/promptService.ts
+
 export const deletePromptService = async (userId: string, promptId: string) => {
-    return await prisma.prompt.deleteMany({
+    return prisma.prompt.deleteMany({
         where: {
             id: promptId,
             userId: userId,
         },
+    });
+};
+
+export const deleteAllPromptsService = async (userId: string) => {
+    return prisma.prompt.deleteMany({
+        where: {userId},
     });
 };
