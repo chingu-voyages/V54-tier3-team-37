@@ -1,16 +1,20 @@
 import { Provider } from 'react-redux';
-import { Route, Routes } from 'react-router-dom';
+import {
+  Route,
+  Routes,
+} from 'react-router-dom';
 
 import About from './components/About';
 import AboutPage from './components/AboutPage';
 import Auth from './components/Auth';
+import AuthWrapper from './components/AuthWrapper';
+import Dashboard from './components/Dashboard';
 import Footer from './components/Footer';
 import Hero from './components/Hero';
 import Nav from './components/Nav';
-import PromptGenPage from './pages/PromptGenPage';
 import PrivateRoute from './components/PrivateRoute';
-import AuthWrapper from './components/AuthWrapper';
-
+import PromptHistory from './components/PromptHistory';
+import PromptGenPage from './pages/PromptGenPage';
 import { store } from './store';
 
 function App() {
@@ -47,6 +51,19 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route
+            path="/dashboard"
+            element={<Dashboard />}
+          >
+            <Route
+              path="generate"
+              element={<PromptGenPage />}
+            />
+            <Route
+              path="history"
+              element={<PromptHistory />}
+            />
+          </Route>
         </Routes>
         <Footer />
       </div>
