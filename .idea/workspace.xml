@@ -5,45 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b10f10e5-74e8-4e53-9248-a630dcfdd37a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/__mocks__/mockUsersRoute.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/__tests__/config/cookieOptions.test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/__tests__/routes/userRoutes.test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/config/cookieOptions.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/controllers/userController.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/swagger.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/types/mapper/userMapper.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/__tests__/authSlice.test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/api/auth.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/AuthWrapper.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/PrivateRoute.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/constants/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/PromptGenPage.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/types/auth.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/types/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/env.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/prisma/migrations/20250315145311_init/migration.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/prisma/migrations/20250317231804_update_user_prompt_models/migration.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/config/authConfig.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/config/authConfig.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/config/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/config/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/config/settings.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/config/settings.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/controllers/authController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/controllers/authController.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/controllers/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/controllers/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/routes/userRoutes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/routes/userRoutes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/server.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/__tests__/.gitkeep" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/jest.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/jest.config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/About.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/About.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Auth.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Auth.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Footer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Nav.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Nav.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/store/hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/store/hooks.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/store/slices/authSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/store/slices/authSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/types/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/types/ui.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/types/types.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/types/types.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -57,10 +22,10 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 8
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2v3aUjVdEiWVIJRmqqKh6NfVF4i" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -76,16 +41,29 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "Merging prompts/ayer/geminiConn",
+    "git-widget-placeholder": "Merging propmts/ayer/createPrompt",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.jest.jest_package": "C:/src/edu-projects/V54-tier3-team-37/node_modules/jest",
     "nodejs_package_manager_path": "yarn",
     "ts.external.directory.path": "C:\\src\\edu-projects\\V54-tier3-team-37\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Jest.prompt controller">
+    <configuration name="prompt controller" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$/backend" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/backend/__tests__/routes/promptRoutes.test.ts" />
+      <test-names>
+        <test-name value="prompt controller" />
+      </test-names>
+      <method v="2" />
+    </configuration>
     <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/backend/package.json" />
       <command value="run" />
@@ -98,6 +76,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Jest.prompt controller" />
         <item itemvalue="npm.start" />
       </list>
     </recent_temporary>
@@ -111,6 +90,8 @@
       <option name="presentableId" value="Default" />
       <updated>1743376232267</updated>
       <workItem from="1743376234826" duration="109000" />
+      <workItem from="1743535525941" duration="5786000" />
+      <workItem from="1743545559968" duration="6606000" />
     </task>
     <servers />
   </component>
