@@ -1,4 +1,5 @@
-import { API_BASE_URL } from '@/components/constants';
+// import { API_BASE_URL } from '@/components/constants';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 export const getCurrentUser = async () => {
   const res = await fetch(`${API_BASE_URL}/users/me`, {
