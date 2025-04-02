@@ -1,6 +1,11 @@
 import {beforeAll, beforeEach, describe, expect, it} from "@jest/globals";
 import request from "supertest";
-import {createPromptService, deletePromptService, savePromptOutputService} from "../../src/services/promptService";
+import {
+    createPromptService,
+    deleteAllPromptsService,
+    deletePromptService,
+    savePromptOutputService
+} from "../../src/services/promptService";
 import express from "express";
 import {getSignedTestJWT, JWT_SECRET} from "../../__mocks__/getSignedTestJWT";
 import {createMockUser, MockUser} from "../../__mocks__/mockUsersRoute";
@@ -16,6 +21,7 @@ jest.mock("../../src/services/promptService", () => ({
     createPromptService: jest.fn(),
     savePromptOutputService: jest.fn(),
     deletePromptService: jest.fn(),
+    deleteAllPromptsService: jest.fn(),
 }));
 
 jest.mock("../../src/services/geminiService", () => ({
@@ -199,14 +205,6 @@ describe("prompt controller", () => {
         expect(res.body.error).toBe("Prompt not found or not authorized");
     });
 
-    it("should return 400 if promptId or userId is missing", async () => {
-        const res = await request(app)
-            .delete(`/prompts/`) // Missing ID → invalid route
-            .set("Cookie", [`token=${token}`]);
-
-        expect(res.status).toBe(404); // because Express doesn't match the route
-    });
-
     it("should return 401 if no token is provided", async () => {
         const res = await request(app)
             .delete(`/prompts/${mockPrompt.id}`);
@@ -228,6 +226,45 @@ describe("prompt controller", () => {
 
         const res = await request(app)
             .delete(`/prompts/${mockPrompt.id}`)
+            .set("Cookie", [`token=${token}`]);
+
+        expect(res.status).toBe(500);
+        expect(res.body.error).toBe("Something went wrong");
+    });
+
+    it("should return 204 when all prompts are successfully deleted", async () => {
+        (deleteAllPromptsService as jest.Mock).mockResolvedValue({ count: 5 });
+
+        const res = await request(app)
+            .delete("/prompts")
+            .set("Cookie", [`token=${token}`]);
+
+        expect(res.status).toBe(204);
+        expect(deleteAllPromptsService).toHaveBeenCalledWith(mockUser.id);
+    });
+
+    it("should return 401 if no token is provided", async () => {
+        const res = await request(app)
+            .delete("/prompts");
+
+        expect(res.status).toBe(401);
+        expect(res.body.message).toBe("Token not provided");
+    });
+
+    it("should return 401 if the token is invalid", async () => {
+        const res = await request(app)
+            .delete("/prompts")
+            .set("Cookie", [`token=invalid-token`]);
+
+        expect(res.status).toBe(401);
+        expect(res.body.message).toBe("Token is not verified");
+    });
+
+    it("should return 500 if deleteAllPromptsService throws an error", async () => {
+        (deleteAllPromptsService as jest.Mock).mockRejectedValue(new Error("DB error"));
+
+        const res = await request(app)
+            .delete("/prompts")
             .set("Cookie", [`token=${token}`]);
 
         expect(res.status).toBe(500);
