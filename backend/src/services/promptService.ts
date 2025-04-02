@@ -22,6 +22,16 @@ export const createPromptService = async (userId: string | undefined, data: Crea
 };
 
 
+/**
+ * Service to retrieve a specific prompt by ID that belongs to the given user.
+ *
+ * - Queries the database for a prompt with the matching `id` and `userId`
+ * - Ensures that users can only access their own prompts
+ *
+ * @param userId - ID of the authenticated user
+ * @param promptId - ID of the prompt to retrieve
+ * @returns The prompt object if found, otherwise `null`
+ */
 export const getPromptService = async (userId: string, promptId: string) => {
     const prompt = await prisma.prompt.findUnique({
         where: { id: promptId, userId: userId },

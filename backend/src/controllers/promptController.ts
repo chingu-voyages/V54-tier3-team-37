@@ -1,4 +1,6 @@
 import {CreatePromptInput} from "../types/promptTypes.js";
+import { Request, Response } from "express";
+import { getPromptService } from "../services/promptService";
 import {createPromptService, savePromptOutputService} from "../services/promptService.js";
 import {generateGeminiResponse} from "../services/geminiService.js";
 import {formatPromptForAI} from "../utils/formatPromptForAI.js";
@@ -69,9 +71,20 @@ export const createPrompt = async (req: Request, res: Response): Promise<void> =
     }
 };
 
-import { Request, Response } from "express";
-import { getPromptService } from "../services/promptService"; // adjust path if needed
 
+/**
+ * Controller to retrieve a specific prompt by ID for the authenticated user.
+ *
+ * - Extracts userId from request (set by auth middleware)
+ * - Extracts promptId from URL params
+ * - Validates presence of userId and promptId
+ * - Uses the service to fetch the prompt from the database
+ * - Returns the prompt if found
+ * - Handles not found and internal errors with appropriate responses
+ *
+ * @param req - Express request containing `userId` from auth middleware and `promptId` from URL params
+ * @param res - Express response
+ */
 export const getPrompt = async (req: Request, res: Response) => {
     try {
         const userId = req.userId;

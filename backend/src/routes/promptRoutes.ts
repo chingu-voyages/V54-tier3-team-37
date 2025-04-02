@@ -48,6 +48,40 @@ const promptRoute: Router = Router();
  */
 promptRoute.post("/", authMiddleware, promptController.createPrompt);
 
+/**
+ * @swagger
+ * /prompts/{promptId}:
+ *   get:
+ *     summary: Get a prompt by ID
+ *     description: Returns a specific prompt created by the authenticated user.
+ *     tags:
+ *       - Prompts
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: promptId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the prompt to retrieve
+ *     responses:
+ *       200:
+ *         description: Prompt retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 prompt:
+ *                   $ref: '#/components/schemas/Prompt'
+ *       400:
+ *         description: Missing userId or promptId
+ *       404:
+ *         description: Prompt not found
+ *       500:
+ *         description: Internal server error
+ */
 promptRoute.get("/:promptId", authMiddleware, promptController.getPrompt);
 
 export {promptRoute};
