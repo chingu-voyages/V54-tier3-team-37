@@ -54,6 +54,8 @@ const PromptGenResult = ({
               <Star
                 key={i}
                 size={16}
+                role="img"
+                aria-label="Star"
                 className="text-yellow-500"
               />
             ))}

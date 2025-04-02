@@ -5,6 +5,7 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import {
+  act,
   fireEvent,
   render,
   screen,
@@ -52,16 +53,19 @@ describe('PromptGenForm Component', () => {
   it('updates the textarea fields', async () => {
     renderForm();
     const roleInput = screen.getByLabelText(/Role/i);
-    userEvent.type(roleInput, 'Test Role');
-    expect(roleInput).toHaveValue('Test Role');
+    await userEvent.type(roleInput, 'Test Role');
+
+    await waitFor(() => {
+      expect(roleInput).toHaveValue('Test Role');
+    });
   });
 
   it('updates the language select field', async () => {
     renderForm();
-    const languageSelect = screen.getByRole('button', { name: /Select a language/i });
+    const languageSelect = screen.getByRole('combobox', { name: /Language/i });
     fireEvent.click(languageSelect);
 
-    const englishOption = screen.getByText(/English/i);
+    const englishOption = screen.getByRole('option', { name: 'English' });
     fireEvent.click(englishOption);
 
     await waitFor(() => {
@@ -69,27 +73,32 @@ describe('PromptGenForm Component', () => {
     });
   });
 
-  it('calls setIsLoading and setGeneratedPrompt on submit', async () => {
+  it('calls setIsLoading on submit', async () => {
     renderForm();
 
     const roleInput = screen.getByLabelText(/Role/i);
-    userEvent.type(roleInput, 'Test Role');
+    await userEvent.type(roleInput, 'Test Role');
 
     const contextInput = screen.getByLabelText(/Context/i);
-    userEvent.type(contextInput, 'Test Context');
+    await userEvent.type(contextInput, 'Test Context');
 
     const taskInput = screen.getByLabelText(/Task/i);
-    userEvent.type(taskInput, 'Test Task');
+    await userEvent.type(taskInput, 'Test Task');
 
     const outputInput = screen.getByLabelText(/Output/i);
-    userEvent.type(outputInput, 'Test Output');
+    await userEvent.type(outputInput, 'Test Output');
 
     const constraintInput = screen.getByLabelText(/Constraints/i);
-    userEvent.type(constraintInput, 'Test Constraints');
+    await userEvent.type(constraintInput, 'Test Constraints');
 
     const generateButton = screen.getByRole('button', { name: /Generate/i });
-    fireEvent.click(generateButton);
 
-    expect(mockSetIsLoading).toHaveBeenCalledWith(true);
+    await act(async () => {
+      fireEvent.click(generateButton);
+
+      await waitFor(() => {
+        expect(mockSetIsLoading).toHaveBeenCalledWith(true);
+      });
+    });
   });
 });
