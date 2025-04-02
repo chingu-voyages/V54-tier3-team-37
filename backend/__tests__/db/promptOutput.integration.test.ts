@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from "@jest/globals";
-import { prisma } from "../utils/prismaTestUtils";
-import { createTestUser, createTestPrompt, deleteTestUser } from "../utils/prismaTestUtils";
+import { prisma } from "../../__mocks__/prismaTestUtils";
+import { createTestUser, createTestPrompt, deleteTestUser } from "../../__mocks__/prismaTestUtils";
 
 describe("PromptOutput model integration tests", () => {
     let userId: string;

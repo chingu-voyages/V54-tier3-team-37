@@ -64,14 +64,14 @@ userRoute.get("/me", authMiddleware, async (req: Request, res: Response): Promis
 
 /**
  * @swagger
- * /me:
+ * /users/me:
  *   delete:
  *     summary: Delete the currently authenticated user
  *     description: Deletes the authenticated user account.
  *     tags:
  *       - User
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     responses:
  *       204:
  *         description: User successfully deleted

@@ -1,4 +1,10 @@
 components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token
+
   schemas:
     PromptInput:
       type: object
@@ -50,3 +56,38 @@ components:
             isBookmarked:
               type: boolean
               example: false
+
+    PromptOutput:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        promptId:
+          type: string
+          format: uuid
+        content:
+          type: string
+          example: Here is a list of useful repositories...
+        metadata:
+          type: object
+          properties:
+            language:
+              type: string
+              enum: [EN, ES, FR]
+              example: EN
+            model:
+              type: string
+              example: gemini-2.0-flash
+            formattedPromptPreview:
+              type: string
+              example: "Role: Frontend Developer..."
+        version:
+          type: integer
+          example: 1
+        createdAt:
+          type: string
+          format: date-time

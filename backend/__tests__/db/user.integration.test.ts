@@ -1,5 +1,5 @@
 import {afterAll, describe, expect, it} from "@jest/globals";
-import {createTestUser, deleteUserByEmail, generateUniqueEmail, prisma} from "../utils/prismaTestUtils";
+import {createTestUser, deleteUserByEmail, generateUniqueEmail, prisma} from "../../__mocks__/prismaTestUtils";
 
 describe("Prisma User Model", () => {
     let testEmail: string;

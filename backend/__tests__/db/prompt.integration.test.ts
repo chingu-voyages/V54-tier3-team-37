@@ -4,7 +4,7 @@ import {
     prisma,
     deleteTestUser,
     createTestUser,
-} from '../utils/prismaTestUtils';
+} from '../../__mocks__/prismaTestUtils';
 
 const defaultPromptData = {
     role: 'Test Role',
