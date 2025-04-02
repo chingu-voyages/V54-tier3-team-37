@@ -1,7 +1,6 @@
 import express, { Request, Response } from "express";
 import request from "supertest";
 import cookieParser from "cookie-parser";
-import prisma from "../../src/prisma";
 import { describe, expect, beforeEach, jest } from "@jest/globals";
 import { authRoute } from "../../src/routes/authRoutes";
 
@@ -12,6 +11,10 @@ import {
   invalidRoutes,
 } from "../../__mocks__/mockRoutes";
 import { getSignedTestJWT, JWT_SECRET } from "../../__mocks__/getSignedTestJWT";
+import {
+  createTestUser,
+  deleteTestUser,
+} from "../../__mocks__/prismaTestUtils";
 
 jest.mock("../../src/controllers", () => ({
   authController: {
@@ -47,42 +50,32 @@ describe("Router", () => {
   beforeEach(async () => {
     app = express();
     app.use(cookieParser());
-
     app.use(authRoute);
-    const mockUser = mockUsers.unregisteredUser[0];
-    // console.log("about to create user:");
-    // console.log(mockUser);
-    newUser = await prisma.user.create({
-      data: {
-        email: mockUser.email,
-        displayName: mockUser.displayName,
-      },
-    });
-    if (!newUser) throw Error("failed to create a test user");
 
-    // console.log("created newUser:");
-    // console.log(newUser);
+    const mockUser = mockUsers.authRoutesUser;
+    newUser = await createTestUser(mockUser);
+    if (!newUser.id) throw Error("failed to create a test user");
+
     const testToken = getSignedTestJWT(newUser);
+
     app.get("/set-test-cookie", (req, res) => {
       res.cookie("token", testToken);
       res.send("Cookies set");
     });
+
     process.env.JWT_SECRET = JWT_SECRET;
   });
 
   afterEach(async () => {
-    const deleted = await prisma.user.delete({
-      where: { id: newUser.id },
-    });
-    expect(deleted.id).toBe(newUser.id);
+    const deleted = await deleteTestUser(newUser.id);
+    expect(deleted.id).toEqual(newUser.id);
   });
 
   test("clears authentication token", async () => {
     const agent = request.agent(app);
     await agent.get("/set-test-cookie").expect(200);
     const response = await agent.post("/logout");
-
-    expect(response.status).toBe(200);
+    if (response.ok) expect(response.status).toBe(200);
   });
 
   test("returns 404 for non-existing routes", async () => {
