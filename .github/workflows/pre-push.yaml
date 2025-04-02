@@ -1,4 +1,4 @@
-name: Backend Husky Checks
+name: Backend Checks
 on:
   # Only trigger when a change happens in the '/backend' folder
   push:
