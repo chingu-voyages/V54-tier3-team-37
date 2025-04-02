@@ -1,7 +1,6 @@
 import {CreatePromptInput} from "../types/promptTypes.js";
-import { Request, Response } from "express";
-import { getPromptService } from "../services/promptService";
-import {createPromptService, savePromptOutputService} from "../services/promptService.js";
+import {Request, Response} from "express";
+import {createPromptService, getPromptService, savePromptOutputService} from "../services/promptService.js";
 import {generateGeminiResponse} from "../services/geminiService.js";
 import {formatPromptForAI} from "../utils/formatPromptForAI.js";
 
@@ -85,26 +84,27 @@ export const createPrompt = async (req: Request, res: Response): Promise<void> =
  * @param req - Express request containing `userId` from auth middleware and `promptId` from URL params
  * @param res - Express response
  */
-export const getPrompt = async (req: Request, res: Response) => {
+export const getPrompt = async (req: Request, res: Response): Promise<void> => {
     try {
         const userId = req.userId;
-
         const promptId = req.params.promptId;
 
         if (!userId || !promptId) {
-            return res.status(400).json({ message: "Missing userId or promptId" });
+            res.status(400).json({message: "Missing userId or promptId"});
+            return;
         }
 
         const prompt = await getPromptService(userId, promptId);
 
         if (!prompt) {
-            return res.status(404).json({ message: "Prompt not found" });
+            res.status(404).json({message: "Prompt not found"});
+            return;
         }
 
-        return res.status(200).json({ prompt });
+        res.status(200).json({prompt});
     } catch (error) {
         console.error("Error in getPrompt controller:", error);
-        return res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({message: "Internal server error"});
     }
 };
 
