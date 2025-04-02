@@ -13,11 +13,12 @@ jest.mock("../../src/controllers/findOrCreateUser", () => ({
     findUserById: jest.fn(),
 }));
 
-jest.mock("../../src/controllers/userController", () => ({
+jest.mock("../../src/controllers/userController", () => {
+    return {
         getUserById: jest.fn(),
         deleteUserById: jest.fn(),
-    }
-));
+    };
+});
 
 
 let app: express.Express;
