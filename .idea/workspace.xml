@@ -5,12 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b10f10e5-74e8-4e53-9248-a630dcfdd37a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/backend/src/types/outputTypes.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/utils/formatPromptForAI.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/__tests__/db/prompt.integration.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/__tests__/db/prompt.integration.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/__tests__/db/promptOutput.integration.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/__tests__/db/promptOutput.integration.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/__tests__/db/user.integration.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/__tests__/db/user.integration.test.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/__tests__/routes/promptRoutes.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/__tests__/routes/promptRoutes.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/__tests__/utils/prismaTestUtils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/__mocks__/prismaTestUtils.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/config/settings.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/config/settings.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/controllers/promptController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/controllers/promptController.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/docs/components.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/docs/components.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/routes/promptRoutes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/routes/promptRoutes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/routes/userRoutes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/routes/userRoutes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/server.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/services/geminiService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/services/geminiService.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/services/promptService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/services/promptService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/swagger.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/swagger.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/types/types.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/types/types.d.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,21 +49,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;prompt/ayer/getPrompt&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs.jest.jest_package&quot;: &quot;C:/src/edu-projects/V54-tier3-team-37/node_modules/jest&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\src\\edu-projects\\V54-tier3-team-37\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "Merging prompt/ayer/getPrompt",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.jest.jest_package": "C:/src/edu-projects/V54-tier3-team-37/node_modules/jest",
+    "nodejs_package_manager_path": "yarn",
+    "ts.external.directory.path": "C:\\src\\edu-projects\\V54-tier3-team-37\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Jest.prompt controller">
     <configuration name="prompt controller" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
@@ -91,11 +103,15 @@
       <option name="presentableId" value="Default" />
       <updated>1743376232267</updated>
       <workItem from="1743376234826" duration="109000" />
-      <workItem from="1743605123493" duration="3422000" />
+      <workItem from="1743535525941" duration="5786000" />
+      <workItem from="1743545559968" duration="6606000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
 </project>

@@ -1,7 +1,6 @@
 import {Router} from "express";
 import {authMiddleware} from "../middleware/index.js";
 import {promptController} from "../controllers/index.js";
-import {getPrompt} from "../controllers/promptController.js";
 
 
 const promptRoute: Router = Router();
@@ -17,7 +16,7 @@ const promptRoute: Router = Router();
  * @swagger
  * /prompts:
  *   post:
- *     summary: Create a new prompt
+ *     summary: Create a new prompt and get AI-generated output
  *     tags: [Prompts]
  *     security:
  *       - cookieAuth: []
@@ -32,16 +31,16 @@ const promptRoute: Router = Router();
  *                 $ref: '#/components/schemas/PromptInput'
  *     responses:
  *       201:
- *         description: Prompt created
+ *         description: AI-generated output saved and returned
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 prompt:
- *                   $ref: '#/components/schemas/Prompt'
+ *                 output:
+ *                   $ref: '#/components/schemas/PromptOutput'
  *       400:
- *         description: Invalid request
+ *         description: Invalid request or prompt creation failure
  *       401:
  *         description: Unauthorized
  *       500:
