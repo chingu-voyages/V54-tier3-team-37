@@ -1,21 +1,29 @@
-import { useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useAppDispatch } from '@/store/hooks';
 import { fetchUser } from '@/store/slices/authSlice';
 
 const AuthWrapper = () => {
   const dispatch = useAppDispatch();
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const userId = searchParams.get('userId');
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const hasFetched = useRef(false);
+
+  const from = location.state?.from;
+  const redirectTo = searchParams.get('redirectTo');
+  const fallback = from || redirectTo || '/generate';
 
   useEffect(() => {
-    if (userId) {
-      dispatch(fetchUser(userId)).then(() => {
-        navigate('/generate', { replace: true });
-      });
-    }
-  }, [userId, dispatch, navigate]);
+    if (hasFetched.current) return;
+    hasFetched.current = true;
+
+    dispatch(fetchUser()).then((res) => {
+      if (res.meta.requestStatus === 'fulfilled' && location.pathname === '/auth') {
+        navigate(fallback, { replace: true });
+      }
+    });
+  }, [dispatch, fallback, location.pathname, navigate]);
 
   return null;
 };
