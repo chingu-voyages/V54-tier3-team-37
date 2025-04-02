@@ -228,5 +228,23 @@ describe("prompt controller", () => {
         expect(res.body.message).toBe("Token not provided");
     });
 
+    it("should return 401 if no token is provided", async () => {
+        const res = await request(app)
+            .get(`/prompts/${mockPrompt.id}`)
+            .send();
+
+        expect(res.status).toBe(401);
+        expect(res.body.message).toBe("Token not provided");
+    });
+
+    it("should return 401 for an invalid token", async () => {
+        const res = await request(app)
+            .get(`/prompts/${mockPrompt.id}`)
+            .set("Cookie", [`token=invalid-token`]);
+
+        expect(res.status).toBe(401);
+        expect(res.body.message).toBe("Token is not verified");
+    });
+
 
 });
