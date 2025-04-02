@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getUserById } from '@/api/auth';
 import type { User, AuthState } from '@/types';
+import { getCurrentUser } from '@/api/auth';
 
 const initialState: AuthState = {
   user: null,
@@ -9,17 +9,17 @@ const initialState: AuthState = {
   error: null,
 };
 
-export const fetchUser = createAsyncThunk(
-  'auth/fetchUser',
-  async (userId: string, { rejectWithValue }) => {
-    try {
-      const user = await getUserById(userId);
-      return user;
-    } catch (error) {
-      return rejectWithValue(error instanceof Error ? error.message : 'Failed to fetch user');
+export const fetchUser = createAsyncThunk('auth/fetchUser', async (_, { rejectWithValue }) => {
+  try {
+    const user = await getCurrentUser();
+    return user;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return rejectWithValue(error.message);
     }
+    return rejectWithValue('Failed to fetch user');
   }
-);
+});
 
 const authSlice = createSlice({
   name: 'auth',
@@ -44,9 +44,13 @@ const authSlice = createSlice({
       })
       .addCase(fetchUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload as string;
         state.user = null;
         state.isLoggedIn = false;
+        if (action.payload) {
+          state.error = action.payload as string;
+        } else {
+          state.error = null;
+        }
       });
   },
 });
