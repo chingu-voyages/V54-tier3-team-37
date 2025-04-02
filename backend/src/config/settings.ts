@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import {authRoute, promptRoute, userRoute} from "../routes/index.js";
 import cors from "cors";
-import {setupSwagger} from "../swagger.js";
+// import {setupSwagger} from "../swagger.js";
 
 export const configApp = () => {
     const app = express();

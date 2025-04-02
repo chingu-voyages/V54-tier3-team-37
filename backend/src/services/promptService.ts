@@ -11,3 +11,12 @@ export const createPromptService = async (userId: string | undefined, data: Crea
 
     return createdPrompt;
 };
+
+
+export const getPromptService = async (userId: string, promptId: string) => {
+    const prompt = await prisma.prompt.findUnique({
+        where: { id: promptId, userId: userId },
+    });
+
+    return prompt;
+};

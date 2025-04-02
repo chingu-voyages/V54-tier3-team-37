@@ -1,6 +1,7 @@
 import {Router} from "express";
 import {authMiddleware} from "../middleware/index.js";
 import {promptController} from "../controllers/index.js";
+import {getPrompt} from "../controllers/promptController.js";
 
 
 const promptRoute: Router = Router();
@@ -47,5 +48,7 @@ const promptRoute: Router = Router();
  *         description: Server error
  */
 promptRoute.post("/", authMiddleware, promptController.createPrompt);
+
+promptRoute.get("/:promptId", authMiddleware, promptController.getPrompt);
 
 export {promptRoute};
