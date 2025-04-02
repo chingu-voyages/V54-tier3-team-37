@@ -14,7 +14,7 @@ const navLinks: NavLink[] = [
 const Nav = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { isLoggedIn } = useAppSelector((state) => state.auth);
+  const { isLoggedIn, user } = useAppSelector((state) => state.auth);
 
   const handleLogout = async () => {
     try {
@@ -41,20 +41,25 @@ const Nav = () => {
           <ul className="flex items-center gap-12 text-2xl">
             {navLinks.map((link) => (
               <li key={link.text}>
-                <a href={link.href}>{link.text}</a>
+                <Link to={link.href}>{link.text}</Link>
               </li>
             ))}
           </ul>
 
           {isLoggedIn ? (
-            <Button
-              variant="outline"
-              size="lg"
-              className="text-foreground cursor-pointer rounded-2xl py-6 text-2xl"
-              onClick={handleLogout}
-            >
-              Log out
-            </Button>
+            <div className="flex items-center gap-4">
+              {user?.displayName && (
+                <span className="text-foreground text-xl">Hi, {user.displayName}</span>
+              )}
+              <Button
+                variant="outline"
+                size="lg"
+                className="text-foreground cursor-pointer rounded-2xl py-6 text-2xl"
+                onClick={handleLogout}
+              >
+                Log out
+              </Button>
+            </div>
           ) : (
             <Button
               variant="outline"
