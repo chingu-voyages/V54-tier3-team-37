@@ -9,7 +9,7 @@ export const createTestUser = async (overrides: Partial<User> = {}) => {
   const email = overrides.email ?? generateUniqueEmail("user");
   const displayName = overrides.displayName ?? "Test User";
 
-  return prisma.user.create({
+  return await prisma.user.create({
     data: {
       email,
       displayName,
@@ -39,6 +39,6 @@ export const deleteUserByEmail = async (email: string) => {
   await prisma.user.deleteMany({ where: { email } });
 };
 
-export const deleteTestUser = (id: string) => {
-  return prisma.user.delete({ where: { id } });
+export const deleteTestUser = async (id: string) => {
+  return await prisma.user.delete({ where: { id } });
 };
