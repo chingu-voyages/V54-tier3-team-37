@@ -78,7 +78,7 @@ const PromptHistory = () => {
         {promptList.length && (
           <Button size="lg">
             <Link
-              to="/generate"
+              to="../generate"
               className="flex items-center justify-between gap-2"
             >
               <Plus /> Generate New Prompt
