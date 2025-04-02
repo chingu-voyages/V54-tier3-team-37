@@ -199,5 +199,34 @@ describe("prompt controller", () => {
         expect(getPromptService).toHaveBeenCalledWith(mockUser.id, mockPrompt.id);
     });
 
+    it("should return 404 if the prompt does not exist", async () => {
+        (getPromptService as jest.Mock).mockResolvedValue(null);
+
+        const res = await request(app)
+            .get(`/prompts/non-existent-id`)
+            .set("Cookie", [`token=${token}`]);
+
+        expect(res.status).toBe(404);
+        expect(res.body.message).toBe("Prompt not found");
+    });
+
+    it("should return 404 if the route is incorrect or promptId is missing", async () => {
+        const res = await request(app)
+            .get("/prompts/") // trailing slash but no ID
+            .set("Cookie", [`token=${token}`]);
+
+        expect(res.status).toBe(404);
+    });
+
+    it("should return 400 if userId or promptId is missing", async () => {
+        const res = await request(app)
+            .get(`/prompts/${mockPrompt.id}`)
+            // no cookie = no userId from middleware
+            .send();
+
+        expect(res.status).toBe(401);
+        expect(res.body.message).toBe("Token not provided");
+    });
+
 
 });
