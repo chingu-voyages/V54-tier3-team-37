@@ -62,10 +62,10 @@ export const savePromptOutputService = async (
  */
 export const deletePromptService = async (userId: string, promptId: string) => {
     const result = await prisma.prompt.deleteMany({
-        where: { id: promptId, userId },
+        where: {id: promptId, userId},
     });
 
-    return { deletedCount: result.count };
+    return {deletedCount: result.count};
 };
 
 /**

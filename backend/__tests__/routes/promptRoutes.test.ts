@@ -184,7 +184,7 @@ describe("prompt controller", () => {
     });
 
     it("should return 204 when the prompt is successfully deleted", async () => {
-        (deletePromptService as jest.Mock).mockResolvedValue({ count: 1 });
+        (deletePromptService as jest.Mock).mockResolvedValue({count: 1});
 
         const res = await request(app)
             .delete(`/prompts/${mockPrompt.id}`)
@@ -195,7 +195,7 @@ describe("prompt controller", () => {
     });
 
     it("should return 404 if the prompt does not exist or does not belong to the user", async () => {
-        (deletePromptService as jest.Mock).mockResolvedValue({ count: 0 });
+        (deletePromptService as jest.Mock).mockResolvedValue({deletedCount: 0});
 
         const res = await request(app)
             .delete(`/prompts/nonexistent-id`)
@@ -233,7 +233,7 @@ describe("prompt controller", () => {
     });
 
     it("should return 204 when all prompts are successfully deleted", async () => {
-        (deleteAllPromptsService as jest.Mock).mockResolvedValue({ count: 5 });
+        (deleteAllPromptsService as jest.Mock).mockResolvedValue({count: 5});
 
         const res = await request(app)
             .delete("/prompts")

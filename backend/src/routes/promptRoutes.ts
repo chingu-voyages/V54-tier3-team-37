@@ -94,5 +94,4 @@ promptRoute.delete("/", authMiddleware, promptController.deleteAllPrompts);
 promptRoute.delete("/:promptId", authMiddleware, promptController.deletePrompt);
 
 
-
 export {promptRoute};

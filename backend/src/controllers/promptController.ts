@@ -99,7 +99,7 @@ export const deletePrompt = async (req: Request, res: Response): Promise<void> =
 
         const result = await deletePromptService(userId, promptId);
 
-        if (result.count === 0) {
+        if (result.deletedCount === 0) {
             res.status(404).json({error: "Prompt not found or not authorized"});
             return;
         }
