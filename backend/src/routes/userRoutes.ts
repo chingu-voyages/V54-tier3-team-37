@@ -68,8 +68,7 @@ userRoute.get("/me", authMiddleware, async (req: Request, res: Response): Promis
  *   delete:
  *     summary: Delete the currently authenticated user
  *     description: Deletes the authenticated user account.
- *     tags:
- *       - User
+ *     tags: [Users]
  *     security:
  *       - cookieAuth: []
  *     responses:

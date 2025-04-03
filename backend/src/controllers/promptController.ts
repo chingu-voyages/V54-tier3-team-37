@@ -3,10 +3,10 @@ import {
     createPromptService,
     deleteAllPromptsService,
     deletePromptService,
+    getPromptService,
     savePromptOutputService
 } from "../services/promptService.js";
 import {Request, Response} from "express";
-import {createPromptService, getPromptService, savePromptOutputService} from "../services/promptService.js";
 import {generateGeminiResponse} from "../services/geminiService.js";
 import {formatPromptForAI} from "../utils/formatPromptForAI.js";
 

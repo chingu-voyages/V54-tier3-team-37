@@ -4,9 +4,9 @@ import {
     createPromptService,
     deleteAllPromptsService,
     deletePromptService,
+    getPromptService,
     savePromptOutputService
 } from "../../src/services/promptService";
-import {createPromptService, getPromptService, savePromptOutputService} from "../../src/services/promptService";
 import express from "express";
 import {getSignedTestJWT, JWT_SECRET} from "../../__mocks__/getSignedTestJWT";
 import {createMockUser, MockUser} from "../../__mocks__/mockUsersRoute";

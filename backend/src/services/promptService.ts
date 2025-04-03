@@ -13,7 +13,7 @@ import {PromptOutput} from "@prisma/client";
 export const createPromptService = async (userId: string | undefined, data: CreatePromptInput) => {
     const createdPrompt = await prisma.prompt.create({
         data: {
-            user: { connect: { id: userId } },
+            user: {connect: {id: userId}},
             ...data,
         },
     });
@@ -34,7 +34,7 @@ export const createPromptService = async (userId: string | undefined, data: Crea
  */
 export const getPromptService = async (userId: string, promptId: string) => {
     const prompt = await prisma.prompt.findUnique({
-        where: { id: promptId, userId: userId },
+        where: {id: promptId, userId: userId},
     });
 
     return prompt;
