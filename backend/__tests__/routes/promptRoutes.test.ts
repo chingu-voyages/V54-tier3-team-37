@@ -1,6 +1,6 @@
 import {beforeAll, beforeEach, describe, expect, it} from "@jest/globals";
 import request from "supertest";
-import {createPromptService, savePromptOutputService} from "../../src/services/promptService";
+import {createPromptService, getPromptService, savePromptOutputService} from "../../src/services/promptService";
 import express from "express";
 import {getSignedTestJWT, JWT_SECRET} from "../../__mocks__/getSignedTestJWT";
 import {createMockUser, MockUser} from "../../__mocks__/mockUsersRoute";
@@ -15,6 +15,7 @@ import {generateGeminiResponse} from "../../src/services/geminiService";
 jest.mock("../../src/services/promptService", () => ({
     createPromptService: jest.fn(),
     savePromptOutputService: jest.fn(),
+    getPromptService: jest.fn(),
 }));
 
 jest.mock("../../src/services/geminiService", () => ({
@@ -175,5 +176,75 @@ describe("prompt controller", () => {
         expect(res.status).toBe(401);
         expect(res.body.message).toBe("Token is not verified");
     });
+
+    it("should return 200 and the prompt for a valid user and promptId", async () => {
+        (getPromptService as jest.Mock).mockResolvedValue(mockPrompt);
+
+        const res = await request(app)
+            .get(`/prompts/${mockPrompt.id}`)
+            .set("Cookie", [`token=${token}`]);
+
+        expect(res.status).toBe(200);
+        expect(res.body.prompt).toMatchObject({
+            id: mockPrompt.id,
+            userId: mockPrompt.userId,
+            role: mockPrompt.role,
+            context: mockPrompt.context,
+            task: mockPrompt.task,
+            output: mockPrompt.output,
+            constraints: mockPrompt.constraints,
+            language: mockPrompt.language,
+        });
+
+        expect(getPromptService).toHaveBeenCalledWith(mockUser.id, mockPrompt.id);
+    });
+
+    it("should return 404 if the prompt does not exist", async () => {
+        (getPromptService as jest.Mock).mockResolvedValue(null);
+
+        const res = await request(app)
+            .get(`/prompts/non-existent-id`)
+            .set("Cookie", [`token=${token}`]);
+
+        expect(res.status).toBe(404);
+        expect(res.body.message).toBe("Prompt not found");
+    });
+
+    it("should return 404 if the route is incorrect or promptId is missing", async () => {
+        const res = await request(app)
+            .get("/prompts/") // trailing slash but no ID
+            .set("Cookie", [`token=${token}`]);
+
+        expect(res.status).toBe(404);
+    });
+
+    it("should return 400 if userId or promptId is missing", async () => {
+        const res = await request(app)
+            .get(`/prompts/${mockPrompt.id}`)
+            // no cookie = no userId from middleware
+            .send();
+
+        expect(res.status).toBe(401);
+        expect(res.body.message).toBe("Token not provided");
+    });
+
+    it("should return 401 if no token is provided", async () => {
+        const res = await request(app)
+            .get(`/prompts/${mockPrompt.id}`)
+            .send();
+
+        expect(res.status).toBe(401);
+        expect(res.body.message).toBe("Token not provided");
+    });
+
+    it("should return 401 for an invalid token", async () => {
+        const res = await request(app)
+            .get(`/prompts/${mockPrompt.id}`)
+            .set("Cookie", [`token=invalid-token`]);
+
+        expect(res.status).toBe(401);
+        expect(res.body.message).toBe("Token is not verified");
+    });
+
 
 });

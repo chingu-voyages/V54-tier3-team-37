@@ -5,11 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b10f10e5-74e8-4e53-9248-a630dcfdd37a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/src/env.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/types/outputTypes.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/utils/formatPromptForAI.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/__tests__/db/prompt.integration.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/__tests__/db/prompt.integration.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/__tests__/db/promptOutput.integration.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/__tests__/db/promptOutput.integration.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/__tests__/db/user.integration.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/__tests__/db/user.integration.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/__tests__/routes/promptRoutes.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/__tests__/routes/promptRoutes.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/__tests__/utils/prismaTestUtils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/__mocks__/prismaTestUtils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/config/settings.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/config/settings.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/controllers/promptController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/controllers/promptController.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/docs/components.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/docs/components.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/routes/promptRoutes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/routes/promptRoutes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/routes/userRoutes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/routes/userRoutes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/server.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/services/geminiService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/services/geminiService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/services/promptService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/services/promptService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/swagger.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/swagger.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/types/types.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/types/types.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +54,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "Merging propmts/ayer/createPrompt",
+    "git-widget-placeholder": "Merging prompt/ayer/getPrompt",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
@@ -97,5 +110,8 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
 </project>
