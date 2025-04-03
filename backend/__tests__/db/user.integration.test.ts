@@ -34,7 +34,7 @@ describe("Prisma User Model", () => {
 
         try {
             await createTestUser({email: testEmail});
-        } catch (error: any) {
+        } catch (error: unknown) {
             errorCaught = true;
             expect(error.code).toBe('P2002'); // Prisma's unique constraint error
             expect(error.meta?.target).toContain('email');
@@ -65,7 +65,7 @@ describe("Prisma User Model", () => {
 
         try {
             await createTestUser({email});
-        } catch (error: any) {
+        } catch (error: unknown) {
             errorCaught = true;
             expect(error.code).toBe("P2002");
         }
