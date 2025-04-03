@@ -3,7 +3,7 @@ import path from "path";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import { authRoute, promptRoute, userRoute } from "../routes/index.js";
-import { limiter } from "../middleware/rateLimiter.js";
+import { limiter } from "../middleware/index.js";
 import cors from "cors";
 
 export const configApp = async () => {
