@@ -1,9 +1,10 @@
-import prisma from "./prisma.js";
 import "dotenv/config.js";
+import env from "./env.js";
+import prisma from "./prisma.js";
+
 import { configApp } from "./config/index.js";
 
-// Bad practice: No type safety for environment variables
-const port = process.env.PORT || 4000;
+const port = env.PORT || 4000;
 
 // Unused dangerous function that would fail if called
 const dangerousFunction = () => {

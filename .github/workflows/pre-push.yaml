@@ -22,5 +22,5 @@ jobs:
           yarn set version stable
       - run: yarn install
       # Fail immediately if a hook fails
-      - run: cd backend && npx husky run pre-commit || exit 1
-      - run: cd backend && npx husky run pre-push || exit 1
+      - run: npx husky run pre-commit || exit 1
+      - run: npx husky run pre-push || exit 1
