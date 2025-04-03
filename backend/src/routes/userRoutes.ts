@@ -55,7 +55,8 @@ userRoute.get("/me", authMiddleware, async (req: Request, res: Response): Promis
         }
 
         res.status(200).json({user: mapUserToPublic(user)});
-    } catch (_error) {
+    } catch (error) {
+        console.error("Error in GET /users/me:", error);
         res.status(500).json({error: "Internal server error"});
     }
 });
