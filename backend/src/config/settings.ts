@@ -1,4 +1,4 @@
-import express, {Express} from "express";
+import express from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
 import session from "express-session";
@@ -14,7 +14,7 @@ export const configApp = async () => {
     app.use(express.json());
 
     if (nodeEnv !== "test") {
-        const { setupSwagger } = await import("../swagger.js");
+        const {setupSwagger} = await import("../swagger.js");
         setupSwagger(app);
     }
 
