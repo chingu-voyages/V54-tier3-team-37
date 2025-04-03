@@ -11,16 +11,27 @@ on:
 jobs:
   pre-push:
     runs-on: ubuntu-latest
+    # Run commands in the '/backend' folder
+    defaults:
+      run:
+        working-directory: backend
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      # Set up Yarn with Corepack
       - name: Enable Corepack and prepare Yarn
         run: |
           corepack enable
           yarn set version stable
+      # Install dependencies
       - run: yarn install
-      # Fail immediately if a hook fails
-      - run: cd backend && npx husky run pre-commit || exit 1
-      - run: cd backend && npx husky run pre-push || exit 1
+      # Linting
+      - run: yarn eslint . --ext .ts,.tsx --max-warnings 0 || exit 1
+      # Type checking
+      - run: yarn tsc --noEmit
+      # Generate prisma and run tests
+      - run: yarn prisma generate
+      - run: yarn test

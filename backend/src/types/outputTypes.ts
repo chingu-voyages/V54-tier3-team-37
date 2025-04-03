@@ -2,6 +2,6 @@ export interface SavePromptOutputInput {
     userId: string;
     promptId: string;
     content: string;
-    metadata?: Record<string, any>;
+    metadata?: Record<string, unknown>;
     version?: number;
 }
