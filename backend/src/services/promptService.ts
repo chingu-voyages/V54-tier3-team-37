@@ -1,4 +1,5 @@
 import prisma from "../prisma.js";
+import { Prisma } from "@prisma/client";
 import {CreatePromptInput} from "../types/promptTypes.js";
 import {SavePromptOutputInput} from "../types/outputTypes.js";
 import {PromptOutput} from "@prisma/client";
@@ -13,7 +14,7 @@ import {PromptOutput} from "@prisma/client";
 export const createPromptService = async (userId: string | undefined, data: CreatePromptInput) => {
     const createdPrompt = await prisma.prompt.create({
         data: {
-            user: { connect: { id: userId } },
+            user: {connect: {id: userId}},
             ...data,
         },
     });
@@ -34,7 +35,7 @@ export const createPromptService = async (userId: string | undefined, data: Crea
  */
 export const getPromptService = async (userId: string, promptId: string) => {
     const prompt = await prisma.prompt.findUnique({
-        where: { id: promptId, userId: userId },
+        where: {id: promptId, userId: userId},
     });
 
     return prompt;
@@ -56,7 +57,7 @@ export const savePromptOutputService = async (
                 userId: data.userId,
                 promptId: data.promptId,
                 content: data.content,
-                metadata: data.metadata || {},
+                metadata: (data.metadata ?? {}) as Prisma.JsonObject,
                 version: data.version ?? 1,
             },
         });
@@ -66,4 +67,37 @@ export const savePromptOutputService = async (
         console.error("Error saving prompt output:", error);
         throw new Error("Failed to save prompt output");
     }
+};
+
+/**
+ * Deletes a specific prompt by its ID and user ID.
+ *
+ * Ensures that the prompt belongs to the user before deletion.
+ * Returns an object with a `count` property indicating how many records were deleted (0 or 1).
+ *
+ * @param userId - The ID of the user attempting to delete the prompt
+ * @param promptId - The ID of the prompt to delete
+ * @returns {Promise<{ count: number }>} Result of the deletion
+ */
+export const deletePromptService = async (userId: string, promptId: string) => {
+    const result = await prisma.prompt.deleteMany({
+        where: {id: promptId, userId},
+    });
+
+    return {deletedCount: result.count};
+};
+
+/**
+ * Deletes all prompts associated with a specific user.
+ *
+ * Used for scenarios like account cleanup or bulk deletion.
+ * Returns an object with a `count` property indicating how many records were deleted.
+ *
+ * @param userId - The ID of the user whose prompts should be deleted
+ * @returns {Promise<{ count: number }>} Result of the deletion
+ */
+export const deleteAllPromptsService = async (userId: string) => {
+    return prisma.prompt.deleteMany({
+        where: {userId},
+    });
 };
