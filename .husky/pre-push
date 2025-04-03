@@ -6,9 +6,12 @@ set -e
 
 cd backend
 
+echo "🔍 Running linter..."
+yarn eslint . --ext .ts,.tsx --max-warnings 0
+
 # Compile TypeScript
 echo "Compiling TypeScript.."
-yarn tsc
+yarn tsc --noEmit
 
 # Check if tests passed
 if [ $? -ne 0 ]; then

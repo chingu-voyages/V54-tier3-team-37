@@ -3,7 +3,7 @@ import request from "supertest";
 import cookieParser from "cookie-parser";
 import {beforeAll, beforeEach, describe, expect, it} from "@jest/globals";
 import {userRoute} from "../../src/routes";
-import { MockUser, createMockUser } from "../../__mocks__/mockUsersRoute";
+import {createMockUser, MockUser} from "../../__mocks__/mockUsersRoute";
 import {findUserById} from "../../src/controllers";
 import {deleteUserById, getUserById} from "../../src/controllers/userController";
 import {getSignedTestJWT, JWT_SECRET} from "../../__mocks__/getSignedTestJWT";
@@ -136,7 +136,6 @@ describe("GET /users/me", () => {
     });
 
     it("should return 500 if delete throws", async () => {
-        const originalConsoleError = console.error;
         console.error = jest.fn();
         (deleteUserById as jest.Mock).mockRejectedValue(new Error("DB error"));
         const res = await request(app)

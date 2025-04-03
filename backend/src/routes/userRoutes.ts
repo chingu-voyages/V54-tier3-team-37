@@ -56,10 +56,10 @@ userRoute.get("/me", authMiddleware, async (req: Request, res: Response): Promis
 
         res.status(200).json({user: mapUserToPublic(user)});
     } catch (error) {
+        console.error("Error in GET /users/me:", error);
         res.status(500).json({error: "Internal server error"});
     }
 });
-
 
 
 /**
@@ -68,8 +68,7 @@ userRoute.get("/me", authMiddleware, async (req: Request, res: Response): Promis
  *   delete:
  *     summary: Delete the currently authenticated user
  *     description: Deletes the authenticated user account.
- *     tags:
- *       - User
+ *     tags: [Users]
  *     security:
  *       - cookieAuth: []
  *     responses:
@@ -102,7 +101,7 @@ userRoute.delete("/me", authMiddleware, async (req: Request, res: Response): Pro
 
         const user = await getUserById(userId);
         if (!user) {
-            res.status(404).json({ error: "User not found" });
+            res.status(404).json({error: "User not found"});
             return;
         }
 
@@ -110,7 +109,7 @@ userRoute.delete("/me", authMiddleware, async (req: Request, res: Response): Pro
         res.status(204).send();
     } catch (error) {
         console.error("Error deleting user:", error);
-        res.status(500).json({ error: "Internal server error" });
+        res.status(500).json({error: "Internal server error"});
     }
 });
 
