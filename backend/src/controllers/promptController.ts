@@ -1,6 +1,6 @@
-import {Request, Response} from "express";
 import {CreatePromptInput} from "../types/promptTypes.js";
-import {createPromptService, savePromptOutputService} from "../services/promptService.js";
+import {Request, Response} from "express";
+import {createPromptService, getPromptService, savePromptOutputService} from "../services/promptService.js";
 import {generateGeminiResponse} from "../services/geminiService.js";
 import {formatPromptForAI} from "../utils/formatPromptForAI.js";
 
@@ -69,3 +69,42 @@ export const createPrompt = async (req: Request, res: Response): Promise<void> =
         res.status(500).json({error: "Something went wrong"});
     }
 };
+
+
+/**
+ * Controller to retrieve a specific prompt by ID for the authenticated user.
+ *
+ * - Extracts userId from request (set by auth middleware)
+ * - Extracts promptId from URL params
+ * - Validates presence of userId and promptId
+ * - Uses the service to fetch the prompt from the database
+ * - Returns the prompt if found
+ * - Handles not found and internal errors with appropriate responses
+ *
+ * @param req - Express request containing `userId` from auth middleware and `promptId` from URL params
+ * @param res - Express response
+ */
+export const getPrompt = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const userId = req.userId;
+        const promptId = req.params.promptId;
+
+        if (!userId || !promptId) {
+            res.status(400).json({message: "Missing userId or promptId"});
+            return;
+        }
+
+        const prompt = await getPromptService(userId, promptId);
+
+        if (!prompt) {
+            res.status(404).json({message: "Prompt not found"});
+            return;
+        }
+
+        res.status(200).json({prompt});
+    } catch (error) {
+        console.error("Error in getPrompt controller:", error);
+        res.status(500).json({message: "Internal server error"});
+    }
+};
+
