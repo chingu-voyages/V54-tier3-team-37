@@ -6,6 +6,12 @@ import yaml from "js-yaml";
 import {fileURLToPath} from "url";
 import path from "path";
 
+interface SwaggerComponents {
+    components: {
+        schemas: Record<string, unknown>;
+    };
+}
+
 // Convert import.meta.url to __dirname for compatibility with file operations
 const __filename: string = fileURLToPath(import.meta.url);
 const __dirname: string = path.dirname(__filename);
@@ -20,11 +26,11 @@ const docsPath: string = path.resolve(__dirname, "./docs");
 const yamlFiles: string[] = fs.readdirSync(docsPath).filter(file => file.endsWith(".yaml"));
 
 // Combine schemas from all YAML files into one object
-let combinedComponents: any = {components: {schemas: {}}};
+const combinedComponents: SwaggerComponents = { components: { schemas: {} } };
 
 for (const file of yamlFiles) {
     const filePath = path.join(docsPath, file);
-    const content = yaml.load(fs.readFileSync(filePath, "utf8")) as any;
+    const content = yaml.load(fs.readFileSync(filePath, "utf8")) as SwaggerComponents | undefined;
 
     if (content?.components?.schemas) {
         combinedComponents.components.schemas = {
@@ -33,6 +39,7 @@ for (const file of yamlFiles) {
         };
     }
 }
+
 // Swagger JSDoc options to configure OpenAPI generation
 const options = {
     definition: {
