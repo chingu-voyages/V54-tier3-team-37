@@ -10,7 +10,7 @@ type PublicUser = {
     email: string;
     displayName: string;
     imageUrl: string | null;
-    createdAt: Date;
+    createdAt: string;
 };
 
 /**
@@ -18,7 +18,11 @@ type PublicUser = {
  * @param user - The Prisma User object
  * @returns A PublicUser object suitable for API responses
  */
-export const mapUserToPublic = (user: User) => {
+export const mapUserToPublic = (user: User): PublicUser => {
+    if (!user.id || !user.createdAt) {
+        throw new Error("User object is missing required fields.");
+    }
+
     return {
         id: user.id,
         email: user.email,
