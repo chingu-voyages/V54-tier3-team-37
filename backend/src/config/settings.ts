@@ -6,22 +6,16 @@ import { authRoute, promptRoute, userRoute } from "../routes/index.js";
 import { limiter } from "../middleware/rateLimiter.js";
 import cors from "cors";
 
-type NodeEnv = "development" | "production" | "test";
-
-const nodeEnv = process.env.NODE_ENV as NodeEnv;
-
 export const configApp = async () => {
   const app = express();
   app.use(express.json());
 
-  if (nodeEnv !== "test") {
+  if (process.env.NODE_ENV !== "test") {
     const { setupSwagger } = await import("../swagger.js");
     setupSwagger(app);
   }
 
-  const allowedOrigins = process.env.HOME_REACT_ADDRESS?.split(",") || [
-    "http://localhost:5173",
-  ];
+  const allowedOrigins = process.env.HOME_REACT_ADDRESS?.split(",");
 
   app.use(cookieParser());
   app.use(
