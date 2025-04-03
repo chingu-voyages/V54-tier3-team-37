@@ -18,7 +18,9 @@ export const envSchema = z.object({
   GEMINI_API_KEY: z.string().min(10),
   JWT_SECRET: z.string().min(10),
   SESSION_SECRET: z.string().min(15),
-  NODE_ENV: z.enum(["development", "production"]).default("development"),
+  NODE_ENV: z
+    .enum(["development", "production", "test"])
+    .default("development"),
 });
 
 // Validate `process.env` against our schema
