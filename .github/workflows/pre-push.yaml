@@ -15,6 +15,14 @@ jobs:
     defaults:
       run:
         working-directory: backend
+    environment: Testing
+    # Env is now available for all steps within the 'build' job
+    env:
+      HOME_REACT_ADDRESS: ${{secrets.HOME_REACT_ADDRESS}}
+      JWT_SECRET: ${{secrets.JWT_SECRET}}
+      DATABASE_URL: ${{secrets.DATABASE_URL}}
+      GEMINI_API_KEY: ${{secrets.GEMINI_API_KEY}}
+      NODE_ENV: "test"
 
     steps:
       - uses: actions/checkout@v4

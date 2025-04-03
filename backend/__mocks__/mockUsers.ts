@@ -1,4 +1,5 @@
 export const mockUsers = {
+  authRoutesUser: { email: "go@dev.net", displayName: "Go Dev" },
   unregisteredUser: [
     { email: "foo@bar.dev", displayName: "Foo" },
     {

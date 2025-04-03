@@ -5,7 +5,7 @@ import tsParser from "@typescript-eslint/parser";
 import prettier from "eslint-plugin-prettier";
 
 export default defineConfig({
-  ignores: ["dist"],
+  ignores: ["dist/**"],
   extends: [js.configs.recommended, ...tseslint.configs.recommended],
   files: ["**/*.{js,ts}"],
   plugins: { prettier },
