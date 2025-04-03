@@ -152,7 +152,6 @@ describe("prompt controller", () => {
     });
 
     it("should return 500 if createPromptService throws an error", async () => {
-        const originalError = console.error;
         console.error = jest.fn();
         (createPromptService as jest.Mock).mockRejectedValue(new Error("DB error"));
 

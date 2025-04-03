@@ -1,4 +1,5 @@
 import prisma from "../prisma.js";
+import { Prisma } from "@prisma/client";
 import {CreatePromptInput} from "../types/promptTypes.js";
 import {SavePromptOutputInput} from "../types/outputTypes.js";
 import {PromptOutput} from "@prisma/client";
@@ -56,7 +57,7 @@ export const savePromptOutputService = async (
                 userId: data.userId,
                 promptId: data.promptId,
                 content: data.content,
-                metadata: data.metadata || {},
+                metadata: (data.metadata ?? {}) as Prisma.JsonObject,
                 version: data.version ?? 1,
             },
         });

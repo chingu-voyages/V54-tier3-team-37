@@ -136,7 +136,6 @@ describe("GET /users/me", () => {
     });
 
     it("should return 500 if delete throws", async () => {
-        const originalConsoleError = console.error;
         console.error = jest.fn();
         (deleteUserById as jest.Mock).mockRejectedValue(new Error("DB error"));
         const res = await request(app)

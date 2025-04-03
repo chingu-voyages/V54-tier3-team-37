@@ -21,7 +21,7 @@ describe("generateRandomHexString", () => {
   });
 
   test("generates a unique string", () => {
-    let results = new Set();
+    const results = new Set();
     for (let i = 0; i < 10; i++) {
       results.add(generateRandomHexString());
     }
