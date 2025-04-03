@@ -1,7 +1,7 @@
 import {CreatePromptInput} from "../types/promptTypes.js";
-import {createPromptService, savePromptOutputService, updatePromptService} from "../services/promptService.js";
 import {
     createPromptService,
+    updatePromptService,
     deleteAllPromptsService,
     deletePromptService,
     getPromptService,

@@ -1,8 +1,8 @@
 import {beforeAll, beforeEach, describe, expect, it} from "@jest/globals";
 import request from "supertest";
-import {createPromptService, savePromptOutputService, updatePromptService} from "../../src/services/promptService";
 import {
     createPromptService,
+    updatePromptService,
     deleteAllPromptsService,
     deletePromptService,
     getPromptService,

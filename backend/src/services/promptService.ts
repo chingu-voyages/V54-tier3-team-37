@@ -72,9 +72,7 @@ export const savePromptOutputService = async (
                 userId: data.userId,
                 promptId: data.promptId,
                 content: data.content,
-                metadata: (data.metadata ?? {}) as Prisma.JsonObject,
-                version: data.version ?? 1,
-                metadata: data.metadata || {},
+                metadata: data.metadata as Prisma.JsonObject,
                 version,
             },
         });
