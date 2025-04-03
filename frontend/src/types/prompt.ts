@@ -1,0 +1,35 @@
+export type PentagramField = {
+  name: 'role' | 'context' | 'task' | 'output' | 'constraints';
+  label: 'Role' | 'Context' | 'Task' | 'Output' | 'Constraints';
+  type: 'textarea';
+  placeholder: string;
+  tooltip: string;
+  required: boolean;
+};
+
+export type LanguageSelect = {
+  name: 'language';
+  label: 'Language';
+  type: 'select';
+  options: LanguageOption[];
+};
+
+export type LanguageOption = {
+  value: 'EN' | 'ES' | 'FR';
+  text: 'English' | 'Spanish' | 'French';
+};
+
+export type PromptResponse = {
+  role: string;
+  context: string;
+  task: string;
+  output: string;
+  constraints: string;
+  language: 'EN' | 'ES' | 'FR';
+  apiResponse: string;
+  id: string;
+  userId: string;
+  createdAt: string;
+  score: number;
+  isBookmarked: boolean;
+};

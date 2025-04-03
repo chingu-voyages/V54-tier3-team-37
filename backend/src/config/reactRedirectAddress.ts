@@ -17,4 +17,4 @@ const getReactAddress = (isProd: boolean) => {
 };
 
 export const HOME_REACT_ADDRESS = getReactAddress(isProduction);
-export const LOGGED_IN_REACT_ADDRESS = `${HOME_REACT_ADDRESS}/`;
+export const LOGGED_IN_REACT_ADDRESS = `${HOME_REACT_ADDRESS}/auth`;

@@ -1,6 +1,6 @@
-import * as React from "react"
+import * as React from 'react';
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/cn';
 
 function Card({ className, ...props }: React.ComponentProps<"div">) {
   return (
@@ -65,4 +65,4 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
+export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle };

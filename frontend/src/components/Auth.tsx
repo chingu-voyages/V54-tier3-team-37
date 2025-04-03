@@ -1,9 +1,17 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Github } from 'lucide-react';
 import { FcGoogle } from 'react-icons/fc';
-import { API_BASE_URL } from './constants';
+
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+// import { API_BASE_URL } from './constants';
 import { OAuthButtonProps } from '@/types';
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 export default function Auth() {
   return (

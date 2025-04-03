@@ -1,13 +1,15 @@
-import { API_BASE_URL } from '@/components/constants';
+// import { API_BASE_URL } from '@/components/constants';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
-export const getUserById = async (userId: string) => {
-  const res = await fetch(`${API_BASE_URL}/users/${userId}`, {
+export const getCurrentUser = async () => {
+  const res = await fetch(`${API_BASE_URL}/users/me`, {
     credentials: 'include',
   });
 
-  if (!res.ok) throw new Error('User not found');
+  if (!res.ok) throw new Error('User not authenticated');
 
-  return res.json();
+  const data = await res.json();
+  return data.user;
 };
 
 export const logoutUser = async () => {

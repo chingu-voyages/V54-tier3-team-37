@@ -95,7 +95,7 @@ const sendCookieAndRedirect = (res: Response, user: User) => {
   try {
     const token = generateToken(user);
     res.cookie("token", token, cookieOptions);
-    res.redirect(`${LOGGED_IN_REACT_ADDRESS}?userId=${user.id}`);
+    res.redirect(LOGGED_IN_REACT_ADDRESS);
   } catch (error) {
     throw new Error(error instanceof Error ? error.message : String(error));
   }
