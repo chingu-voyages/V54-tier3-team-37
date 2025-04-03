@@ -18,6 +18,9 @@ jobs:
           node-version: 20
           cache: yarn
       - run: yarn install
+      - name: Enable Corepack
+        run: corepack enable
+      - run: yarn install
       # Fail immediately if a hook fails
       - run: cd backend && npx husky run pre-commit || exit 1
       - run: cd backend && npx husky run pre-push || exit 1
