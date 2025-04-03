@@ -1,0 +1,26 @@
+name: Backend Checks
+on:
+  # Only trigger when a change happens in the '/backend' folder
+  push:
+    paths:
+      - "backend/**"
+  pull_request:
+    paths:
+      - "backend/**"
+
+jobs:
+  pre-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Enable Corepack and prepare Yarn
+        run: |
+          corepack enable
+          yarn set version stable
+      - run: yarn install
+      # Fail immediately if a hook fails
+      - run: cd backend && npx husky run pre-commit || exit 1
+      - run: cd backend && npx husky run pre-push || exit 1
