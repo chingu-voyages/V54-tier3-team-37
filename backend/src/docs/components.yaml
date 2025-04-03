@@ -35,6 +35,14 @@ components:
           type: string
           enum: [EN, ES, FR]
           example: EN
+        score:
+          type: integer
+          example: 5
+          description: Optional score between 0 and 5
+        isBookmarked:
+          type: boolean
+          example: true
+          description: Indicates whether the prompt is bookmarked
 
     Prompt:
       allOf:
