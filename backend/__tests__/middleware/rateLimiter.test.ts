@@ -24,7 +24,7 @@ describe("rateLimiter middleware", () => {
     // This will clear the memory cache
     rateLimiter = rateLimit({
       windowMs: ONE_MINUTE,
-      max: REQUESTS_PER_MINUTE, // 60 requests
+      max: REQUESTS_PER_MINUTE, // 5 requests
       standardHeaders: "draft-8",
       legacyHeaders: false,
     });
