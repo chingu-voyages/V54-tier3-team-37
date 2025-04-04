@@ -1,29 +1,15 @@
-import {CreatePromptInput} from "../types/promptTypes.js";
 import {
-    createPromptService,
-    updatePromptService,
     deleteAllPromptsService,
     deletePromptService,
     getPromptService,
-    savePromptOutputService
+    savePromptOutputService,
+    updatePromptService
 } from "../services/promptService.js";
 import {Request, Response} from "express";
 import {generateGeminiResponse} from "../services/geminiService.js";
 import {formatPromptForAI} from "../utils/formatPromptForAI.js";
 
 
-/**
- * Controller to handle prompt creation and AI-generated output.
- *
- * - Validates request body
- * - Creates a new prompt in the database
- * - Formats the prompt for AI
- * - Calls Gemini service to generate AI output
- * - Saves the output and returns it in the response
- *
- * @param req - Express request containing `prompt` in the body and `userId` from auth middleware
- * @param res - Express response
- */
 export const createPrompt = async (req: Request, res: Response): Promise<void> => {
     try {
         const userId = req.userId;
@@ -36,39 +22,27 @@ export const createPrompt = async (req: Request, res: Response): Promise<void> =
 
         const {role, context, task, output, constraints, language} = prompt;
 
-        const data: CreatePromptInput = {
+        const formattedPrompt = formatPromptForAI({
             role,
             context,
             task,
             output,
             constraints,
-            language
-        };
-
-        const createdPrompt =
-            await createPromptService(userId, data);
-
-        if (!createdPrompt) {
-            res.status(400).json({error: "Prompt creation failed"});
-            return;
-        }
-
-        const formattedPrompt = formatPromptForAI(data);
-
-        const aiOutput = await generateGeminiResponse(formattedPrompt);
-
-        const savedOutput = await savePromptOutputService({
-            userId: userId!,
-            promptId: createdPrompt.id,
-            content: aiOutput,
-            metadata: {
-                language,
-                model: "gemini-2.0-flash",
-                formattedPromptPreview: formattedPrompt.slice(0, 200),
-            },
+            language,
         });
 
-        res.status(201).json({output: savedOutput});
+        const aiResponse = await generateGeminiResponse(formattedPrompt);
+
+        res.status(200).json({
+            role,
+            context,
+            task,
+            output,
+            constraints,
+            language,
+            geminiText: aiResponse.text,
+            geminiSummary: aiResponse.summary,
+        });
 
     } catch
         (error) {

@@ -5,19 +5,15 @@ import {promptController} from "../controllers/index.js";
 
 const promptRoute: Router = Router();
 
-/**
- * @swagger
- * tags:
- *   - name: Prompts
- *     description: Prompt management
- */
 
 /**
  * @swagger
  * /prompts:
  *   post:
- *     summary: Create a new prompt and get AI-generated output
- *     tags: [Prompts]
+ *     summary: Generate Gemini response from prompt input
+ *     description: Takes a prompt, sends it to Gemini AI, and returns the full response with a summary. Does not store in database.
+ *     tags:
+ *       - Prompts
  *     security:
  *       - cookieAuth: []
  *     requestBody:
@@ -30,21 +26,52 @@ const promptRoute: Router = Router();
  *               prompt:
  *                 $ref: '#/components/schemas/PromptInput'
  *     responses:
- *       201:
- *         description: AI-generated output saved and returned
+ *       200:
+ *         description: Gemini response generated
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
+ *                 role:
+ *                   type: string
+ *                 context:
+ *                   type: string
+ *                 task:
+ *                   type: string
  *                 output:
- *                   $ref: '#/components/schemas/PromptOutput'
+ *                   type: string
+ *                 constraints:
+ *                   type: string
+ *                 language:
+ *                   type: string
+ *                   enum: [EN, ES, FR]
+ *                 geminiText:
+ *                   type: string
+ *                   example: This is Gemini's full output...
+ *                 geminiSummary:
+ *                   type: string
+ *                   example: Summary of Gemini output
  *       400:
- *         description: Invalid request or prompt creation failure
- *       401:
- *         description: Unauthorized
+ *         description: Prompt input is missing
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Prompt is required
  *       500:
- *         description: Server error
+ *         description: Gemini API failed
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Something went wrong
  */
 promptRoute.post("/", authMiddleware, promptController.createPrompt);
 

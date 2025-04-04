@@ -6,6 +6,11 @@ export type CreatePromptInput = {
     constraints: string;
     language: 'EN' | 'ES' | 'FR';
     score?: number;
-    isBookmarked?: boolean;
+    geminiText?: string;
+    geminiSummary?: string;
 };
 
+export type GeminiResponseType = {
+    text: string;
+    summary: string;
+}
