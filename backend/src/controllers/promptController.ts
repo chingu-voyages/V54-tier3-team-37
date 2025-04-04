@@ -13,9 +13,14 @@ import {SavePromptOutputInput} from "../types/outputTypes.js";
 import {Language} from "@prisma/client";
 
 
-export const createPrompt = async (req: Request, res: Response): Promise<void> => {
+export const generatePrompt = async (req: Request, res: Response): Promise<void> => {
     try {
         const userId = req.userId;
+
+        if (!userId) {
+            res.status(401).json({error: "Unauthorized"});
+            return;
+        }
         const {prompt} = req.body;
 
         if (!prompt) {
@@ -108,7 +113,7 @@ export const savePrompt = async (req: Request, res: Response): Promise<void> => 
 
         const createdPrompt = await savePromptService(input);
 
-        res.status(201).json(createdPrompt);
+        res.status(200).json(createdPrompt);
     } catch (error) {
         console.error("Error saving prompt:", error);
         res.status(500).json({error: "Something went wrong"});

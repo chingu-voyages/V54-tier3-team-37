@@ -196,7 +196,7 @@ describe("prompt controller", () => {
             .set("Cookie", [`token=${token}`])
             .send({prompt: promptData});
 
-        expect(res.status).toBe(201);
+        expect(res.status).toBe(200);
         expect(savePromptService).toHaveBeenCalledWith({
             ...promptData,
             userId: mockUser.id,

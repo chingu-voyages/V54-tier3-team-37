@@ -4,13 +4,6 @@ import {CreatePromptInput} from "../types/promptTypes.js";
 import {SavePromptOutputInput} from "../types/outputTypes.js";
 
 
-/**
- * Creates a new prompt in the database and links it to the specified user.
- *
- * @param userId - The ID of the user creating the prompt.
- * @param data - The prompt input data including role, context, task, etc.
- * @returns The created prompt object from the database.
- */
 export const createPromptService = async (userId: string | undefined, data: CreatePromptInput) => {
     const createdPrompt = await prisma.prompt.create({
         data: {
@@ -23,16 +16,7 @@ export const createPromptService = async (userId: string | undefined, data: Crea
 };
 
 
-/**
- * Service to retrieve a specific prompt by ID that belongs to the given user.
- *
- * - Queries the database for a prompt with the matching `id` and `userId`
- * - Ensures that users can only access their own prompts
- *
- * @param userId - ID of the authenticated user
- * @param promptId - ID of the prompt to retrieve
- * @returns The prompt object if found, otherwise `null`
- */
+
 export const getPromptService = async (userId: string, promptId: string) => {
     const prompt = await prisma.prompt.findUnique({
         where: {id: promptId, userId: userId},
