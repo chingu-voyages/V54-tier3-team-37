@@ -4,6 +4,18 @@ import {CreatePromptInput} from "../types/promptTypes.js";
 import {SavePromptOutputInput} from "../types/outputTypes.js";
 
 
+/**
+ * Creates a new prompt in the database for the specified user.
+ *
+ * This service:
+ * - Connects the new prompt to the user via `userId`
+ * - Saves all provided prompt data using Prisma
+ * - Returns the created `Prompt` object
+ *
+ * @param {string | undefined} userId - The ID of the user creating the prompt
+ * @param {CreatePromptInput} data - The prompt details to be saved
+ * @returns {Promise<Prompt>} - The newly created prompt record
+ */
 export const createPromptService = async (userId: string | undefined, data: CreatePromptInput) => {
     const createdPrompt = await prisma.prompt.create({
         data: {
@@ -15,6 +27,19 @@ export const createPromptService = async (userId: string | undefined, data: Crea
     return createdPrompt;
 };
 
+/**
+ * Saves a Gemini-generated prompt with full metadata to the database.
+ *
+ * This service:
+ * - Accepts validated prompt data including AI-generated content and score
+ * - Persists the prompt using Prisma and links it to the specified user
+ * - Returns the saved `Prompt` object from the database
+ * - Logs and throws an error if the operation fails
+ *
+ * @param {SavePromptOutputInput} data - The complete prompt input to be saved, including userId, prompt content, Gemini response, and score
+ * @returns {Promise<Prompt>} - The saved prompt record
+ * @throws {Error} - If saving to the database fails
+ */
 export const savePromptService = async (
     data: SavePromptOutputInput
 ): Promise<Prompt> => {
@@ -41,6 +66,19 @@ export const savePromptService = async (
     }
 };
 
+/**
+ * Updates the score of a specific prompt for a given user.
+ *
+ * This service:
+ * - Updates the score of the prompt using `updateMany` to ensure the prompt belongs to the user
+ * - Returns `null` if no prompt was updated (not found or unauthorized)
+ * - Retrieves and returns the updated prompt using `findUnique`
+ *
+ * @param {string} userId - The ID of the user requesting the update
+ * @param {string} promptId - The ID of the prompt to be updated
+ * @param {number} score - The new score to assign to the prompt
+ * @returns {Promise<Prompt | null>} - The updated prompt if found and updated, or `null` if not
+ */
 export const updatePromptScoreService = async (
     userId: string,
     promptId: string,
@@ -64,6 +102,17 @@ export const updatePromptScoreService = async (
     });
 };
 
+/**
+ * Retrieves a specific prompt by its ID and associated user ID.
+ *
+ * This service:
+ * - Uses Prisma to find a prompt that matches both `promptId` and `userId`
+ * - Ensures users can only access their own prompts
+ *
+ * @param {string} userId - The ID of the user who owns the prompt
+ * @param {string} promptId - The ID of the prompt to retrieve
+ * @returns {Promise<Prompt | null>} - The found prompt or `null` if not found or not authorized
+ */
 export const getPromptService = async (userId: string, promptId: string) => {
     const prompt = await prisma.prompt.findUnique({
         where: {id: promptId, userId: userId},
@@ -72,6 +121,18 @@ export const getPromptService = async (userId: string, promptId: string) => {
     return prompt;
 };
 
+/**
+ * Retrieves all prompts associated with a given user.
+ *
+ * This service:
+ * - Constructs query arguments to fetch prompts using Prisma
+ * - Filters prompts by the provided `userId` and orders them in descending order by creation date
+ * - Returns an array of prompts or throws an error if the operation fails
+ *
+ * @param {string} userId - The ID of the user whose prompts are to be retrieved
+ * @returns {Promise<Prompt[]>} - A promise that resolves to an array of prompts
+ * @throws {Error} - Throws an error if the prompts cannot be fetched
+ */
 export const getAllPromptsService = async (userId: string) => {
     try {
         const args: Prisma.PromptFindManyArgs = {
