@@ -184,10 +184,10 @@ promptRoute.post("/save", authMiddleware, promptController.savePrompt);
 
 /**
  * @swagger
- * /prompts/{promptId}:
+ * /{promptId}:
  *   get:
- *     summary: Get a prompt by ID
- *     description: Returns a specific prompt created by the authenticated user.
+ *     summary: Get a specific saved prompt by ID
+ *     description: Retrieves a single prompt belonging to the authenticated user by prompt ID.
  *     tags:
  *       - Prompts
  *     security:
@@ -195,13 +195,14 @@ promptRoute.post("/save", authMiddleware, promptController.savePrompt);
  *     parameters:
  *       - in: path
  *         name: promptId
+ *         required: true
  *         schema:
  *           type: string
- *         required: true
- *         description: The ID of the prompt to retrieve
+ *           format: uuid
+ *         description: The unique identifier of the prompt
  *     responses:
  *       200:
- *         description: Prompt retrieved successfully
+ *         description: Prompt successfully retrieved
  *         content:
  *           application/json:
  *             schema:
@@ -209,12 +210,50 @@ promptRoute.post("/save", authMiddleware, promptController.savePrompt);
  *               properties:
  *                 prompt:
  *                   $ref: '#/components/schemas/Prompt'
+ *             example:
+ *               prompt:
+ *                 id: "a1b2c3d4-e5f6-7890-abcd-1234567890ef"
+ *                 userId: "user-123"
+ *                 role: "Developer"
+ *                 context: "Build a login feature"
+ *                 task: "Write backend logic"
+ *                 output: "Express route for authentication"
+ *                 constraints: "No third-party auth packages"
+ *                 language: "EN"
+ *                 score: 5
+ *                 geminiText: "This is the full Gemini response."
+ *                 geminiSummary: "Short summary of the response"
+ *                 createdAt: "2025-04-04T12:00:00Z"
  *       400:
  *         description: Missing userId or promptId
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Missing userId or promptId
  *       404:
  *         description: Prompt not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Prompt not found
  *       500:
  *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Internal server error
  */
 promptRoute.get("/:promptId", authMiddleware, promptController.getPrompt);
 
@@ -222,23 +261,66 @@ promptRoute.get("/:promptId", authMiddleware, promptController.getPrompt);
  * @swagger
  * /prompts:
  *   get:
- *     summary: Get all prompts for the current user
- *     tags: [Prompts]
+ *     summary: Get all prompts for the authenticated user
+ *     description: Returns an array of prompts created by the current user.
+ *     tags:
+ *       - Prompts
  *     security:
  *       - cookieAuth: []
  *     responses:
  *       200:
- *         description: List of prompts
+ *         description: A list of prompts
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Prompt'
+ *             example:
+ *               - id: "a1b2c3d4-e5f6-7890-abcd-1234567890ef"
+ *                 userId: "user-123"
+ *                 role: "Developer"
+ *                 context: "Build a login feature"
+ *                 task: "Write backend logic"
+ *                 output: "Express route for authentication"
+ *                 constraints: "No third-party auth packages"
+ *                 language: "EN"
+ *                 score: 5
+ *                 geminiText: "This is the full Gemini response."
+ *                 geminiSummary: "Short summary of the response"
+ *                 createdAt: "2025-04-04T12:00:00Z"
+ *               - id: "b2c3d4e5-f6a7-8901-bcde-234567890abc"
+ *                 userId: "user-123"
+ *                 role: "Product Manager"
+ *                 context: "Plan a new feature"
+ *                 task: "Write feature summary"
+ *                 output: "A structured summary document"
+ *                 constraints: "No technical jargon"
+ *                 language: "EN"
+ *                 score: 4
+ *                 geminiText: "This is another Gemini response."
+ *                 geminiSummary: "Another short summary"
+ *                 createdAt: "2025-04-04T13:00:00Z"
  *       401:
- *         description: Unauthorized (missing or invalid token)
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Unauthorized
  *       500:
- *         description: Server error
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Internal server error
  */
 promptRoute.get("/", authMiddleware, promptController.getAllPrompts);
 
@@ -247,6 +329,7 @@ promptRoute.get("/", authMiddleware, promptController.getAllPrompts);
  * /prompts/{promptId}:
  *   put:
  *     summary: Update the score of an existing prompt
+ *     description: Updates the score of a prompt identified by its ID and returns the updated prompt object.
  *     tags:
  *       - Prompts
  *     security:
@@ -257,6 +340,7 @@ promptRoute.get("/", authMiddleware, promptController.getAllPrompts);
  *         required: true
  *         schema:
  *           type: string
+ *           format: uuid
  *         description: The ID of the prompt to update
  *     requestBody:
  *       required: true
@@ -278,6 +362,19 @@ promptRoute.get("/", authMiddleware, promptController.getAllPrompts);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Prompt'
+ *             example:
+ *               id: "a1b2c3d4-e5f6-7890-abcd-1234567890ef"
+ *               userId: "user-123"
+ *               role: "Developer"
+ *               context: "Build a login feature"
+ *               task: "Write backend logic"
+ *               output: "Express route for authentication"
+ *               constraints: "No third-party auth packages"
+ *               language: "EN"
+ *               score: 4
+ *               geminiText: "This is the updated Gemini response."
+ *               geminiSummary: "Updated summary of the response"
+ *               createdAt: "2025-04-04T12:00:00Z"
  *       400:
  *         description: Missing or invalid score
  *       401:

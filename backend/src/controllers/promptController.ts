@@ -121,19 +121,6 @@ export const savePrompt = async (req: Request, res: Response): Promise<void> => 
 };
 
 
-/**
- * Controller to retrieve a specific prompt by ID for the authenticated user.
- *
- * - Extracts userId from request (set by auth middleware)
- * - Extracts promptId from URL params
- * - Validates presence of userId and promptId
- * - Uses the service to fetch the prompt from the database
- * - Returns the prompt if found
- * - Handles not found and internal errors with appropriate responses
- *
- * @param req - Express request containing `userId` from auth middleware and `promptId` from URL params
- * @param res - Express response
- */
 export const getPrompt = async (req: Request, res: Response): Promise<void> => {
     try {
         const userId = req.userId;

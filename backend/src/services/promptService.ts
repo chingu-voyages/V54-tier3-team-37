@@ -15,17 +15,6 @@ export const createPromptService = async (userId: string | undefined, data: Crea
     return createdPrompt;
 };
 
-
-
-export const getPromptService = async (userId: string, promptId: string) => {
-    const prompt = await prisma.prompt.findUnique({
-        where: {id: promptId, userId: userId},
-    });
-
-    return prompt;
-};
-
-
 export const savePromptService = async (
     data: SavePromptOutputInput
 ): Promise<Prompt> => {
@@ -73,6 +62,14 @@ export const updatePromptScoreService = async (
     return prisma.prompt.findUnique({
         where: {id: promptId},
     });
+};
+
+export const getPromptService = async (userId: string, promptId: string) => {
+    const prompt = await prisma.prompt.findUnique({
+        where: {id: promptId, userId: userId},
+    });
+
+    return prompt;
 };
 
 export const getAllPromptsService = async (userId: string) => {

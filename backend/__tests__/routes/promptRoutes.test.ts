@@ -276,6 +276,10 @@ describe("prompt controller", () => {
             output: mockPrompt.output,
             constraints: mockPrompt.constraints,
             language: mockPrompt.language,
+            score: mockPrompt.score,
+            geminiText: mockPrompt.geminiText,
+            geminiSummary: mockPrompt.geminiSummary,
+            createdAt: mockPrompt.createdAt,
         });
 
         expect(getPromptService).toHaveBeenCalledWith(mockUser.id, mockPrompt.id);
