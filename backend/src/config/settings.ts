@@ -3,7 +3,6 @@ import path from "path";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import { authRoute, promptRoute, userRoute } from "../routes/index.js";
-import { limiter } from "../middleware/index.js";
 import cors from "cors";
 
 export const configApp = async () => {
@@ -28,9 +27,6 @@ export const configApp = async () => {
   // Serve static files
   const __dirname = path.resolve();
   app.use(express.static(path.join(__dirname, "..", "static")));
-
-  // Apply the rate limiting middleware to all requests
-  app.use(limiter);
 
   const sessionSecret = String(process.env.SESSION_SECRET);
   app.use(
