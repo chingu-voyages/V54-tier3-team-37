@@ -12,7 +12,26 @@ import {formatPromptForAI} from "../utils/formatPromptForAI.js";
 import {SavePromptOutputInput} from "../types/outputTypes.js";
 import {Language} from "@prisma/client";
 
-
+/**
+ * Handles prompt generation using Gemini AI for an authenticated user.
+ *
+ * This controller:
+ * - Validates the user is authenticated via `req.userId`
+ * - Validates the presence of the `prompt` object in the request body
+ * - Extracts prompt fields (`role`, `context`, `task`, `output`, `constraints`, `language`)
+ * - Formats the prompt input for AI consumption
+ * - Calls the Gemini API to generate a response
+ * - Returns the original prompt fields along with `geminiText` and `geminiSummary`
+ *
+ * @param {Request} req - Express request object with a `userId` and `prompt` in body
+ * @param {Response} res - Express response object used to return the result or error
+ * @returns {void}
+ *
+ * @response 200 - Returns original prompt fields and Gemini AI-generated text and summary
+ * @response 400 - If `prompt` is missing
+ * @response 401 - If user is not authenticated
+ * @response 500 - If an internal error occurs while generating the prompt
+ */
 export const generatePrompt = async (req: Request, res: Response): Promise<void> => {
     try {
         const userId = req.userId;
@@ -59,7 +78,27 @@ export const generatePrompt = async (req: Request, res: Response): Promise<void>
     }
 };
 
-
+/**
+ * Saves a Gemini-generated prompt to the database for the authenticated user.
+ *
+ * This controller:
+ * - Ensures the user is authenticated using `req.userId`
+ * - Validates the presence and structure of the `prompt` object in the request body
+ * - Validates the `language` field against allowed enum values
+ * - Ensures the `score` field is a valid number
+ * - Constructs a typed input object to pass to the save service
+ * - Persists the prompt using `savePromptService`
+ * - Returns the full saved prompt as the response
+ *
+ * @param {Request} req - Express request object with `userId` and `prompt` in body
+ * @param {Response} res - Express response object used to return the saved prompt or error
+ * @returns {void}
+ *
+ * @response 200 - The saved prompt object with full metadata
+ * @response 400 - If `prompt` is missing, score is invalid, or language is not allowed
+ * @response 401 - If the user is not authenticated
+ * @response 500 - If a server-side error occurs while saving the prompt
+ */
 export const savePrompt = async (req: Request, res: Response): Promise<void> => {
     try {
         const userId = req.userId;
@@ -120,7 +159,23 @@ export const savePrompt = async (req: Request, res: Response): Promise<void> => 
     }
 };
 
-
+/**
+ * Retrieves a specific prompt by its ID for the authenticated user.
+ *
+ * This controller:
+ * - Validates that both `userId` and `promptId` are present
+ * - Calls the `getPromptService` to retrieve the prompt from the database
+ * - Returns the prompt if found, otherwise sends a 404 response
+ *
+ * @param {Request} req - Express request object containing `userId` and `promptId` as a route param
+ * @param {Response} res - Express response object used to return the prompt or an error
+ * @returns {void}
+ *
+ * @response 200 - The requested prompt wrapped in a `prompt` field
+ * @response 400 - If `userId` or `promptId` is missing
+ * @response 404 - If the prompt was not found for the given user
+ * @response 500 - If a server-side error occurs during the operation
+ */
 export const getPrompt = async (req: Request, res: Response): Promise<void> => {
     try {
         const userId = req.userId;
@@ -145,6 +200,22 @@ export const getPrompt = async (req: Request, res: Response): Promise<void> => {
     }
 };
 
+/**
+ * Retrieves all prompts created by the authenticated user.
+ *
+ * This controller:
+ * - Verifies the user is authenticated via `req.userId`
+ * - Calls `getAllPromptsService` to fetch all prompts associated with the user
+ * - Returns an array of `Prompt` objects
+ *
+ * @param {Request} req - Express request object containing `userId`
+ * @param {Response} res - Express response object used to return the result or error
+ * @returns {void}
+ *
+ * @response 200 - Array of prompts belonging to the authenticated user
+ * @response 401 - If the user is not authenticated
+ * @response 500 - If a server-side error occurs while fetching prompts
+ */
 export const getAllPrompts = async (req: Request, res: Response): Promise<void> => {
     try {
         const userId = req.userId;
@@ -162,6 +233,23 @@ export const getAllPrompts = async (req: Request, res: Response): Promise<void> 
     }
 };
 
+/**
+ * Updates the score of a specific prompt for the authenticated user.
+ *
+ * This controller:
+ * - Validates the presence of `userId`, `promptId`, and a numeric `score`
+ * - Calls `updatePromptScoreService` to update the score in the database
+ * - Returns the updated `Prompt` if successful
+ *
+ * @param {Request} req - Express request object containing `userId`, `promptId` as a route param, and `score` in the body
+ * @param {Response} res - Express response object used to return the updated prompt or an error
+ * @returns {void}
+ *
+ * @response 200 - The updated prompt with the new score
+ * @response 400 - If `score`, `userId`, or `promptId` is missing or invalid
+ * @response 404 - If the prompt does not exist or the user is not authorized
+ * @response 500 - If a server-side error occurs during the update
+ */
 
 export const updateScorePrompt = async (req: Request, res: Response): Promise<void> => {
     try {
