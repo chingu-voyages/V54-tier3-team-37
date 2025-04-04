@@ -1,10 +1,10 @@
 import {
     deleteAllPromptsService,
     deletePromptService,
+    getAllPromptsService,
     getPromptService,
-    savePromptOutputService,
     savePromptService,
-    updatePromptService
+    updatePromptScoreService
 } from "../services/promptService.js";
 import {Request, Response} from "express";
 import {generateGeminiResponse} from "../services/geminiService.js";
@@ -58,6 +58,11 @@ export const createPrompt = async (req: Request, res: Response): Promise<void> =
 export const savePrompt = async (req: Request, res: Response): Promise<void> => {
     try {
         const userId = req.userId;
+
+        if (!userId) {
+            res.status(401).json({error: "Unauthorized"});
+            return;
+        }
         const {prompt} = req.body;
 
         if (!prompt) {
@@ -89,7 +94,7 @@ export const savePrompt = async (req: Request, res: Response): Promise<void> => 
         }
 
         const input: SavePromptOutputInput = {
-            userId,
+            userId: userId,
             role: String(role),
             context: String(context),
             task: String(task),
@@ -110,52 +115,81 @@ export const savePrompt = async (req: Request, res: Response): Promise<void> => 
     }
 };
 
+
 /**
- * Controller to update an existing prompt and generate a new AI output version.
+ * Controller to retrieve a specific prompt by ID for the authenticated user.
  *
- * Steps:
- * - Validates request input (userId, promptId, prompt)
- * - Calls service to update the prompt in the DB
- * - If found, formats the updated prompt for AI
- * - Sends it to Gemini and stores the new version of the output
- * - Returns the latest saved output in the response
+ * - Extracts userId from request (set by auth middleware)
+ * - Extracts promptId from URL params
+ * - Validates presence of userId and promptId
+ * - Uses the service to fetch the prompt from the database
+ * - Returns the prompt if found
+ * - Handles not found and internal errors with appropriate responses
  *
- * @param req - Express request with userId from auth middleware, promptId from URL, and prompt object in body
+ * @param req - Express request containing `userId` from auth middleware and `promptId` from URL params
  * @param res - Express response
  */
-export const updatePrompt = async (req: Request, res: Response): Promise<void> => {
+export const getPrompt = async (req: Request, res: Response): Promise<void> => {
     try {
         const userId = req.userId;
         const promptId = req.params.promptId;
-        const {prompt} = req.body;
 
-        if (!userId || !promptId || !prompt) {
-            res.status(400).json({error: "Missing required fields"});
+        if (!userId || !promptId) {
+            res.status(400).json({message: "Missing userId or promptId"});
             return;
         }
 
-        const updatedPrompt = await updatePromptService(userId, promptId, prompt);
+        const prompt = await getPromptService(userId, promptId);
+
+        if (!prompt) {
+            res.status(404).json({message: "Prompt not found"});
+            return;
+        }
+
+        res.status(200).json({prompt});
+    } catch (error) {
+        console.error("Error in getPrompt controller:", error);
+        res.status(500).json({message: "Internal server error"});
+    }
+};
+
+export const getAllPrompts = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const userId = req.userId;
+
+        if (!userId) {
+            res.status(401).json({error: "Unauthorized"});
+            return;
+        }
+
+        const prompts = await getAllPromptsService(userId);
+        res.status(200).json(prompts);
+    } catch (error) {
+        console.error("Error fetching prompts:", error);
+        res.status(500).json({error: "Something went wrong"});
+    }
+};
+
+
+export const updateScorePrompt = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const userId = req.userId;
+
+        const promptId = req.params.promptId;
+        const {score} = req.body;
+
+        if (!userId || !promptId || typeof score !== "number") {
+            res.status(400).json({error: "Missing or invalid score"});
+            return;
+        }
+        const updatedPrompt = await updatePromptScoreService(userId, promptId, score);
 
         if (!updatedPrompt) {
             res.status(404).json({error: "Prompt not found or not authorized"});
             return;
         }
 
-        const formatted = formatPromptForAI(prompt);
-        const aiOutput = await generateGeminiResponse(formatted);
-
-        const savedOutput = await savePromptOutputService({
-            userId,
-            promptId,
-            content: aiOutput,
-            metadata: {
-                language: prompt.language,
-                model: "gemini-2.0-flash",
-                formattedPromptPreview: formatted.slice(0, 200),
-            },
-        });
-
-        res.status(200).json({output: savedOutput});
+        res.status(200).json(updatedPrompt);
     } catch (error) {
         console.error("Error updating prompt:", error);
         res.status(500).json({error: "Something went wrong"});
@@ -224,44 +258,6 @@ export const deleteAllPrompts = async (req: Request, res: Response): Promise<voi
     } catch (error) {
         console.error("Error deleting all prompts:", error);
         res.status(500).json({error: "Something went wrong"});
-    }
-};
-
-
-/**
- * Controller to retrieve a specific prompt by ID for the authenticated user.
- *
- * - Extracts userId from request (set by auth middleware)
- * - Extracts promptId from URL params
- * - Validates presence of userId and promptId
- * - Uses the service to fetch the prompt from the database
- * - Returns the prompt if found
- * - Handles not found and internal errors with appropriate responses
- *
- * @param req - Express request containing `userId` from auth middleware and `promptId` from URL params
- * @param res - Express response
- */
-export const getPrompt = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const userId = req.userId;
-        const promptId = req.params.promptId;
-
-        if (!userId || !promptId) {
-            res.status(400).json({message: "Missing userId or promptId"});
-            return;
-        }
-
-        const prompt = await getPromptService(userId, promptId);
-
-        if (!prompt) {
-            res.status(404).json({message: "Prompt not found"});
-            return;
-        }
-
-        res.status(200).json({prompt});
-    } catch (error) {
-        console.error("Error in getPrompt controller:", error);
-        res.status(500).json({message: "Internal server error"});
     }
 };
 

@@ -1,5 +1,5 @@
 import prisma from "../prisma.js";
-import {Prompt} from "@prisma/client";
+import {Prisma, Prompt} from "@prisma/client";
 import {CreatePromptInput} from "../types/promptTypes.js";
 import {SavePromptOutputInput} from "../types/outputTypes.js";
 
@@ -68,6 +68,44 @@ export const savePromptService = async (
     }
 };
 
+export const updatePromptScoreService = async (
+    userId: string,
+    promptId: string,
+    score: number
+) => {
+    const result = await prisma.prompt.updateMany({
+        where: {
+            id: promptId,
+            userId,
+        },
+        data: {
+            score,
+        },
+    });
+
+    if (result.count === 0) return null;
+
+
+    return prisma.prompt.findUnique({
+        where: {id: promptId},
+    });
+};
+
+export const getAllPromptsService = async (userId: string) => {
+    try {
+        const args: Prisma.PromptFindManyArgs = {
+            where: {userId},
+            orderBy: {createdAt: "desc"},
+        };
+
+        return await prisma.prompt.findMany(args);
+    } catch (error) {
+        console.error("Error fetching prompts:", error);
+        throw new Error("Failed to fetch prompts");
+    }
+};
+
+
 /**
  * Deletes a specific prompt by its ID and user ID.
  *
@@ -101,45 +139,6 @@ export const deleteAllPromptsService = async (userId: string) => {
     });
 };
 
-
-/**
- * Service to update a prompt for a specific user.
- *
- * - Uses `updateMany` to safely attempt an update scoped by both userId and promptId
- * - Returns `null` if no records were updated (prompt not found or not authorized)
- * - Otherwise, returns the updated prompt data (with id included)
- *
- * @param userId - ID of the user who owns the prompt
- * @param promptId - ID of the prompt to update
- * @param data - Updated prompt fields (role, task, etc.)
- * @returns The updated prompt data or `null` if not found
- */
-export const updatePromptService = async (
-    userId: string,
-    promptId: string,
-    data: CreatePromptInput
-) => {
-    const result = await prisma.prompt.updateMany({
-        where: {
-            id: promptId,
-            userId,
-        },
-        data: {
-            role: data.role,
-            context: data.context,
-            task: data.task,
-            output: data.output,
-            constraints: data.constraints,
-            language: data.language,
-            ...(data.score !== undefined && {score: data.score}),
-            ...(data.isBookmarked !== undefined && {isBookmarked: data.isBookmarked}),
-        },
-    });
-
-    if (result.count === 0) return null;
-
-    return {...data, id: promptId};
-};
 
 
 

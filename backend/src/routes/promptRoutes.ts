@@ -10,8 +10,7 @@ const promptRoute: Router = Router();
  * @swagger
  * /prompts/generate:
  *   post:
- *     summary: Generate Gemini response from prompt input
- *     description: Takes a prompt, sends it to Gemini AI, and returns the full response with a summary. Does not store in database.
+ *     summary: Generate Gemini response from a prompt
  *     tags:
  *       - Prompts
  *     security:
@@ -48,31 +47,19 @@ const promptRoute: Router = Router();
  *                   enum: [EN, ES, FR]
  *                 geminiText:
  *                   type: string
- *                   example: This is Gemini's full output...
  *                 geminiSummary:
  *                   type: string
- *                   example: Summary of Gemini output
+ *                 score:
+ *                   type: integer
+ *                   example: 3
  *       400:
  *         description: Prompt input is missing
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: Prompt is required
+ *       401:
+ *         description: Unauthorized
  *       500:
- *         description: Gemini API failed
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: Something went wrong
+ *         description: Internal server error
  */
+
 promptRoute.post("/generate", authMiddleware, promptController.createPrompt);
 
 /**
@@ -112,8 +99,68 @@ promptRoute.post("/save", authMiddleware, promptController.savePrompt);
 /**
  * @swagger
  * /prompts/{promptId}:
+ *   get:
+ *     summary: Get a prompt by ID
+ *     description: Returns a specific prompt created by the authenticated user.
+ *     tags:
+ *       - Prompts
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: promptId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the prompt to retrieve
+ *     responses:
+ *       200:
+ *         description: Prompt retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 prompt:
+ *                   $ref: '#/components/schemas/Prompt'
+ *       400:
+ *         description: Missing userId or promptId
+ *       404:
+ *         description: Prompt not found
+ *       500:
+ *         description: Internal server error
+ */
+promptRoute.get("/:promptId", authMiddleware, promptController.getPrompt);
+
+/**
+ * @swagger
+ * /prompts:
+ *   get:
+ *     summary: Get all prompts for the current user
+ *     tags: [Prompts]
+ *     security:
+ *       - cookieAuth: []
+ *     responses:
+ *       200:
+ *         description: List of prompts
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Prompt'
+ *       401:
+ *         description: Unauthorized (missing or invalid token)
+ *       500:
+ *         description: Server error
+ */
+promptRoute.get("/", authMiddleware, promptController.getAllPrompts);
+
+/**
+ * @swagger
+ * /prompts/{promptId}:
  *   put:
- *     summary: Update a prompt and generate a new AI output version
+ *     summary: Update the score of an existing prompt
  *     tags:
  *       - Prompts
  *     security:
@@ -131,21 +178,22 @@ promptRoute.post("/save", authMiddleware, promptController.savePrompt);
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - score
  *             properties:
- *               prompt:
- *                 $ref: '#/components/schemas/PromptInput'
+ *               score:
+ *                 type: integer
+ *                 example: 4
+ *                 description: New score value for the prompt
  *     responses:
  *       200:
- *         description: Prompt updated and output version saved
+ *         description: Updated prompt with new score
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 output:
- *                   $ref: '#/components/schemas/PromptOutput'
+ *               $ref: '#/components/schemas/Prompt'
  *       400:
- *         description: Missing required fields
+ *         description: Missing or invalid score
  *       401:
  *         description: Unauthorized – token missing or invalid
  *       404:
@@ -153,7 +201,7 @@ promptRoute.post("/save", authMiddleware, promptController.savePrompt);
  *       500:
  *         description: Internal server error
  */
-promptRoute.put("/:promptId", authMiddleware, promptController.updatePrompt);
+promptRoute.put("/:promptId", authMiddleware, promptController.updateScorePrompt);
 
 
 /**
@@ -201,41 +249,5 @@ promptRoute.delete("/", authMiddleware, promptController.deleteAllPrompts);
  */
 promptRoute.delete("/:promptId", authMiddleware, promptController.deletePrompt);
 
-
-/**
- * @swagger
- * /prompts/{promptId}:
- *   get:
- *     summary: Get a prompt by ID
- *     description: Returns a specific prompt created by the authenticated user.
- *     tags:
- *       - Prompts
- *     security:
- *       - cookieAuth: []
- *     parameters:
- *       - in: path
- *         name: promptId
- *         schema:
- *           type: string
- *         required: true
- *         description: The ID of the prompt to retrieve
- *     responses:
- *       200:
- *         description: Prompt retrieved successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 prompt:
- *                   $ref: '#/components/schemas/Prompt'
- *       400:
- *         description: Missing userId or promptId
- *       404:
- *         description: Prompt not found
- *       500:
- *         description: Internal server error
- */
-promptRoute.get("/:promptId", authMiddleware, promptController.getPrompt);
 
 export {promptRoute};

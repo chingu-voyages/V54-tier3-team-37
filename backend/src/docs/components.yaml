@@ -18,31 +18,23 @@ components:
       properties:
         role:
           type: string
-          example: Developer
+          example: "Developer"
         context:
           type: string
-          example: A new feature request
+          example: "Build a login feature"
         task:
           type: string
-          example: Write unit tests
+          example: "Write backend logic"
         output:
           type: string
-          example: Jest test cases
+          example: "Express route for authentication"
         constraints:
           type: string
-          example: Use mocking
+          example: "No third-party auth packages"
         language:
           type: string
           enum: [EN, ES, FR]
-          example: EN
-        score:
-          type: integer
-          example: 5
-          description: Optional score between 0 and 5
-        isBookmarked:
-          type: boolean
-          example: true
-          description: Indicates whether the prompt is bookmarked
+          example: "EN"
 
     Prompt:
       allOf:
@@ -60,10 +52,16 @@ components:
               format: date-time
             score:
               type: integer
-              example: 0
+              example: 3
             isBookmarked:
               type: boolean
               example: false
+            geminiText:
+              type: string
+              example: "Generated response from Gemini"
+            geminiSummary:
+              type: string
+              example: "Summarized version of the response"
 
     PromptOutput:
       type: object
@@ -79,23 +77,18 @@ components:
           format: uuid
         content:
           type: string
-          example: Here is a list of useful repositories...
         metadata:
           type: object
           properties:
             language:
               type: string
               enum: [EN, ES, FR]
-              example: EN
             model:
               type: string
-              example: gemini-2.0-flash
             formattedPromptPreview:
               type: string
-              example: "Role: Frontend Developer..."
         version:
           type: integer
-          example: 1
         createdAt:
           type: string
           format: date-time
