@@ -3,11 +3,14 @@ import {
     deletePromptService,
     getPromptService,
     savePromptOutputService,
+    savePromptService,
     updatePromptService
 } from "../services/promptService.js";
 import {Request, Response} from "express";
 import {generateGeminiResponse} from "../services/geminiService.js";
 import {formatPromptForAI} from "../utils/formatPromptForAI.js";
+import {SavePromptOutputInput} from "../types/outputTypes.js";
+import {Language} from "@prisma/client";
 
 
 export const createPrompt = async (req: Request, res: Response): Promise<void> => {
@@ -47,6 +50,62 @@ export const createPrompt = async (req: Request, res: Response): Promise<void> =
     } catch
         (error) {
         console.error("Prompt creation error:", error);
+        res.status(500).json({error: "Something went wrong"});
+    }
+};
+
+
+export const savePrompt = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const userId = req.userId;
+        const {prompt} = req.body;
+
+        if (!prompt) {
+            res.status(400).json({error: "Prompt is required"});
+            return;
+        }
+
+        const {
+            role,
+            context,
+            task,
+            output,
+            constraints,
+            language,
+            score,
+            geminiText,
+            geminiSummary,
+        } = prompt;
+
+        if (!Object.values(Language).includes(language)) {
+            res.status(400).json({error: "Invalid language"});
+            return;
+        }
+
+        const scoreValue = Number(score);
+        if (isNaN(scoreValue)) {
+            res.status(400).json({error: "Score must be a number"});
+            return;
+        }
+
+        const input: SavePromptOutputInput = {
+            userId,
+            role: String(role),
+            context: String(context),
+            task: String(task),
+            output: String(output),
+            constraints: String(constraints),
+            language: language as Language,
+            score: Number(score),
+            geminiText: String(geminiText),
+            geminiSummary: String(geminiSummary),
+        };
+
+        const createdPrompt = await savePromptService(input);
+
+        res.status(201).json(createdPrompt);
+    } catch (error) {
+        console.error("Error saving prompt:", error);
         res.status(500).json({error: "Something went wrong"});
     }
 };

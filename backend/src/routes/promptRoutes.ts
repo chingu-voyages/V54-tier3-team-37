@@ -8,7 +8,7 @@ const promptRoute: Router = Router();
 
 /**
  * @swagger
- * /prompts:
+ * /prompts/generate:
  *   post:
  *     summary: Generate Gemini response from prompt input
  *     description: Takes a prompt, sends it to Gemini AI, and returns the full response with a summary. Does not store in database.
@@ -73,7 +73,41 @@ const promptRoute: Router = Router();
  *                   type: string
  *                   example: Something went wrong
  */
-promptRoute.post("/", authMiddleware, promptController.createPrompt);
+promptRoute.post("/generate", authMiddleware, promptController.createPrompt);
+
+/**
+ * @swagger
+ * /prompts/save:
+ *   post:
+ *     summary: Save a prompt with AI-generated response
+ *     tags:
+ *       - Prompts
+ *     security:
+ *       - cookieAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               prompt:
+ *                 $ref: '#/components/schemas/Prompt'
+ *     responses:
+ *       201:
+ *         description: Prompt successfully saved
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Prompt'
+ *       400:
+ *         description: Missing or invalid prompt data
+ *       401:
+ *         description: Unauthorized - user not authenticated
+ *       500:
+ *         description: Server error
+ */
+promptRoute.post("/save", authMiddleware, promptController.savePrompt);
 
 /**
  * @swagger

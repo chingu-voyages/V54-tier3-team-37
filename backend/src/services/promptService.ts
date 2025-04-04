@@ -1,8 +1,8 @@
 import prisma from "../prisma.js";
-import { Prisma } from "@prisma/client";
+import {Prompt} from "@prisma/client";
 import {CreatePromptInput} from "../types/promptTypes.js";
 import {SavePromptOutputInput} from "../types/outputTypes.js";
-import {PromptOutput} from "@prisma/client";
+
 
 /**
  * Creates a new prompt in the database and links it to the specified user.
@@ -41,39 +41,23 @@ export const getPromptService = async (userId: string, promptId: string) => {
     return prompt;
 };
 
-/**
- * Saves a new AI-generated output version for a specific prompt and user.
- *
- * - If `version` is not provided, it calculates the next version based on the latest saved output for the prompt.
- * - Associates the output with both the prompt and user.
- * - Automatically stores metadata and versioning info.
- *
- * @param data - The output data to save, including promptId, userId, content, optional metadata, and optional version.
- * @returns The saved PromptOutput record from the database.
- * @throws Will throw an error if saving fails (e.g. DB connection issues).
- */
-export const savePromptOutputService = async (
+
+export const savePromptService = async (
     data: SavePromptOutputInput
-): Promise<PromptOutput> => {
+): Promise<Prompt> => {
     try {
-        let version = data.version;
-
-        if (version === undefined) {
-            const latest = await prisma.promptOutput.findFirst({
-                where: {promptId: data.promptId},
-                orderBy: [{version: "desc"}] as const,
-            });
-
-            version = latest ? latest.version + 1 : 1;
-        }
-
-        const saved = await prisma.promptOutput.create({
+        const saved = await prisma.prompt.create({
             data: {
                 userId: data.userId,
-                promptId: data.promptId,
-                content: data.content,
-                metadata: data.metadata as Prisma.JsonObject,
-                version,
+                role: data.role,
+                context: data.context,
+                output: data.output,
+                task: data.task,
+                constraints: data.constraints,
+                language: data.language,
+                score: data.score,
+                geminiText: data.geminiText,
+                geminiSummary: data.geminiSummary,
             },
         });
 
@@ -147,8 +131,8 @@ export const updatePromptService = async (
             output: data.output,
             constraints: data.constraints,
             language: data.language,
-            ...(data.score !== undefined && { score: data.score }),
-            ...(data.isBookmarked !== undefined && { isBookmarked: data.isBookmarked }),
+            ...(data.score !== undefined && {score: data.score}),
+            ...(data.isBookmarked !== undefined && {isBookmarked: data.isBookmarked}),
         },
     });
 
