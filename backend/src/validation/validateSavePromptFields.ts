@@ -1,8 +1,9 @@
 import {validatePromptFields} from "./validatePromptFields.js";
 import {ValidationError} from "../services/errors.js";
+import {PromptInput} from "../types/promptTypes.js";
 
-export const validateSavePromptFields = (body: any): void => {
-    validatePromptFields(body); // base check
+export const validateSavePromptFields = (body: PromptInput): void => {
+    validatePromptFields(body);
 
     validatePromptFields(body);
 

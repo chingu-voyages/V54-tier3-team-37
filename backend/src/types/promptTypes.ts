@@ -1,4 +1,4 @@
-export type CreatePromptInput = {
+export type PromptInput = {
     role: string;
     context: string;
     task: string;

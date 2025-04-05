@@ -14,7 +14,10 @@ import {Language} from "@prisma/client";
 import {DuplicatePromptError, UnauthorizedError} from "../services/errors.js";
 
 
-export const generatePrompt = async (req: Request, res: Response): Promise<void> => {
+class PromptType {
+}
+
+export const generatePrompt = async (req: Request<{}, {}, PromptType>, res: Response): Promise<void> => {
     try {
         const userId = req.userId;
 
@@ -33,14 +36,14 @@ export const generatePrompt = async (req: Request, res: Response): Promise<void>
         } = req.body;
 
 
-        const promptText = `
-            You are a ${role}.
-            Context: ${context}
-            Task: ${task}
-            Expected Output: ${output}
-            Constraints: ${constraints}
-            Language: ${language}
-            `.trim();
+        const promptText = [
+            `You are a ${role}.`,
+            `Context: ${context}`,
+            `Task: ${task}`,
+            `Expected Output: ${output}`,
+            `Constraints: ${constraints}`,
+            `Language: ${language}`
+        ].join('\n');
 
         const aiResponse = await generateGeminiResponse(promptText);
 

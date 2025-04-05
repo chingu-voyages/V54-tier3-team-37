@@ -1,10 +1,9 @@
-// middlewares/validateBody.ts
-
-import { Request, Response, NextFunction } from "express";
+import {NextFunction, Request, Response} from "express";
 import {ValidationError} from "../services/errors.js";
+import {PromptInput} from "../types/promptTypes.js";
 
 
-type ValidatorFn = (body: any) => void;
+type ValidatorFn = (body: PromptInput) => void;
 
 export const validateBody = (validator: ValidatorFn) => {
     return (req: Request, res: Response, next: NextFunction) => {
@@ -13,7 +12,7 @@ export const validateBody = (validator: ValidatorFn) => {
             next();
         } catch (error) {
             if (error instanceof ValidationError) {
-                res.status(400).json({ error: error.message });
+                res.status(400).json({error: error.message});
             } else {
                 next(error);
             }
