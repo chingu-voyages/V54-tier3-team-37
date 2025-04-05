@@ -1,4 +1,5 @@
 import {
+    checkDuplicatePrompt,
     deleteAllPromptsService,
     deletePromptService,
     getAllPromptsService,
@@ -8,57 +9,40 @@ import {
 } from "../services/promptService.js";
 import {Request, Response} from "express";
 import {generateGeminiResponse} from "../services/geminiService.js";
-import {formatPromptForAI} from "../utils/formatPromptForAI.js";
 import {SavePromptOutputInput} from "../types/outputTypes.js";
 import {Language} from "@prisma/client";
+import {DuplicatePromptError, UnauthorizedError} from "../services/errors.js";
 
-/**
- * Handles prompt generation using Gemini AI for an authenticated user.
- *
- * This controller:
- * - Validates the user is authenticated via `req.userId`
- * - Validates the presence of the `prompt` object in the request body
- * - Extracts prompt fields (`role`, `context`, `task`, `output`, `constraints`, `language`)
- * - Formats the prompt input for AI consumption
- * - Calls the Gemini API to generate a response
- * - Returns the original prompt fields along with `geminiText` and `geminiSummary`
- *
- * @param {Request} req - Express request object with a `userId` and `prompt` in body
- * @param {Response} res - Express response object used to return the result or error
- * @returns {void}
- *
- * @response 200 - Returns original prompt fields and Gemini AI-generated text and summary
- * @response 400 - If `prompt` is missing
- * @response 401 - If user is not authenticated
- * @response 500 - If an internal error occurs while generating the prompt
- */
+
 export const generatePrompt = async (req: Request, res: Response): Promise<void> => {
     try {
         const userId = req.userId;
 
-        if (!userId) {
-            res.status(401).json({error: "Unauthorized"});
-            return;
-        }
-        const {prompt} = req.body;
+        if (!userId) throw new UnauthorizedError();
 
-        if (!prompt) {
-            res.status(400).json({error: "Prompt is required"});
-            return;
-        }
-
-        const {role, context, task, output, constraints, language} = prompt;
-
-        const formattedPrompt = formatPromptForAI({
+        const {
             role,
             context,
             task,
             output,
             constraints,
             language,
-        });
+            score = 0,
+            geminiText = null,
+            geminiSummary = null
+        } = req.body;
 
-        const aiResponse = await generateGeminiResponse(formattedPrompt);
+
+        const promptText = `
+            You are a ${role}.
+            Context: ${context}
+            Task: ${task}
+            Expected Output: ${output}
+            Constraints: ${constraints}
+            Language: ${language}
+            `.trim();
+
+        const aiResponse = await generateGeminiResponse(promptText);
 
         res.status(200).json({
             role,
@@ -67,52 +51,28 @@ export const generatePrompt = async (req: Request, res: Response): Promise<void>
             output,
             constraints,
             language,
+            score,
             geminiText: aiResponse.text,
             geminiSummary: aiResponse.summary,
         });
 
     } catch
         (error) {
-        console.error("Prompt creation error:", error);
-        res.status(500).json({error: "Something went wrong"});
+        console.error("[PromptController] generatePrompt error:", error);
+        if (error instanceof UnauthorizedError) {
+            res.status(401).json({error: error.message});
+        } else {
+            res.status(500).json({error: "Something went wrong"});
+        }
     }
 };
 
-/**
- * Saves a Gemini-generated prompt to the database for the authenticated user.
- *
- * This controller:
- * - Ensures the user is authenticated using `req.userId`
- * - Validates the presence and structure of the `prompt` object in the request body
- * - Validates the `language` field against allowed enum values
- * - Ensures the `score` field is a valid number
- * - Constructs a typed input object to pass to the save service
- * - Persists the prompt using `savePromptService`
- * - Returns the full saved prompt as the response
- *
- * @param {Request} req - Express request object with `userId` and `prompt` in body
- * @param {Response} res - Express response object used to return the saved prompt or error
- * @returns {void}
- *
- * @response 200 - The saved prompt object with full metadata
- * @response 400 - If `prompt` is missing, score is invalid, or language is not allowed
- * @response 401 - If the user is not authenticated
- * @response 500 - If a server-side error occurs while saving the prompt
- */
+
 export const savePrompt = async (req: Request, res: Response): Promise<void> => {
     try {
         const userId = req.userId;
 
-        if (!userId) {
-            res.status(401).json({error: "Unauthorized"});
-            return;
-        }
-        const {prompt} = req.body;
-
-        if (!prompt) {
-            res.status(400).json({error: "Prompt is required"});
-            return;
-        }
+        if (!userId) throw new UnauthorizedError();
 
         const {
             role,
@@ -123,22 +83,12 @@ export const savePrompt = async (req: Request, res: Response): Promise<void> => 
             language,
             score,
             geminiText,
-            geminiSummary,
-        } = prompt;
+            geminiSummary
+        } = req.body;
 
-        if (!Object.values(Language).includes(language)) {
-            res.status(400).json({error: "Invalid language"});
-            return;
-        }
-
-        const scoreValue = Number(score);
-        if (isNaN(scoreValue)) {
-            res.status(400).json({error: "Score must be a number"});
-            return;
-        }
 
         const input: SavePromptOutputInput = {
-            userId: userId,
+            userId,
             role: String(role),
             context: String(context),
             task: String(task),
@@ -150,12 +100,23 @@ export const savePrompt = async (req: Request, res: Response): Promise<void> => 
             geminiSummary: String(geminiSummary),
         };
 
+        const isDuplicate: boolean = await checkDuplicatePrompt(input);
+
+        if (isDuplicate) throw new DuplicatePromptError();
+
         const createdPrompt = await savePromptService(input);
 
         res.status(200).json(createdPrompt);
+
     } catch (error) {
-        console.error("Error saving prompt:", error);
-        res.status(500).json({error: "Something went wrong"});
+        console.error("[PromptController] savePrompt error:", error);
+        if (error instanceof UnauthorizedError) {
+            res.status(401).json({error: error.message});
+        } else if (error instanceof DuplicatePromptError) {
+            res.status(409).json({error: error.message});
+        } else {
+            res.status(500).json({error: "Something went wrong"});
+        }
     }
 };
 
@@ -193,7 +154,7 @@ export const getPrompt = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        res.status(200).json({prompt});
+        res.status(200).json(prompt);
     } catch (error) {
         console.error("Error in getPrompt controller:", error);
         res.status(500).json({message: "Internal server error"});
@@ -226,6 +187,7 @@ export const getAllPrompts = async (req: Request, res: Response): Promise<void> 
         }
 
         const prompts = await getAllPromptsService(userId);
+
         res.status(200).json(prompts);
     } catch (error) {
         console.error("Error fetching prompts:", error);
@@ -340,4 +302,5 @@ export const deleteAllPrompts = async (req: Request, res: Response): Promise<voi
         res.status(500).json({error: "Something went wrong"});
     }
 };
+
 

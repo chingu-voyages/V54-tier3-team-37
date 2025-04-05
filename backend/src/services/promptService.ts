@@ -28,23 +28,49 @@ export const createPromptService = async (userId: string | undefined, data: Crea
 };
 
 /**
- * Saves a Gemini-generated prompt with full metadata to the database.
+ * Checks if a prompt already exists in the database for a specific user.
  *
  * This service:
- * - Accepts validated prompt data including AI-generated content and score
- * - Persists the prompt using Prisma and links it to the specified user
- * - Returns the saved `Prompt` object from the database
- * - Logs and throws an error if the operation fails
+ * - Searches for an existing prompt using the provided data
+ * - Returns `true` if a duplicate is found, `false` otherwise
  *
- * @param {SavePromptOutputInput} data - The complete prompt input to be saved, including userId, prompt content, Gemini response, and score
- * @returns {Promise<Prompt>} - The saved prompt record
- * @throws {Error} - If saving to the database fails
+ * @param {SavePromptOutputInput} data - The prompt details to check for duplicates
+ * @returns {Promise<boolean>} - `true` if a duplicate exists, `false` otherwise
+ */
+export const checkDuplicatePrompt = async (
+    data: SavePromptOutputInput
+): Promise<boolean> => {
+    const existingPrompt = await prisma.prompt.findFirst({
+        where: {
+            userId: data.userId,
+            role: data.role,
+            context: data.context,
+            task: data.task,
+            output: data.output,
+            constraints: data.constraints,
+            language: data.language,
+        },
+    });
+
+    return Boolean(existingPrompt);
+};
+
+/**
+ * Saves the output of a prompt for a specific user.
+ *
+ * This service:
+ * - Creates a new prompt record in the database
+ * - Returns the created `Prompt` object
+ *
+ * @param {SavePromptOutputInput} data - The prompt output details to be saved
+ * @returns {Promise<Prompt>} - The newly created prompt record
  */
 export const savePromptService = async (
     data: SavePromptOutputInput
 ): Promise<Prompt> => {
     try {
-        const saved = await prisma.prompt.create({
+
+        return await prisma.prompt.create({
             data: {
                 userId: data.userId,
                 role: data.role,
@@ -58,8 +84,6 @@ export const savePromptService = async (
                 geminiSummary: data.geminiSummary,
             },
         });
-
-        return saved;
     } catch (error) {
         console.error("Error saving prompt output:", error);
         throw new Error("Failed to save prompt output");
