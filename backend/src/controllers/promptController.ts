@@ -29,9 +29,7 @@ export const generatePrompt = async (req: Request<unknown, unknown, PromptInput>
             output,
             constraints,
             language,
-            score = 0,
-            geminiText = null,
-            geminiSummary = null
+            score = 0
         } = req.body;
 
 
