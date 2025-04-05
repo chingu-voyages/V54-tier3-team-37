@@ -1,37 +1,10 @@
-/* ---------------------------------------------------- */
-/* Luis, I still have zero idea what I am doing, hahaha */
-/* ---------------------------------------------------- */
-
+import { postGeminiRequest } from '@/api/prompt';
+import type { PromptBody } from '@/types/prompt';
 import {
   createAsyncThunk,
   createSlice,
   PayloadAction,
 } from '@reduxjs/toolkit';
-
-// Temporarily left here and might be modified later
-interface PromptData {
-  role: string;
-  context: string;
-  task: string;
-  output: string;
-  constraints: string;
-  language: string;
-}
-
-interface ApiResponse {
-  userId?: string;
-  promptId: string;
-  content: string;
-  metadata: {
-    language: string;
-    model: string;
-    formattedPromptPreview: string;
-  };
-}
-
-interface ApiErrorResponse {
-  error: string;
-}
 
 interface PromptState {
   output: string | null;
@@ -45,52 +18,18 @@ const initialState: PromptState = {
   error: null,
 };
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
-if (!API_BASE_URL) {
-  console.error('Error: VITE_API_BASE_URL is not defined in the environment variables.');
-}
-
-export const createPrompt = createAsyncThunk<
-  string,
-  PromptData,
-  { rejectValue: string }
->('prompts/createPrompt', async (promptData: PromptData, { rejectWithValue }) => {
-  if (!API_BASE_URL) {
-    return rejectWithValue('Base URL is not configured.');
-  }
-  try {
-    const response = await fetch(`${API_BASE_URL}/prompts`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ prompt: promptData }),
-    });
-
-    if (!response.ok) {
-      let errorMsg = `HTTP error! Status: ${response.status}`;
-      try {
-        const errorData: ApiErrorResponse = await response.json();
-        errorMsg = errorData.error || errorMsg;
-      } catch (parseError) {
-        console.error('Failed to parse error response:', parseError);
+export const sendPromptToGemini = createAsyncThunk('prompts/sendPromptToGemini',async (promptBody: PromptBody, {rejectWithValue }) => {
+    try {
+      const promptBodyWithGeminiResponse = await postGeminiRequest(promptBody);
+      return promptBodyWithGeminiResponse;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
       }
-      return rejectWithValue(errorMsg);
+      return rejectWithValue('Failed to send prompt to Gemini')
     }
-
-    const data: ApiResponse = await response.json();
-
-    if (typeof data.content !== 'string') {
-      console.error("API response did not contain a valid 'content' string:", data);
-      return rejectWithValue('Invalid response format from server.');
-    }
-
-  } catch (error: unknown) {
-    console.error('Network or other error in createPrompt:', error);
-    return rejectWithValue(error.message || 'Network request failed');
   }
-});
+);
 
 export const promptSlice = createSlice({
   name: 'prompts',
@@ -104,18 +43,22 @@ export const promptSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(createPrompt.pending, (state) => {
+      .addCase(sendPromptToGemini.pending, (state) => {
         state.loading = 'pending';
         state.error = null;
         state.output = null;
       })
-      .addCase(createPrompt.fulfilled, (state, action: PayloadAction<string>) => {
+      .addCase(sendPromptToGemini.fulfilled, (state, action: PayloadAction<string>) => {
         state.loading = 'succeeded';
         state.output = action.payload;
       })
-      .addCase(createPrompt.rejected, (state, action) => {
+      .addCase(sendPromptToGemini.rejected, (state, action) => {
         state.loading = 'failed';
-        state.error = action.payload ?? 'An unknown error occurred';
+        if (action.payload) {
+          state.error = action.payload as string;
+        } else {
+          state.error = null;
+        }
       });
   },
 });

@@ -19,6 +19,18 @@ export type LanguageOption = {
   text: 'English' | 'Spanish' | 'French';
 };
 
+export type PromptBody = {
+  role: string;
+  context: string;
+  task: string;
+  output: string;
+  constraints: string;
+  language: string;
+  score: number;
+  geminiText: string | null;
+  geminiSummary: string | null;
+}
+
 export type PromptResponse = {
   role: string;
   context: string;

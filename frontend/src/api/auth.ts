@@ -1,5 +1,8 @@
-// import { API_BASE_URL } from '@/components/constants';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+
+if (!API_BASE_URL) {
+  console.error('Error: VITE_API_BASE_URL is not defined in the environment variables.');
+}
 
 export const getCurrentUser = async () => {
   const res = await fetch(`${API_BASE_URL}/users/me`, {
