@@ -3,10 +3,10 @@ import {ValidationError} from "../services/errors.js";
 import {PromptInput} from "../types/promptTypes.js";
 
 export const validatePromptFields = (body: PromptInput): void => {
-    const requiredFields = ["role", "context", "task", "output", "constraints", "language"];
+    const requiredFields:(keyof PromptInput)[]  = ["role", "context", "task", "output", "constraints", "language"];
 
     for (const field of requiredFields) {
-        if (!body[field]) {
+        if (!body[field ]) {
             throw new ValidationError(`Field '${field}' is required.`);
         }
     }

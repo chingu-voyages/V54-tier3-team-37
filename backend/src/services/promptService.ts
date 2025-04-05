@@ -1,7 +1,10 @@
 import prisma from "../prisma.js";
 import {Prisma, Prompt} from "@prisma/client";
-import {CreatePromptInput} from "../types/promptTypes.js";
+
 import {SavePromptOutputInput} from "../types/outputTypes.js";
+import {PromptInput} from "../types/promptTypes.js";
+
+
 
 
 /**
@@ -16,7 +19,7 @@ import {SavePromptOutputInput} from "../types/outputTypes.js";
  * @param {CreatePromptInput} data - The prompt details to be saved
  * @returns {Promise<Prompt>} - The newly created prompt record
  */
-export const createPromptService = async (userId: string | undefined, data: CreatePromptInput) => {
+export const createPromptService = async (userId: string | undefined, data: PromptInput) => {
     const createdPrompt = await prisma.prompt.create({
         data: {
             user: {connect: {id: userId}},

@@ -12,12 +12,10 @@ import {generateGeminiResponse} from "../services/geminiService.js";
 import {SavePromptOutputInput} from "../types/outputTypes.js";
 import {Language} from "@prisma/client";
 import {DuplicatePromptError, UnauthorizedError} from "../services/errors.js";
+import {PromptInput} from "../types/promptTypes.js";
 
 
-class PromptType {
-}
-
-export const generatePrompt = async (req: Request<object, object, PromptType>, res: Response): Promise<void> => {
+export const generatePrompt = async (req: Request<unknown, unknown, PromptInput>, res: Response): Promise<void> => {
 
     try {
         const userId = req.userId;
@@ -31,7 +29,9 @@ export const generatePrompt = async (req: Request<object, object, PromptType>, r
             output,
             constraints,
             language,
-            score = 0
+            score = 0,
+            geminiText = null,
+            geminiSummary = null
         } = req.body;
 
 

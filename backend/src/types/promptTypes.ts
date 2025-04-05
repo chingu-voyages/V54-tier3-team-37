@@ -6,8 +6,8 @@ export type PromptInput = {
     constraints: string;
     language: 'EN' | 'ES' | 'FR';
     score?: number;
-    geminiText?: string;
-    geminiSummary?: string;
+    geminiText?: string | null;
+    geminiSummary?: string | null;
 };
 
 export type GeminiResponseType = {
