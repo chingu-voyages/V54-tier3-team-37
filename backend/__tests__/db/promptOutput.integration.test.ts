@@ -19,98 +19,111 @@ describe("PromptOutput model integration tests", () => {
   });
 
   afterAll(async () => {
-    await prisma.promptOutput.deleteMany({ where: { userId } });
-    await prisma.prompt.deleteMany({ where: { userId } });
+    await prisma.prompt.deleteMany();
     await deleteTestUser(userId);
     await prisma.$disconnect();
   });
 
-  it("should create and retrieve a prompt output", async () => {
-    const content = "This is an AI-generated answer.";
-    const created = await prisma.promptOutput.create({
+  it("should create and retrieve a prompt", async () => {
+    const created = await prisma.prompt.create({
       data: {
-        promptId,
         userId,
-        content,
-        metadata: { source: "Gemini", feedback: "great" },
+        role: "student",
+        context: "Explain the solar system",
+        output: "The solar system consists of the sun and planets...",
+        task: "Educational content generation",
+        constraints: "Short summary under 100 words",
+        language: "EN",
+        score: 5,
+        geminiText: "Gemini generated detailed explanation",
+        geminiSummary: "Summary from Gemini",
       },
     });
 
-    const found = await prisma.promptOutput.findUnique({
+    promptId = created.id;
+
+    const found = await prisma.prompt.findUnique({
       where: { id: created.id },
     });
 
     expect(found).not.toBeNull();
-    expect(found?.content).toBe(content);
-    expect(found?.version).toBe(1); // default
-    expect(found?.metadata).toMatchObject({ source: "Gemini" });
+    expect(found?.role).toBe("student");
+    expect(found?.language).toBe("EN");
+    expect(found?.score).toBe(5);
+    expect(found?.geminiText).toContain("Gemini");
   });
 
-  it("should update content and version", async () => {
-    const created = await prisma.promptOutput.create({
+
+  it("should update the score and geminiSummary", async () => {
+    const updated = await prisma.prompt.update({
+      where: { id: promptId },
       data: {
-        promptId,
-        userId,
-        content: "Original content",
+        score: 8,
+        geminiSummary: "Updated Gemini summary",
       },
     });
 
-    const updated = await prisma.promptOutput.update({
-      where: { id: created.id },
-      data: {
-        content: "Updated content",
-        version: 2,
-      },
-    });
-
-    expect(updated.content).toBe("Updated content");
-    expect(updated.version).toBe(2);
+    expect(updated.score).toBe(8);
+    expect(updated.geminiSummary).toBe("Updated Gemini summary");
   });
 
-  it("should delete a prompt output", async () => {
-    const created = await prisma.promptOutput.create({
+  it("should delete a prompt", async () => {
+    const created = await prisma.prompt.create({
       data: {
-        promptId,
         userId,
-        content: "To be deleted",
+        role: "tester",
+        context: "Delete me",
+        output: "This is temporary",
+        task: "Testing deletion",
+        constraints: "None",
+        language: "EN",
       },
     });
 
-    await prisma.promptOutput.delete({
+    await prisma.prompt.delete({
       where: { id: created.id },
     });
 
-    const found = await prisma.promptOutput.findUnique({
+    const found = await prisma.prompt.findUnique({
       where: { id: created.id },
     });
 
     expect(found).toBeNull();
   });
 
-  it("should cascade delete prompt outputs when prompt is deleted", async () => {
-    const prompt = await createTestPrompt(userId);
+  it("should cascade delete prompts when user is deleted", async () => {
+    const tempUser = await createTestUser();
+    const tempUserId = tempUser.id;
 
-    await prisma.promptOutput.createMany({
+    await prisma.prompt.createMany({
       data: [
         {
-          promptId: prompt.id,
-          userId,
-          content: "Cascade 1",
+          userId: tempUserId,
+          role: "cascade1",
+          context: "Cascade context 1",
+          output: "Cascade output 1",
+          task: "Cascade test 1",
+          constraints: "None",
+          language: "EN",
         },
         {
-          promptId: prompt.id,
-          userId,
-          content: "Cascade 2",
+          userId: tempUserId,
+          role: "cascade2",
+          context: "Cascade context 2",
+          output: "Cascade output 2",
+          task: "Cascade test 2",
+          constraints: "None",
+          language: "EN",
         },
       ],
     });
 
-    await prisma.prompt.delete({ where: { id: prompt.id } });
+    await deleteTestUser(tempUserId);
 
-    const outputs = await prisma.promptOutput.findMany({
-      where: { promptId: prompt.id },
+    const prompts = await prisma.prompt.findMany({
+      where: { userId: tempUserId },
     });
 
-    expect(outputs.length).toBe(0);
+    expect(prompts.length).toBe(0);
   });
 });

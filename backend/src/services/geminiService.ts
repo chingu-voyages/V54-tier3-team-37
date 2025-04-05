@@ -1,20 +1,16 @@
 import {GoogleGenerativeAI} from "@google/generative-ai";
+import {GeminiResponseType} from "../types/promptTypes.js";
 
 // Initialize Gemini AI with the API key from environment variables
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 /**
- * Generates a text response from the Gemini AI model based on the provided prompt.
+ * Generates a response from the Gemini AI model based on the provided prompt text.
  *
- * - Uses the `gemini-2.0-flash` model for fast, low-latency generation
- * - Sends the prompt as a user message to the model
- * - Returns the generated AI response as plain text
- *
- * @param promptText - The formatted prompt to send to the AI
- * @returns The AI-generated response as a string
- * @throws Error if the model fails to generate content
+ * @param {string} promptText - The text prompt to send to the Gemini AI model.
+ * @returns {Promise<GeminiResponseType>} - A promise that resolves to an object containing the generated text and its summary.
  */
-export const generateGeminiResponse = async (promptText: string): Promise<string> => {
+export const generateGeminiResponse = async (promptText: string): Promise<GeminiResponseType> => {
     try {
         const model = genAI.getGenerativeModel({model: "gemini-2.0-flash"});
 
@@ -27,7 +23,31 @@ export const generateGeminiResponse = async (promptText: string): Promise<string
             ],
         });
 
-        return result.response.text();
+        const text = result.response.text().trim();
+
+        const summaryResult = await model.generateContent({
+            contents: [{
+                role: "user",
+                parts: [{
+                    text: `
+                    You are a smart assistant. Based on the following:
+                    
+                    Summarize the following interaction in 1–2 sentences without using phrases like "The user" or "AI." 
+                    Write it like a short neutral description of what was requested and delivered.
+                    
+                    Prompt:
+                    ${promptText}
+                    
+                    Response:
+                    ${text}
+                    `.trim()
+                }],
+            }],
+        });
+
+        const summary = summaryResult.response.text().trim();
+
+        return {text, summary};
     } catch (error) {
         console.error("Gemini Error:", error);
         throw error;

@@ -1,4 +1,4 @@
-export type CreatePromptInput = {
+export type PromptInput = {
     role: string;
     context: string;
     task: string;
@@ -6,6 +6,11 @@ export type CreatePromptInput = {
     constraints: string;
     language: 'EN' | 'ES' | 'FR';
     score?: number;
-    isBookmarked?: boolean;
+    geminiText?: string | null;
+    geminiSummary?: string | null;
 };
 
+export type GeminiResponseType = {
+    text: string;
+    summary: string;
+}
