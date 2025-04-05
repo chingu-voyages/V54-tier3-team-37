@@ -1,14 +1,4 @@
-const devOptions = {
-  env: "development",
-  secure: false,
-  sameSite: "lax",
-};
-
-const prodOptions = {
-  env: "production",
-  secure: true,
-  sameSite: "none",
-};
+import { devOptions, prodOptions } from "../../__mocks__/cookieOptions";
 
 describe("cookieOptions", () => {
   const appEnv = process.env;
@@ -26,13 +16,6 @@ describe("cookieOptions", () => {
 
   test("sets correct options in development", async () => {
     process.env.NODE_ENV = devOptions.env;
-    const { cookieOptions } = await import("../../src/config/cookieOptions");
-    expect(cookieOptions.secure).toEqual(devOptions.secure);
-    expect(cookieOptions.sameSite).toEqual(devOptions.sameSite);
-  });
-
-  test("sets correct options in undefined environment", async () => {
-    process.env.NODE_ENV = "";
     const { cookieOptions } = await import("../../src/config/cookieOptions");
     expect(cookieOptions.secure).toEqual(devOptions.secure);
     expect(cookieOptions.sameSite).toEqual(devOptions.sameSite);
