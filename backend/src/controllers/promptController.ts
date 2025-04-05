@@ -17,7 +17,8 @@ import {DuplicatePromptError, UnauthorizedError} from "../services/errors.js";
 class PromptType {
 }
 
-export const generatePrompt = async (req: Request<{}, {}, PromptType>, res: Response): Promise<void> => {
+export const generatePrompt = async (req: Request<object, object, PromptType>, res: Response): Promise<void> => {
+
     try {
         const userId = req.userId;
 
@@ -30,9 +31,7 @@ export const generatePrompt = async (req: Request<{}, {}, PromptType>, res: Resp
             output,
             constraints,
             language,
-            score = 0,
-            geminiText = null,
-            geminiSummary = null
+            score = 0
         } = req.body;
 
 
