@@ -1,5 +1,5 @@
-import { Language } from "@prisma/client";
-import { GeminiResponseType } from "../../src/types/promptTypes";
+import {Language} from "@prisma/client";
+import {GeminiResponseType} from "../../src/types/promptTypes";
 
 
 export const promptInput = {
@@ -13,6 +13,19 @@ export const promptInput = {
     geminiText: null,
     geminiSummary: null,
 };
+
+export const validPrompt = {
+    role: "Test Role",
+    context: "Some context",
+    task: "Test task",
+    output: "Expected output",
+    constraints: "None",
+    language: Language.EN,
+    score: 0,
+    geminiText: "Gemini text",
+    geminiSummary: "Gemini summary",
+};
+
 
 // export const promptData = {
 //     role: "Dev",
