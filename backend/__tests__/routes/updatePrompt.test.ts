@@ -48,21 +48,6 @@ describe("prompt controller", () => {
         mockUser = createMockUser();
         token = getSignedTestJWT(mockUser);
 
-        const mockPrompt = {
-            id: "mock-prompt-id",
-            userId: mockUser.id,
-            role: "Engineer",
-            context: "Build APIs",
-            task: "Add auth",
-            output: "Secure endpoints",
-            constraints: "JWT only",
-            language: "EN",
-            score: 5,
-            geminiText: "Some text",
-            geminiSummary: "Short summary",
-            createdAt: new Date().toISOString(),
-        };
-
         (findUserById as jest.Mock).mockResolvedValue(mockUser);
         (getUserById as jest.Mock).mockResolvedValue(mockUser);
     });
