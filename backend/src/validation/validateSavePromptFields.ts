@@ -3,7 +3,6 @@ import {ValidationError} from "../services/errors.js";
 import {PromptInput} from "../types/promptTypes.js";
 
 export const validateSavePromptFields = (body: PromptInput): void => {
-    validatePromptFields(body);
 
     validatePromptFields(body);
 
