@@ -195,24 +195,19 @@ export const getAllPrompts = async (req: Request, res: Response): Promise<void> 
     }
 };
 
-/**
- * Updates the score of a specific prompt for the authenticated user.
- *
- * This controller:
- * - Validates the presence of `userId`, `promptId`, and a numeric `score`
- * - Calls `updatePromptScoreService` to update the score in the database
- * - Returns the updated `Prompt` if successful
- *
- * @param {Request} req - Express request object containing `userId`, `promptId` as a route param, and `score` in the body
- * @param {Response} res - Express response object used to return the updated prompt or an error
- * @returns {void}
- *
- * @response 200 - The updated prompt with the new score
- * @response 400 - If `score`, `userId`, or `promptId` is missing or invalid
- * @response 404 - If the prompt does not exist or the user is not authorized
- * @response 500 - If a server-side error occurs during the update
- */
 
+/**
+ * Controller to update the score of a specific prompt for the authenticated user.
+ *
+ * - Requires `userId` from auth middleware and `promptId` from route params
+ * - Returns 400 if required values are missing
+ * - Returns 404 if no matching prompt is found or user is not authorized
+ * - Returns 200 with updated prompt data on success
+ * - Returns 500 on unexpected errors
+ *
+ * @param req - Express request with `userId`, `promptId`, and `score`
+ * @param res - Express response
+ */
 export const updateScorePrompt = async (req: Request, res: Response): Promise<void> => {
     try {
         const userId = req.userId;
