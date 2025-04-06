@@ -345,41 +345,41 @@ promptRoute.get("/", authMiddleware, promptController.getAllPrompts);
  */
 promptRoute.put("/:promptId", authMiddleware, promptController.updateScorePrompt);
 
-/**
- * @swagger
- * /prompts:
- *   delete:
- *     summary: Delete all prompts for the authenticated user
- *     description: Removes all prompt records associated with the currently authenticated user.
- *     tags:
- *       - Prompts
- *     security:
- *       - cookieAuth: []
- *     responses:
- *       204:
- *         description: All prompts successfully deleted (no content returned)
- *       401:
- *         description: Unauthorized - user not authenticated
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: Unauthorized
- *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: Something went wrong
- */
-promptRoute.delete("/", authMiddleware, promptController.deleteAllPrompts);
+// /**
+//  * @swagger
+//  * /prompts:
+//  *   delete:
+//  *     summary: Delete all prompts for the authenticated user
+//  *     description: Removes all prompt records associated with the currently authenticated user.
+//  *     tags:
+//  *       - Prompts
+//  *     security:
+//  *       - cookieAuth: []
+//  *     responses:
+//  *       204:
+//  *         description: All prompts successfully deleted (no content returned)
+//  *       401:
+//  *         description: Unauthorized - user not authenticated
+//  *         content:
+//  *           application/json:
+//  *             schema:
+//  *               type: object
+//  *               properties:
+//  *                 error:
+//  *                   type: string
+//  *                   example: Unauthorized
+//  *       500:
+//  *         description: Internal server error
+//  *         content:
+//  *           application/json:
+//  *             schema:
+//  *               type: object
+//  *               properties:
+//  *                 error:
+//  *                   type: string
+//  *                   example: Something went wrong
+//  */
+// promptRoute.delete("/", authMiddleware, promptController.deleteAllPrompts);
 
 /**
  * @swagger
@@ -401,8 +401,17 @@ promptRoute.delete("/", authMiddleware, promptController.deleteAllPrompts);
  *           format: uuid
  *           example: a1b2c3d4-e5f6-7890-abcd-1234567890ef
  *     responses:
- *       204:
- *         description: Prompt deleted successfully (no content returned)
+ *       200:
+ *         description: Prompt deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type:
+ *               properties:
+ *                 deletedId:
+ *                   type: string
+ *                   format: uuid
+ *                   example: a1b2c3d4-e5f6-7890-abcd-1234567890ef
  *       401:
  *         description: Unauthorized - user not authenticated
  *         content:
@@ -413,8 +422,11 @@ promptRoute.delete("/", authMiddleware, promptController.deleteAllPrompts);
  *                 error:
  *                   type: string
  *                   example: Unauthorized
+ *                 message:
+ *                   type: string
+ *                   example: Token not provided
  *       404:
- *         description: Prompt not found
+ *         description: Prompt not found or not authorized
  *         content:
  *           application/json:
  *             schema:
@@ -422,7 +434,7 @@ promptRoute.delete("/", authMiddleware, promptController.deleteAllPrompts);
  *               properties:
  *                 error:
  *                   type: string
- *                   example: Prompt not found
+ *                   example: Prompt not found or not authorized
  *       500:
  *         description: Internal server error
  *         content:
