@@ -386,7 +386,7 @@ promptRoute.put("/:promptId", authMiddleware, promptController.updateScorePrompt
  * /prompts/{promptId}:
  *   delete:
  *     summary: Delete a specific prompt by ID
- *     description: Deletes the prompt identified by `promptId` for the authenticated user.
+ *     description: Deletes the prompt identified by `promptId` for the authenticated user and returns the deleted prompt ID as a raw string.
  *     tags:
  *       - Prompts
  *     security:
@@ -405,10 +405,10 @@ promptRoute.put("/:promptId", authMiddleware, promptController.updateScorePrompt
  *         description: Prompt deleted successfully
  *         content:
  *           application/json:
- *              schema:
- *  *               type: string
- *  *               format: uuid
- *  *               example: a1b2c3d4-e5f6-7890-abcd-1234567890ef
+ *             schema:
+ *               type: string
+ *               format: uuid
+ *               example: a1b2c3d4-e5f6-7890-abcd-1234567890ef
  *       401:
  *         description: Unauthorized - user not authenticated
  *         content:
