@@ -38,8 +38,7 @@ beforeAll(() => {
 describe("prompt controller", () => {
     process.env.JWT_SECRET = JWT_SECRET;
     let mockUser: MockUser;
-    let token: string;
-    let mockPrompt: Prompt;
+    let token: string;    
 
 
     beforeEach(() => {
