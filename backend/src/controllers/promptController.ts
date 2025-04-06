@@ -262,7 +262,7 @@ export const deletePrompt = async (req: Request, res: Response): Promise<void> =
             return;
         }
 
-        res.status(204).send();
+        res.status(200).json(promptId);
     } catch (error) {
         console.error("Prompt deletion error:", error);
         res.status(500).json({error: "Something went wrong"});
