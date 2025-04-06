@@ -405,13 +405,10 @@ promptRoute.put("/:promptId", authMiddleware, promptController.updateScorePrompt
  *         description: Prompt deleted successfully
  *         content:
  *           application/json:
- *             schema:
- *               type:
- *               properties:
- *                 deletedId:
- *                   type: string
- *                   format: uuid
- *                   example: a1b2c3d4-e5f6-7890-abcd-1234567890ef
+ *              schema:
+ *  *               type: string
+ *  *               format: uuid
+ *  *               example: a1b2c3d4-e5f6-7890-abcd-1234567890ef
  *       401:
  *         description: Unauthorized - user not authenticated
  *         content:
