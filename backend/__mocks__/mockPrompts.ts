@@ -26,19 +26,6 @@ export const validPrompt = {
     geminiSummary: "Gemini summary",
 };
 
-
-// export const promptData = {
-//     role: "Dev",
-//     context: "Add login",
-//     output: "Login logic",
-//     task: "Implement login",
-//     constraints: "No third-party",
-//     language: Language.EN,
-//     score: 3,
-//     geminiText: "This is a response from Gemini",
-//     geminiSummary: "Short summary",
-// };
-
 export const mockGeminiResponse: GeminiResponseType = {
     text: "some long response...",
     summary: "short summary",
