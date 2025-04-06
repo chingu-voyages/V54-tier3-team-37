@@ -257,23 +257,55 @@ promptRoute.get("/:promptId", authMiddleware, promptController.getPrompt);
  */
 promptRoute.get("/", authMiddleware, promptController.getAllPrompts);
 
-// promptRoute.put("/:promptId", authMiddleware, promptController.updateScorePrompt);
-
 /**
  * @swagger
- * /prompts:
- *   delete:
- *     summary: Delete all prompts for the authenticated user
- *     description: Removes all prompt records associated with the currently authenticated user.
+ * /prompts/{promptId}:
+ *   put:
+ *     summary: Update the score of a prompt
  *     tags:
  *       - Prompts
  *     security:
  *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: promptId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the prompt to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - score
+ *             properties:
+ *               score:
+ *                 type: number
+ *                 example: 4
  *     responses:
- *       204:
- *         description: All prompts successfully deleted (no content returned)
- *       401:
- *         description: Unauthorized - user not authenticated
+ *       200:
+ *         description: Updated prompt
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id: { type: string }
+ *                 userId: { type: string }
+ *                 role: { type: string }
+ *                 context: { type: string }
+ *                 task: { type: string }
+ *                 output: { type: string }
+ *                 constraints: { type: string }
+ *                 language: { type: string }
+ *                 score: { type: number }
+ *                 geminiText: { type: string }
+ *                 geminiSummary: { type: string }
+ *       400:
+ *         description: Missing or invalid score
  *         content:
  *           application/json:
  *             schema:
@@ -281,7 +313,26 @@ promptRoute.get("/", authMiddleware, promptController.getAllPrompts);
  *               properties:
  *                 error:
  *                   type: string
- *                   example: Unauthorized
+ *       401:
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *       404:
+ *         description: Prompt not found or not authorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  *       500:
  *         description: Internal server error
  *         content:
@@ -291,16 +342,51 @@ promptRoute.get("/", authMiddleware, promptController.getAllPrompts);
  *               properties:
  *                 error:
  *                   type: string
- *                   example: Something went wrong
  */
-promptRoute.delete("/", authMiddleware, promptController.deleteAllPrompts);
+promptRoute.put("/:promptId", authMiddleware, promptController.updateScorePrompt);
+
+// /**
+//  * @swagger
+//  * /prompts:
+//  *   delete:
+//  *     summary: Delete all prompts for the authenticated user
+//  *     description: Removes all prompt records associated with the currently authenticated user.
+//  *     tags:
+//  *       - Prompts
+//  *     security:
+//  *       - cookieAuth: []
+//  *     responses:
+//  *       204:
+//  *         description: All prompts successfully deleted (no content returned)
+//  *       401:
+//  *         description: Unauthorized - user not authenticated
+//  *         content:
+//  *           application/json:
+//  *             schema:
+//  *               type: object
+//  *               properties:
+//  *                 error:
+//  *                   type: string
+//  *                   example: Unauthorized
+//  *       500:
+//  *         description: Internal server error
+//  *         content:
+//  *           application/json:
+//  *             schema:
+//  *               type: object
+//  *               properties:
+//  *                 error:
+//  *                   type: string
+//  *                   example: Something went wrong
+//  */
+// promptRoute.delete("/", authMiddleware, promptController.deleteAllPrompts);
 
 /**
  * @swagger
  * /prompts/{promptId}:
  *   delete:
  *     summary: Delete a specific prompt by ID
- *     description: Deletes the prompt identified by `promptId` for the authenticated user.
+ *     description: Deletes the prompt identified by `promptId` for the authenticated user and returns the deleted prompt ID as a raw string.
  *     tags:
  *       - Prompts
  *     security:
@@ -315,8 +401,14 @@ promptRoute.delete("/", authMiddleware, promptController.deleteAllPrompts);
  *           format: uuid
  *           example: a1b2c3d4-e5f6-7890-abcd-1234567890ef
  *     responses:
- *       204:
- *         description: Prompt deleted successfully (no content returned)
+ *       200:
+ *         description: Prompt deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: string
+ *               format: uuid
+ *               example: a1b2c3d4-e5f6-7890-abcd-1234567890ef
  *       401:
  *         description: Unauthorized - user not authenticated
  *         content:
@@ -327,8 +419,11 @@ promptRoute.delete("/", authMiddleware, promptController.deleteAllPrompts);
  *                 error:
  *                   type: string
  *                   example: Unauthorized
+ *                 message:
+ *                   type: string
+ *                   example: Token not provided
  *       404:
- *         description: Prompt not found
+ *         description: Prompt not found or not authorized
  *         content:
  *           application/json:
  *             schema:
@@ -336,7 +431,7 @@ promptRoute.delete("/", authMiddleware, promptController.deleteAllPrompts);
  *               properties:
  *                 error:
  *                   type: string
- *                   example: Prompt not found
+ *                   example: Prompt not found or not authorized
  *       500:
  *         description: Internal server error
  *         content:

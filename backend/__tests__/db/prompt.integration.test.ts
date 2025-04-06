@@ -1,120 +1,129 @@
-// import { afterAll, beforeAll, describe, expect, it } from "@jest/globals";
-// import {
-//   createTestPrompt,
-//   prisma,
-//   deleteTestUser,
-//   createTestUser,
-// } from "../../__mocks__/prismaTestUtils";
-//
-// const defaultPromptData = {
-//   role: "Test Role",
-//   context: "Test context",
-//   task: "Test task",
-//   output: "Test output",
-//   constraints: "None",
-//   language: "EN" as const,
-// };
-//
-// describe("Prisma Prompt Model", () => {
-//   let userId: string;
-//
-//   beforeAll(async () => {
-//     const user = await createTestUser();
-//     userId = user.id;
-//   });
-//
-//   afterAll(async () => {
-//     await Promise.all([
-//       prisma.prompt.deleteMany({ where: { userId } }),
-//       deleteTestUser(userId),
-//       prisma.$disconnect(),
-//     ]);
-//   });
-//
-//   it("should create and fetch a prompt for the user", async () => {
-//     const createdPrompt = await createTestPrompt(userId, {
-//       ...defaultPromptData,
-//       role: "Sample Role",
-//     });
-//
-//     const foundPrompt = await prisma.prompt.findUnique({
-//       where: { id: createdPrompt.id },
-//     });
-//
-//     expect(foundPrompt).not.toBeNull();
-//     expect(foundPrompt?.role).toBe("Sample Role");
-//     expect(foundPrompt?.userId).toBe(userId);
-//   });
-//
-//   it("should apply default values for score and isBookmarked", async () => {
-//     const prompt = await createTestPrompt(userId, {
-//       ...defaultPromptData,
-//     });
-//
-//     expect(prompt.score).toBe(0);
-//     expect(prompt.isBookmarked).toBe(false);
-//   });
-//
-//   it("should update the role and score of a prompt", async () => {
-//     const createdPrompt = await createTestPrompt(userId, {
-//       ...defaultPromptData,
-//     });
-//
-//     const updatedPrompt = await prisma.prompt.update({
-//       where: { id: createdPrompt.id },
-//       data: {
-//         role: "Updated Role",
-//         score: 4,
-//       },
-//     });
-//
-//     expect(updatedPrompt.role).toBe("Updated Role");
-//     expect(updatedPrompt.score).toBe(4);
-//   });
-//
-//   it("should delete a prompt and confirm it no longer exists", async () => {
-//     const prompt = await createTestPrompt(userId, {
-//       ...defaultPromptData,
-//       role: "To Be Deleted",
-//     });
-//
-//     await prisma.prompt.delete({ where: { id: prompt.id } });
-//
-//     const found = await prisma.prompt.findUnique({
-//       where: { id: prompt.id },
-//     });
-//
-//     expect(found).toBeNull();
-//   });
-//
-//   it("should delete prompts when the user is deleted (cascade)", async () => {
-//     const user = await createTestUser({
-//       email: `cascade-${Date.now()}@qmail.com`,
-//       displayName: "Cascade Test User",
-//     });
-//
-//     await prisma.prompt.createMany({
-//       data: [
-//         {
-//           userId: user.id,
-//           ...defaultPromptData,
-//           role: "Cascade Role 1",
-//         },
-//         {
-//           userId: user.id,
-//           ...defaultPromptData,
-//           role: "Cascade Role 2",
-//           language: "FR",
-//         },
-//       ],
-//     });
-//
-//     await prisma.user.delete({ where: { id: user.id } });
-//
-//     const remainingPrompts = await prisma.prompt.findMany({
-//       where: { userId: user.id },
-//     });
-//
-//     expect(remainingPrompts.length).toBe(0);
-//   });
-// });
+import { afterAll, beforeAll, describe, expect, it } from "@jest/globals";
+import { prisma } from "../../__mocks__/prismaTestUtils";
+import {
+  createTestUser,
+  createTestPrompt,
+  deleteTestUser,
+} from "../../__mocks__/prismaTestUtils";
+
+describe("PromptOutput model integration tests", () => {
+  let userId: string;
+  let promptId: string;
+
+  beforeAll(async () => {
+    const user = await createTestUser();
+    userId = user.id;
+
+    const prompt = await createTestPrompt(userId);
+    promptId = prompt.id;
+  });
+
+  afterAll(async () => {
+    await prisma.prompt.deleteMany();
+    await deleteTestUser(userId);
+    await prisma.$disconnect();
+  });
+
+  it("should create and retrieve a prompt", async () => {
+    const created = await prisma.prompt.create({
+      data: {
+        userId,
+        role: "student",
+        context: "Explain the solar system",
+        output: "The solar system consists of the sun and planets...",
+        task: "Educational content generation",
+        constraints: "Short summary under 100 words",
+        language: "EN",
+        score: 5,
+        geminiText: "Gemini generated detailed explanation",
+        geminiSummary: "Summary from Gemini",
+      },
+    });
+
+    promptId = created.id;
+
+    const found = await prisma.prompt.findUnique({
+      where: { id: created.id },
+    });
+
+    expect(found).not.toBeNull();
+    expect(found?.role).toBe("student");
+    expect(found?.language).toBe("EN");
+    expect(found?.score).toBe(5);
+    expect(found?.geminiText).toContain("Gemini");
+  });
+
+
+  it("should update the score and geminiSummary", async () => {
+    const updated = await prisma.prompt.update({
+      where: { id: promptId },
+      data: {
+        score: 8,
+        geminiSummary: "Updated Gemini summary",
+      },
+    });
+
+    expect(updated.score).toBe(8);
+    expect(updated.geminiSummary).toBe("Updated Gemini summary");
+  });
+
+  it("should delete a prompt", async () => {
+    const created = await prisma.prompt.create({
+      data: {
+        userId,
+        role: "tester",
+        context: "Delete me",
+        output: "This is temporary",
+        task: "Testing deletion",
+        constraints: "None",
+        language: "EN",
+      },
+    });
+
+    await prisma.prompt.delete({
+      where: { id: created.id },
+    });
+
+    const found = await prisma.prompt.findUnique({
+      where: { id: created.id },
+    });
+
+    expect(found).toBeNull();
+  });
+
+  it("should cascade delete prompts when user is deleted", async () => {
+    const tempUser = await createTestUser();
+    const tempUserId = tempUser.id;
+
+    await prisma.prompt.createMany({
+      data: [
+        {
+          userId: tempUserId,
+          role: "cascade1",
+          context: "Cascade context 1",
+          output: "Cascade output 1",
+          task: "Cascade test 1",
+          constraints: "None",
+          language: "EN",
+        },
+        {
+          userId: tempUserId,
+          role: "cascade2",
+          context: "Cascade context 2",
+          output: "Cascade output 2",
+          task: "Cascade test 2",
+          constraints: "None",
+          language: "EN",
+        },
+      ],
+    });
+
+    await deleteTestUser(tempUserId);
+
+    const prompts = await prisma.prompt.findMany({
+      where: { userId: tempUserId },
+    });
+
+    expect(prompts.length).toBe(0);
+  });
+});
