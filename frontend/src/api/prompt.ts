@@ -20,3 +20,18 @@ export const postGeminiRequest = async (prompt: PromptBody) => {
   const data = await res.json();
   return data;
 };
+
+/* export const savePrompt = async (prompt: PromptBody) => {
+  const { role, context, task, output, constraints, language, score } = prompt;
+
+  const res = await fetch(`${API_BASE_URL}/prompt/save`, {
+    method: 'POST',
+    body: JSON.stringify({ role, context, task, output, constraints, language, score }),
+    credentials: 'include',
+  });
+
+  if (!res.ok) throw new Error('Failed to save prompt.');
+
+  const data = await res.json();
+  return data;
+}; */

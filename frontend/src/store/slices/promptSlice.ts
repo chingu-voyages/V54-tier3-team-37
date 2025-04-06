@@ -18,7 +18,9 @@ const initialState: PromptState = {
   error: null,
 };
 
-export const sendPromptToGemini = createAsyncThunk('prompts/sendPromptToGemini',async (promptBody: PromptBody, {rejectWithValue }) => {
+export const sendPromptToGemini = createAsyncThunk(
+  'prompts/sendPromptToGemini',
+  async (promptBody: PromptBody, { rejectWithValue }) => {
     try {
       const promptBodyWithGeminiResponse = await postGeminiRequest(promptBody);
       return promptBodyWithGeminiResponse;
@@ -26,10 +28,25 @@ export const sendPromptToGemini = createAsyncThunk('prompts/sendPromptToGemini',
       if (error instanceof Error) {
         return rejectWithValue(error.message);
       }
-      return rejectWithValue('Failed to send prompt to Gemini')
+      return rejectWithValue('Failed to send prompt to Gemini');
     }
   }
 );
+
+/* export const savePromptToDatabase = createAsyncThunk(
+  'prompts/savePrompt',
+  async (promptBody: PromptBody, { rejectWithValue }) => {
+    try {
+      const savedPrompt = await savePrompt(promptBody);
+      return savedPrompt;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('Failed to send prompt to Gemini');
+    }
+  }
+); */
 
 export const promptSlice = createSlice({
   name: 'prompts',

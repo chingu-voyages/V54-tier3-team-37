@@ -37,8 +37,9 @@ export type PromptResponse = {
   task: string;
   output: string;
   constraints: string;
-  language: 'EN' | 'ES' | 'FR';
-  apiResponse: string;
+  language: string;
+  geminiText: string | null;
+  geminiSummary: string | null;
   id: string;
   userId: string;
   createdAt: string;
