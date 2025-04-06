@@ -5,7 +5,6 @@ import {getSignedTestJWT, JWT_SECRET} from "../../__mocks__/getSignedTestJWT";
 import {createMockUser, MockUser} from "../../__mocks__/mockUsersRoute";
 import cookieParser from "cookie-parser";
 import {promptRoute} from "../../src/routes";
-import {Prompt} from "@prisma/client";
 import {generateGeminiResponse} from "../../src/services/geminiService";
 import {mockGeminiResponse, promptInput} from "../../__mocks__/mockPrompts";
 import {findUserById} from "../../src/controllers";
@@ -38,7 +37,7 @@ beforeAll(() => {
 describe("prompt controller", () => {
     process.env.JWT_SECRET = JWT_SECRET;
     let mockUser: MockUser;
-    let token: string;    
+    let token: string;
 
 
     beforeEach(() => {
