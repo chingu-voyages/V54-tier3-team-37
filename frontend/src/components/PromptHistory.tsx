@@ -1,12 +1,27 @@
 import { useEffect } from 'react';
-import { Edit, Plus, Star, Trash } from 'lucide-react';
+
+import {
+  Edit,
+  Plus,
+  Star,
+  Trash,
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '@/store/hooks';
 import { getPromptHistory } from '@/store/slices/promptSlice';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
-import { Button } from './ui/button';
 import { formatDateTime } from '@/utils/formatDate';
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from './ui/accordion';
+import { Button } from './ui/button';
 
 const PromptHistory = () => {
   const dispatch = useAppDispatch();
@@ -29,7 +44,7 @@ const PromptHistory = () => {
       <div className="flex items-center justify-end">
         <Button size="lg">
           <Link
-            to="/generate"
+            to="/dashboard/generate"
             className="flex items-center gap-2"
           >
             <Plus /> Generate New Prompt
