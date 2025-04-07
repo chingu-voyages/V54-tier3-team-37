@@ -1,5 +1,6 @@
 import { Provider } from 'react-redux';
 import {
+  Navigate,
   Route,
   Routes,
 } from 'react-router-dom';
@@ -52,6 +53,10 @@ function App() {
             }
           >
             <Route
+              index
+              element={<Navigate to="history" replace />}
+            />
+            <Route
               path="generate"
               element={<PromptGenPage />}
             />
@@ -60,6 +65,8 @@ function App() {
               element={<PromptHistory />}
             />
           </Route>
+          {/* Optional: Add a 404 Not Found route */}
+          {/* <Route path="*" element={<NotFoundPage />} /> */}
         </Routes>
         <Footer />
       </div>
