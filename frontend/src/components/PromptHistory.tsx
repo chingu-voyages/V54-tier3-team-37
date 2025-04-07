@@ -1,163 +1,131 @@
-import {
-  useEffect,
-  useState,
-} from 'react';
-
-import {
-  Edit,
-  Plus,
-  Star,
-  Trash,
-  Triangle,
-} from 'lucide-react';
+import { useEffect } from 'react';
+import { Edit, Plus, Star, Trash } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-import { PromptResponse } from '@/types/prompt';
-
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from './ui/accordion';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { getPromptHistory } from '@/store/slices/promptSlice';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
 import { Button } from './ui/button';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-} from './ui/card';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from './ui/dropdown-menu';
+import { formatDateTime } from '@/utils/formatDate';
 
 const PromptHistory = () => {
-  // We will fix the type once we are clearer on what it is
-  const [promptList, setPromptList] = useState<PromptResponse[]>([]);
+  const dispatch = useAppDispatch();
+  const { promptHistory, loading, error } = useAppSelector((state) => state.prompts);
 
   useEffect(() => {
-    const mockPrompt: PromptResponse = {
-      role: 'Developer',
-      context: 'A new feature request',
-      task: 'Write unit tests',
-      output: 'Jest test cases',
-      constraints: 'Use mocking',
-      language: 'EN',
-      apiResponse:
-        'You are a developer handling a new feature request. You have been assigned a task to write unit tests with Jest, and your lead has asked you to write Jest test cases with mocking. Please provide some test cases for the following component. Provide them one at a time in your response. Add extensive comments to each. Please note that there may be further issues related to my use of ESM rather than CJS.',
-      id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      userId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      createdAt: '2025-04-01T09:50:50.766Z',
-      score: 0,
-      isBookmarked: false,
-    };
-    const epicPromptListSetterOmg = () => {
-      setPromptList([mockPrompt]);
-    };
-    epicPromptListSetterOmg();
-  }, []);
+    dispatch(getPromptHistory());
+  }, [dispatch]);
+
+  if (loading === 'pending') {
+    return <div className="text-muted-foreground text-center">Loading prompts...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center text-red-500">Error: {error}</div>;
+  }
 
   return (
     <div className="flex w-full flex-col gap-16 pb-16">
-      <div className="flex items-center justify-between gap-4">
-        <DropdownMenu>
-          <DropdownMenuTrigger className="bg-muted flex items-center justify-between gap-2 rounded-md border px-4 py-1">
-            Sort By{' '}
-            <Triangle
-              size={12}
-              className="rotate-180"
-            />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem>Date</DropdownMenuItem>
-            <DropdownMenuItem>Rating</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-        {promptList.length && (
-          <Button size="lg">
-            <Link
-              to="../generate"
-              className="flex items-center justify-between gap-2"
-            >
-              <Plus /> Generate New Prompt
-            </Link>
-          </Button>
-        )}
+      <div className="flex items-center justify-end">
+        <Button size="lg">
+          <Link
+            to="/generate"
+            className="flex items-center gap-2"
+          >
+            <Plus /> Generate New Prompt
+          </Link>
+        </Button>
       </div>
-      {promptList.length ? (
+
+      {promptHistory.length > 0 ? (
         <Accordion
-          type="single"
-          collapsible
-          className="space-y-8"
+          type="multiple"
+          className="space-y-4"
         >
-          {/* Remember to unspread this when we get the real data */}
-          {[...promptList, ...promptList, ...promptList].map((prompt, index) => {
-            const sentences = prompt.apiResponse.split('. ');
+          {promptHistory.map((prompt) => {
+            const promptDetails = [
+              ['Role', prompt.role],
+              ['Task', prompt.task],
+              ['Context', prompt.context],
+              ['Output', prompt.output],
+              ['Constraints', prompt.constraints],
+            ];
+
             return (
-              <Card className="bg-muted pt-0">
-                <CardContent>
-                  <AccordionItem value={`${index}`}>
-                    <AccordionTrigger>{`${sentences[0]}. `}</AccordionTrigger>
-                    <AccordionContent>{sentences.slice(1).join('. ')}</AccordionContent>
-                  </AccordionItem>
-                </CardContent>
-                <CardFooter className="flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        size={16}
-                        role="img"
-                        aria-label="Star"
-                        className="text-yellow-500"
-                      />
+              <AccordionItem
+                key={prompt.id}
+                value={prompt.id}
+                className="rounded-xl border bg-white shadow-sm"
+              >
+                <div className="flex w-full items-start justify-between px-6 py-4">
+                  <div className="flex max-w-[70%] flex-col gap-1">
+                    <h3 className="text-xl font-semibold break-words">
+                      {prompt.geminiSummary || 'Untitled Prompt'}
+                    </h3>
+                    <p className="text-muted-foreground text-sm">
+                      Created on: <strong>{formatDateTime(prompt.createdAt)}</strong>
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-4">
+                    <div className="flex gap-1">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          size={16}
+                          className={i < prompt.score ? 'text-yellow-500' : 'text-muted-foreground'}
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                      ))}
+                    </div>
+
+                    <Trash
+                      size={18}
+                      className="text-muted-foreground hover:text-destructive cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // TODO: Handle delete
+                      }}
+                    />
+                    <Edit
+                      size={18}
+                      className="text-muted-foreground hover:text-primary cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // TODO: Handle edit
+                      }}
+                    />
+
+                    <AccordionTrigger
+                      className="!m-0 w-5 !p-0"
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  </div>
+                </div>
+
+                <AccordionContent className="text-muted-foreground px-6 pb-6 text-base leading-relaxed">
+                  <div className="space-y-2">
+                    {promptDetails.map(([label, value]) => (
+                      <p key={label}>
+                        <strong className="text-foreground">{label}:</strong> {value}
+                      </p>
                     ))}
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      size="lg"
-                      variant="ghost"
-                      onClick={() => {
-                        // handle delete
-                      }}
-                      className="cursor-pointer"
-                    >
-                      <Trash size={16} />
-                      Delete
-                    </Button>
-                    <Button
-                      size="lg"
-                      variant="ghost"
-                      onClick={() => {
-                        // handle edit
-                      }}
-                      className="cursor-pointer"
-                    >
-                      <Edit size={16} />
-                      Edit
-                    </Button>
+
+                  <div className="mt-6">
+                    <p className="text-foreground mb-2 font-semibold">Prompto Result:</p>
+                    <p className="text-muted-foreground text-base leading-relaxed">
+                      “{prompt.geminiText ? prompt.geminiText.replace(/\n/g, ' ').trim() : ''}”
+                    </p>
                   </div>
-                </CardFooter>
-              </Card>
+                </AccordionContent>
+              </AccordionItem>
             );
           })}
         </Accordion>
       ) : (
-        <div className="flex flex-col items-center gap-16">
-          <div className="flex flex-col items-center gap-8">
-            <div className="bg-muted-foreground size-48 rounded-full"></div>
-            <p className="text-muted-foreground">You don't have any saved prompts to review.</p>
-          </div>
-          <Button size="lg">
-            <Link
-              to="../generate"
-              className="flex items-center justify-between gap-2"
-            >
-              <Plus /> Generate New Prompt
-            </Link>
-          </Button>
+        <div className="text-muted-foreground mt-12 text-center">
+          You don’t have any saved prompts yet.
         </div>
       )}
     </div>
