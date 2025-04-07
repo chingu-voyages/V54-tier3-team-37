@@ -29,7 +29,7 @@ export type PromptBody = {
   score: number;
   geminiText: string | null;
   geminiSummary: string | null;
-}
+};
 
 export type PromptResponse = {
   role: string;
@@ -46,3 +46,5 @@ export type PromptResponse = {
   score: number;
   isBookmarked: boolean;
 };
+
+export type FormValues = Omit<PromptBody, 'score' | 'geminiText' | 'geminiSummary'>;
