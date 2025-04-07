@@ -44,16 +44,12 @@ function App() {
             element={<Auth />}
           />
           <Route
-            path="/generate"
+            path="/dashboard"
             element={
               <PrivateRoute>
-                <PromptGenPage />
+                <Dashboard />
               </PrivateRoute>
             }
-          />
-          <Route
-            path="/dashboard"
-            element={<Dashboard />}
           >
             <Route
               path="generate"
