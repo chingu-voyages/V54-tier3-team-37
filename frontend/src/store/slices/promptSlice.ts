@@ -1,21 +1,19 @@
-import { postGeminiRequest } from '@/api/prompt';
-import type { PromptBody } from '@/types/prompt';
-import {
-  createAsyncThunk,
-  createSlice,
-  PayloadAction,
-} from '@reduxjs/toolkit';
+import { postGeminiRequest, savePrompt, fetchPrompts } from '@/api/prompt';
+import type { PromptBody, PromptResponse } from '@/types/prompt';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface PromptState {
   output: string | null;
   loading: 'idle' | 'pending' | 'succeeded' | 'failed';
   error: string | null;
+  promptHistory: PromptResponse[];
 }
 
 const initialState: PromptState = {
   output: null,
   loading: 'idle',
   error: null,
+  promptHistory: [],
 };
 
 export const sendPromptToGemini = createAsyncThunk(
@@ -33,9 +31,12 @@ export const sendPromptToGemini = createAsyncThunk(
   }
 );
 
-/* export const savePromptToDatabase = createAsyncThunk(
+export const savePromptToDatabase = createAsyncThunk(
   'prompts/savePrompt',
-  async (promptBody: PromptBody, { rejectWithValue }) => {
+  async (
+    promptBody: PromptBody & { geminiText: string; geminiSummary: string },
+    { rejectWithValue }
+  ) => {
     try {
       const savedPrompt = await savePrompt(promptBody);
       return savedPrompt;
@@ -43,10 +44,24 @@ export const sendPromptToGemini = createAsyncThunk(
       if (error instanceof Error) {
         return rejectWithValue(error.message);
       }
-      return rejectWithValue('Failed to send prompt to Gemini');
+      return rejectWithValue('Failed to save prompt to database');
     }
   }
-); */
+);
+
+export const getPromptHistory = createAsyncThunk(
+  'prompts/getPromptHistory',
+  async (_, { rejectWithValue }) => {
+    try {
+      return await fetchPrompts();
+    } catch (error) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('Failed to load prompt history');
+    }
+  }
+);
 
 export const promptSlice = createSlice({
   name: 'prompts',
@@ -71,11 +86,31 @@ export const promptSlice = createSlice({
       })
       .addCase(sendPromptToGemini.rejected, (state, action) => {
         state.loading = 'failed';
-        if (action.payload) {
-          state.error = action.payload as string;
-        } else {
-          state.error = null;
-        }
+        state.error = (action.payload as string) || null;
+      })
+
+      .addCase(savePromptToDatabase.pending, (state) => {
+        state.loading = 'pending';
+        state.error = null;
+      })
+      .addCase(savePromptToDatabase.fulfilled, (state) => {
+        state.loading = 'succeeded';
+      })
+      .addCase(savePromptToDatabase.rejected, (state, action) => {
+        state.loading = 'failed';
+        state.error = (action.payload as string) || null;
+      })
+
+      .addCase(getPromptHistory.pending, (state) => {
+        state.loading = 'pending';
+      })
+      .addCase(getPromptHistory.fulfilled, (state, action: PayloadAction<PromptResponse[]>) => {
+        state.loading = 'succeeded';
+        state.promptHistory = action.payload;
+      })
+      .addCase(getPromptHistory.rejected, (state, action) => {
+        state.loading = 'failed';
+        state.error = (action.payload as string) || null;
       });
   },
 });
