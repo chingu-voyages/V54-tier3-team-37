@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import cors from "cors";
 
-import { securityHeaders } from "../middleware/index.js";
+import { corsOptions, securityHeaders } from "../middleware/index.js";
 import { authRoute, promptRoute, userRoute } from "../routes/index.js";
 
 export const configApp = async () => {
@@ -16,20 +16,9 @@ export const configApp = async () => {
     setupSwagger(app);
   }
 
-  const allowedOrigins = process.env.HOME_REACT_ADDRESS?.split(",");
-
   app.use(cookieParser());
   app.use(securityHeaders); // Security headers for privacy-focused browsers
-
-  app.use(
-    cors({
-      origin: allowedOrigins,
-      credentials: true,
-      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-      allowedHeaders: ["Content-Type", "Cookie", "Set-Cookie"],
-      exposedHeaders: ["Set-Cookie"],
-    })
-  );
+  app.use(cors(corsOptions));
 
   // Serve static files
   const __dirname = path.resolve();
