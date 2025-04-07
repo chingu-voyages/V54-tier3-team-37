@@ -2,9 +2,10 @@ import { useState } from 'react';
 
 import PromptGenForm from '@/components/PromptGenForm';
 import PromptGenResult from '@/components/PromptGenResult';
+import type { FormValues } from '@/types/prompt';
 
 const PromptGenPage = () => {
-  const [generatedPrompt, setGeneratedPrompt] = useState<string | null>(null);
+  const [formValues, setFormValues] = useState<FormValues | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isGenerated, setIsGenerated] = useState(false);
 
@@ -15,21 +16,18 @@ const PromptGenPage = () => {
           Create Effective Prompts for AI Systems with Our Intuitive Generator
         </h1>
         <p>
-          Fill in the details below to generate a clear, well-structured, and
-          effective prompt tailored to your needs.
+          Fill in the details below to generate a clear, well-structured, and effective prompt
+          tailored to your needs.
         </p>
       </div>
       <PromptGenForm
-        setGeneratedPrompt={setGeneratedPrompt}
+        setFormValues={setFormValues}
         setIsLoading={setIsLoading}
         setIsGenerated={setIsGenerated}
         isLoading={isLoading}
         isGenerated={isGenerated}
       />
-      <PromptGenResult
-        generatedPrompt={generatedPrompt}
-        // setGeneratedPrompt={setGeneratedPrompt}
-      />
+      <PromptGenResult formValues={formValues} />
     </section>
   );
 };
