@@ -1,54 +1,57 @@
 import { useCallback } from 'react';
-
-import {
-  Copy,
-  Save,
-  Star,
-} from 'lucide-react';
-
+import { Copy, Save, Star } from 'lucide-react';
 import { cn } from '@/lib/cn';
-
 import { Button } from './ui/button';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from './ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { savePromptToDatabase } from '@/store/slices/promptSlice';
+import type { FormValues, PromptResponse } from '@/types/prompt';
 
 type PromptGenResultProps = {
-  generatedPrompt: string | null;
-  // setGeneratedPrompt: (prompt: string | null) => void;
+  formValues: FormValues | null;
 };
 
-const PromptGenResult = ({
-  generatedPrompt,
-  // setGeneratedPrompt,
-}: PromptGenResultProps) => {
+const PromptGenResult = ({ formValues }: PromptGenResultProps) => {
+  const dispatch = useAppDispatch();
+  const { output } = useAppSelector((state) => state.prompts) as { output: PromptResponse | null };
+
   const handleCopy = useCallback(() => {
-    if (generatedPrompt) {
-      navigator.clipboard.writeText(generatedPrompt);
+    if (output?.geminiText) {
+      navigator.clipboard.writeText(output.geminiText);
     }
-  }, [generatedPrompt]);
+  }, [output]);
 
   const handleSave = () => {
-    // Placeholder for save functionality
-    alert('Save functionality not implemented yet!');
+    if (!output || !formValues || !output.geminiText || !output.geminiSummary) return;
+
+    const payload = {
+      ...formValues,
+      score: output.score,
+      geminiText: output.geminiText,
+      geminiSummary: output.geminiSummary,
+    };
+
+    dispatch(savePromptToDatabase(payload));
   };
 
   return (
-    <Card className={cn("w-full text-center", generatedPrompt && "bg-muted")}>
+    <Card className={cn('w-full text-center', output && 'bg-muted')}>
       <CardHeader>
         <CardTitle className="text-2xl">Generated Prompt</CardTitle>
       </CardHeader>
       <CardContent className="min-h-32 px-16 py-8">
-        <p className={cn("whitespace-pre-line", generatedPrompt && "text-start text-pretty bg-background p-4 border-muted-foreground border rounded-lg")}>
-          {generatedPrompt || 'Your generated prompts will appear here'}
+        <p
+          className={cn(
+            'whitespace-pre-line',
+            output?.geminiText &&
+              'bg-background border-muted-foreground rounded-lg border p-4 text-start text-pretty'
+          )}
+        >
+          {output?.geminiText || 'Your generated prompts will appear here'}
         </p>
       </CardContent>
-      {generatedPrompt && (
-        <CardFooter className="flex justify-between gap-4 items-center">
+      {output?.geminiText && (
+        <CardFooter className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-1">
             {[...Array(5)].map((_, i) => (
               <Star
@@ -56,7 +59,7 @@ const PromptGenResult = ({
                 size={16}
                 role="img"
                 aria-label="Star"
-                className="text-yellow-500"
+                className={i < output.score ? 'text-yellow-500' : 'text-muted-foreground'}
               />
             ))}
           </div>
