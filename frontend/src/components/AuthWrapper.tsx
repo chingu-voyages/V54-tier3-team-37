@@ -12,7 +12,7 @@ const AuthWrapper = () => {
 
   const from = location.state?.from;
   const redirectTo = searchParams.get('redirectTo');
-  const fallback = from || redirectTo || '/generate';
+  const fallback = from || redirectTo || '/dashboard';
 
   useEffect(() => {
     if (hasFetched.current) return;
