@@ -4,27 +4,12 @@ import { Info } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import {
-  LanguageSelect,
-  PentagramField,
-} from '@/types/prompt';
+import { LanguageSelect, PentagramField } from '@/types/prompt';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Button } from './ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from './ui/card';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from './ui/form';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './ui/form';
 import {
   Select,
   SelectContent,
@@ -34,12 +19,10 @@ import {
   SelectValue,
 } from './ui/select';
 import { Textarea } from './ui/textarea';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from './ui/tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
+
+import { useAppDispatch } from '@/store/hooks';
+import { sendPromptToGemini } from '@/store/slices/promptSlice';
 
 const formSchema = z.object({
   role: z.string().trim().min(1, { message: 'A defined role is required' }),
@@ -53,7 +36,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 type PromptGenFormProps = {
-  setGeneratedPrompt: (prompt: string | null) => void;
+  setFormValues: (values: FormValues) => void;
   setIsLoading: (loading: boolean) => void;
   setIsGenerated: (generated: boolean) => void;
   isLoading: boolean;
@@ -61,12 +44,14 @@ type PromptGenFormProps = {
 };
 
 const PromptGenForm = ({
-  setGeneratedPrompt,
+  setFormValues,
   setIsLoading,
   setIsGenerated,
   isLoading,
   isGenerated,
 }: PromptGenFormProps) => {
+  const dispatch = useAppDispatch();
+
   const pentagramFields: PentagramField[] = [
     {
       name: 'role',
@@ -120,18 +105,9 @@ const PromptGenForm = ({
     label: 'Language',
     type: 'select',
     options: [
-      {
-        value: 'EN',
-        text: 'English',
-      },
-      {
-        value: 'ES',
-        text: 'Spanish',
-      },
-      {
-        value: 'FR',
-        text: 'French',
-      },
+      { value: 'EN', text: 'English' },
+      { value: 'ES', text: 'Spanish' },
+      { value: 'FR', text: 'French' },
     ],
   };
 
@@ -150,32 +126,23 @@ const PromptGenForm = ({
   const onSubmit = async (values: FormValues) => {
     setIsLoading(true);
     setIsGenerated(false);
+    setFormValues(values);
+    const payload = {
+      ...values,
+      score: 0,
+      geminiText: null,
+      geminiSummary: null,
+    };
 
-    // Simulate loading
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    let prompt: string = '';
-    switch (values.language) {
-      case 'EN':
-        prompt = `As a ${values.role}, create a compelling message related to ${values.context}.
-              Your task is to ${values.task}, ensuring the output is ${values.output}. Please adhere to the following constraints: ${values.constraints}.`;
-        break;
-      case 'ES':
-        prompt = `Como ${values.role}, crea un mensaje convincente relacionado con ${values.context}.
-              Tu tarea es ${values.task}, asegurando que el resultado sea ${values.output}. Por favor, respeta las siguientes restricciones: ${values.constraints}.`;
-        break;
-      case 'FR':
-        prompt = `En tant que ${values.role}, créez un message captivant lié à ${values.context}.
-              Votre tâche est de ${values.task}, en veillant à ce que le résultat soit ${values.output}. Veuillez respecter les contraintes suivantes : ${values.constraints}.`;
-        break;
-      default:
-        prompt = `As a ${values.role}, create a compelling message related to ${values.context}.
-              Your task is to ${values.task}, ensuring the output is ${values.output}. Please adhere to the following constraints: ${values.constraints}.`;
+    console.log('PAYLOAD:', payload);
+    try {
+      await dispatch(sendPromptToGemini(payload)).unwrap();
+      setIsGenerated(true);
+    } catch (error) {
+      console.error('Prompt generation failed:', error);
+    } finally {
+      setIsLoading(false);
     }
-
-    setGeneratedPrompt(prompt);
-    setIsLoading(false);
-    setIsGenerated(true);
   };
 
   return (
@@ -189,15 +156,15 @@ const PromptGenForm = ({
             <CardTitle className="text-center text-2xl">AI Prompt Generator Form</CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-2 gap-8 pb-8">
-            {/* 'Role' field is separated from others due to layout */}
+            {/* Role field */}
             <FormField
               control={form.control}
-              name={pentagramFields[0].name as keyof FormValues}
+              name="role"
               render={({ field }) => (
                 <FormItem className="relative">
                   <FormLabel className="flex flex-col items-start">
                     <div className="flex items-center gap-2">
-                      <span className="text-lg">{pentagramFields[0].label}</span>
+                      <span className="text-lg">Role</span>
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger asChild>
@@ -222,15 +189,13 @@ const PromptGenForm = ({
               )}
             />
 
-            {/* 'Language' field is different input type */}
+            {/* Language select */}
             <FormField
               control={form.control}
-              name={languageSelect.name as keyof FormValues}
+              name="language"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex flex-col items-start self-start">
-                    <span className="text-lg">{languageSelect.label}</span>
-                  </FormLabel>
+                  <FormLabel className="text-lg">{languageSelect.label}</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -259,24 +224,24 @@ const PromptGenForm = ({
               )}
             />
 
-            {/* Rest of the the pentagram fields */}
-            {pentagramFields.slice(1).map((pentagramField) => (
+            {/* Other pentagram fields */}
+            {pentagramFields.slice(1).map((fieldDef) => (
               <FormField
-                key={pentagramField.name}
+                key={fieldDef.name}
                 control={form.control}
-                name={pentagramField.name as keyof FormValues}
+                name={fieldDef.name as keyof FormValues}
                 render={({ field }) => (
                   <FormItem className="relative">
                     <FormLabel className="flex flex-col items-start">
                       <div className="flex items-center gap-2">
-                        <span className="text-lg">{pentagramField.label}</span>
+                        <span className="text-lg">{fieldDef.label}</span>
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
                               <Info size={16} />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>{pentagramField.tooltip}</p>
+                              <p>{fieldDef.tooltip}</p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
@@ -284,7 +249,7 @@ const PromptGenForm = ({
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder={pentagramField.placeholder}
+                        placeholder={fieldDef.placeholder}
                         className="h-24 resize-none"
                         {...field}
                       />
