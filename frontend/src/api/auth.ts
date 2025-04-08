@@ -1,16 +1,6 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { getCookie } from '@/utils/getCookie';
 
-const getCookie = (name: string) => {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) {
-    const popped = parts.pop();
-    if (popped) {
-      return popped.split(';').shift();
-    }
-  }
-  return undefined;
-}
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const getCurrentUser = async () => {
   if (!API_BASE_URL) {
