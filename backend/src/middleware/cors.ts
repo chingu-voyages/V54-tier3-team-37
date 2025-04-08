@@ -26,22 +26,11 @@ export const securityHeaders = (
   res: Response,
   next: NextFunction
 ) => {
-  // Accept partitioned cookies
-  res.header("Accept-CH", "Sec-CH-Partitioned-Cookies");
-  // Allow cross-origin access to resources
-  res.header("Cross-Origin-Resource-Policy", "same-site");
-  // Limit tracking data leakage
-  res.header("Referrer-Policy", "strict-origin-when-cross-origin");
-  // Reduces cookie blocking in Chromium-based privacy browsers
-  // Browsing topics for FireFox
-  res.header("Permissions-Policy", "interest-cohort=(), browsing-topics=()");
   // Restricts all resource loading to same-origin by default
   res.header("Content-Security-Policy", "default-src 'self'");
   // Disables MIME type sniffing
   res.header("X-Content-Type-Options", "nosniff");
   // Prevent a web page from being displayed in a frame or iframe, regardless of the origin
   res.header("X-Frame-Options", "deny");
-  // Ensure Render doesn't modify headers
-  res.header("Cache-Control", "no-transform");
   next();
 };
