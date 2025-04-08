@@ -16,17 +16,21 @@ export const getCurrentUser = async () => {
   if (!API_BASE_URL) {
     throw new Error('Error: VITE_API_BASE_URL is not defined in the environment variables');
   }
+
   const token = getCookie('token');
   if (!token) {
-    throw new Error('Error: No token found in cookies')
+    console.warn('No token found in cookies')
   }
-  const res = await fetch(`${API_BASE_URL}/users/me`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  const headers: HeadersInit = {
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  }
+  const fetchOptions: RequestInit = {
+    method: 'GET',
     credentials: 'include',
-  });
+    headers: headers,
+  };
 
+  const res = await fetch(`${API_BASE_URL}/users/me`, fetchOptions);
   if (!res.ok) throw new Error('User not authenticated');
 
   const data = await res.json();
@@ -37,10 +41,10 @@ export const logoutUser = async () => {
   if (!API_BASE_URL) {
     throw new Error('Error: VITE_API_BASE_URL is not defined in the environment variables');
   }
+
   const res = await fetch(`${API_BASE_URL}/logout`, {
     method: 'POST',
     credentials: 'include',
   });
-
   if (!res.ok) throw new Error('Logout failed');
 };
