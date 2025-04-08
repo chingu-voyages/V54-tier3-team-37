@@ -1,7 +1,6 @@
 import { CookieOptions } from "express";
 
 import { isProduction } from "./isProduction.js";
-import { HOME_REACT_ADDRESS } from "./reactRedirectAddress.js";
 
 export const cookieOptions: CookieOptions = {
   httpOnly: true,
@@ -9,7 +8,7 @@ export const cookieOptions: CookieOptions = {
   sameSite: isProduction ? "none" : "lax",
   // Isolate cookies and other site data - preventing cross-site tracking
   partitioned: isProduction, // for privacy-focused browsers, requires 'secure'
-  domain: new URL(HOME_REACT_ADDRESS).hostname, // lock the domain
-  path: "/", // for cross-route access,
+  domain: isProduction ? ".netlify.app" : "localhost", // lock the domain explicitly
+  path: "/", // for cross-route access
   priority: "high",
 };
