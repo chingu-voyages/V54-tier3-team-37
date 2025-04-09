@@ -47,19 +47,19 @@ yarn install
 
 - Create an `.env` file with the following variables:
 
-| Variable                 | Description                                                               |
-| ------------------------ | ------------------------------------------------------------------------- |
-| **PORT**                 | The port number on which the Express server will run.                     |
-| **DATABASE_URL**         | Connection string for the database used by Prisma ORM.                    |
-| **HOME_REACT_ADDRESS**   | Comma-separated URLs of the frontend app (productionUrl,developementUrl). |
-| **GITHUB_CLIENT_ID**     | GitHub OAuth application's client ID.                                     |
-| **GITHUB_CLIENT_SECRET** | GitHub OAuth application's client secret.                                 |
-| **GOOGLE_CLIENT_ID**     | Google OAuth application's client ID.                                     |
-| **GOOGLE_CLIENT_SECRET** | Google OAuth application's client secret.                                 |
-| **GEMINI_API_KEY**       | API key for accessing the Google Gemini model.                            |
-| **JWT_SECRET**           | Secret used to sign JSON Web Tokens for session management.               |
-| **SESSION_SECRET**       | Secret used for secure OAuth state handling.                              |
-| **NODE_ENV**             | Sets the environment mode: `development`, `production`, or `test`.        |
+| Variable                 | Description                                                              |
+| ------------------------ | ------------------------------------------------------------------------ |
+| **PORT**                 | The port number on which the Express server will run.                    |
+| **DATABASE_URL**         | Connection string for the database used by Prisma ORM.                   |
+| **HOME_REACT_ADDRESS**   | Comma-separated URLs of the frontend app (productionUrl,developmentUrl). |
+| **GITHUB_CLIENT_ID**     | GitHub OAuth application's client ID.                                    |
+| **GITHUB_CLIENT_SECRET** | GitHub OAuth application's client secret.                                |
+| **GOOGLE_CLIENT_ID**     | Google OAuth application's client ID.                                    |
+| **GOOGLE_CLIENT_SECRET** | Google OAuth application's client secret.                                |
+| **GEMINI_API_KEY**       | API key for accessing the Google Gemini model.                           |
+| **JWT_SECRET**           | Secret used to sign JSON Web Tokens for session management.              |
+| **SESSION_SECRET**       | Secret used for secure OAuth state handling.                             |
+| **NODE_ENV**             | Sets the environment mode: `development`, `production`, or `test`.       |
 
 ---
 
