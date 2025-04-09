@@ -9,6 +9,7 @@ import { authRoute, promptRoute, userRoute } from "../routes/index.js";
 
 export const configApp = async () => {
   const app = express();
+  app.set("trust proxy", 1);
   app.use(express.json());
 
   if (process.env.NODE_ENV !== "test") {
@@ -26,7 +27,18 @@ export const configApp = async () => {
 
   const sessionSecret = String(process.env.SESSION_SECRET);
   app.use(
-    session({ secret: sessionSecret, resave: false, saveUninitialized: true })
+    session({
+      name: "sid",
+      secret: sessionSecret,
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        maxAge: 1000 * 60 * 10,
+      },
+    })
   );
 
   app.use("/", authRoute);
