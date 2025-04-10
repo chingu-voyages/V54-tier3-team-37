@@ -45,3 +45,14 @@ export const getMockPrompt = (userId: string) => ({
     geminiSummary: "Short summary",
     createdAt: new Date().toISOString(),
 });
+
+export const getMockPromptList = (userId: string) => [
+    getMockPrompt(userId),
+    {
+        ...getMockPrompt(userId),
+        id: "mock-prompt-id-2",
+        task: "Another test task",
+        geminiSummary: "Another summary",
+    },
+];
+
