@@ -23,7 +23,7 @@ export const generateGeminiResponse = async (promptText: string): Promise<Gemini
             ],
         });
 
-        const text = result.response.text().trim();
+        const text = stripMarkdown(result.response.text());
 
         const summaryResult = await model.generateContent({
             contents: [{
@@ -32,8 +32,8 @@ export const generateGeminiResponse = async (promptText: string): Promise<Gemini
                     text: `
                     You are a smart assistant. Based on the following:
                     
-                    Summarize the following interaction in 1–2 sentences without using phrases like "The user" or "AI." 
-                    Write it like a short neutral description of what was requested and delivered.
+                    You are a smart assistant. Based on the interaction below, summarize it in no more than 35 words. 
+                    Avoid using phrases like "the user" or "AI." Write a brief, neutral description of the request and response.
                     
                     Prompt:
                     ${promptText}
@@ -53,3 +53,21 @@ export const generateGeminiResponse = async (promptText: string): Promise<Gemini
         throw error;
     }
 };
+
+/**
+ * Strips Markdown formatting from the given text.
+ *
+ * @param {string} text - The text to strip Markdown from.
+ * @returns {string} - The text without Markdown formatting.
+ */
+function stripMarkdown(text: string): string {
+    return text
+        .replace(/\\n/g, '\n') // Convert escaped newlines to actual newlines
+        .replace(/\*\*(.*?)\*\*/g, '$1') // Remove bold markdown
+        .replace(/\*(.*?)\*/g, '$1') // Remove italic markdown
+        .replace(/`(.*?)`/g, '$1') // Remove inline code markdown
+        .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Convert Markdown links
+        .replace(/^\s*[\*\-+]\s+/gm, '• ') // Normalize list bullets
+        .replace(/\n{2,}/g, '\n\n') // Normalize spacing
+        .trim();
+}
