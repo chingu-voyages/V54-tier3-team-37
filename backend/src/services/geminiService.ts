@@ -67,7 +67,7 @@ function stripMarkdown(text: string): string {
         .replace(/\*(.*?)\*/g, '$1') // Remove italic markdown
         .replace(/`(.*?)`/g, '$1') // Remove inline code markdown
         .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Convert Markdown links
-        .replace(/^\s*[\*\-+]\s+/gm, '• ') // Normalize list bullets
+        .replace(/^\s*[*\-+]\s+/gm, '• ') // Replace markdown bullets with a bullet point
         .replace(/\n{2,}/g, '\n\n') // Normalize spacing
-        .trim();
+        .trim(); // Remove leading/trailing whitespace
 }
