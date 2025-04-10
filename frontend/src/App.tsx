@@ -6,7 +6,6 @@ import {
 } from 'react-router-dom';
 
 import About from './components/About';
-import AboutPage from './components/AboutPage';
 import Auth from './components/Auth';
 import AuthWrapper from './components/AuthWrapper';
 import Dashboard from './components/Dashboard';
@@ -35,10 +34,6 @@ function App() {
                 <About />
               </>
             }
-          />
-          <Route
-            path="/about"
-            element={<AboutPage />}
           />
           <Route
             path="/auth"
