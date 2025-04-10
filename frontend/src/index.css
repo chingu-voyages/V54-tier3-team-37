@@ -56,7 +56,7 @@
 .dark {
   --prompto-primary: #8a2cc5;
   --prompto-secondary: #0097fe;
-  --prompto-accent: #8a2cc5;
+  --prompto-accent: #380d54;
   --prompto-gray-dark: #555555;
   --prompto-gray-medium: #afaba5;
   --prompto-gray-light: #dadada;
@@ -100,13 +100,13 @@
 }
 
 @theme inline {
-  --color-primary: var(--primary);
-  --color-secondary: var(--secondary);
-  --color-accent: var(--accent);
-  --color-gray-dark: var(--gray-dark);
-  --color-gray-medium: var(--gray-medium);
-  --color-gray-light: var(--gray-light);
-  --color-gray-extralight: var(--gray-extralight);
+  --color-prompto-primary: var(--prompto-primary);
+  --color-prompto-secondary: var(--prompto-secondary);
+  --color-prompto-accent: var(--prompto-accent);
+  --color-prompto-gray-dark: var(--prompto-gray-dark);
+  --color-prompto-gray-medium: var(--prompto-gray-medium);
+  --color-prompto-gray-light: var(--prompto-gray-light);
+  --color-prompto-gray-extralight: var(--prompto-gray-extralight);
   /* shadcn/ui base styles
   DO NOT DELETE: NEWLY INSTALLED COMPONENTS WILL BREAK
   instead, replace or overwrite with Prompto styles
@@ -185,7 +185,7 @@
   .text-subheading {
     @apply text-[20px] font-normal;
   }
-  .text-subheading {
+  .text-copy {
     @apply text-[16px] font-normal;
   }
 }
