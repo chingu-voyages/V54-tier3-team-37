@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Keania+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 @import 'tailwindcss';
 
@@ -7,6 +7,17 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  --prompto-primary: #8a2cc5;
+  --prompto-secondary: #0097fe;
+  --prompto-accent: #8a2cc5;
+  --prompto-gray-dark: #555555;
+  --prompto-gray-medium: #afaba5;
+  --prompto-gray-light: #dadada;
+  --prompto-gray-extralight: #ebebeb;
+  /* shadcn/ui base styles
+  DO NOT DELETE: NEWLY INSTALLED COMPONENTS WILL BREAK
+  instead, replace or overwrite with Prompto styles
+  */
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -43,6 +54,17 @@
 }
 
 .dark {
+  --prompto-primary: #8a2cc5;
+  --prompto-secondary: #0097fe;
+  --prompto-accent: #8a2cc5;
+  --prompto-gray-dark: #555555;
+  --prompto-gray-medium: #afaba5;
+  --prompto-gray-light: #dadada;
+  --prompto-gray-extralight: #ebebeb;
+  /* shadcn/ui base styles
+  DO NOT DELETE: NEWLY INSTALLED COMPONENTS WILL BREAK
+  instead, replace or overwrite with Prompto styles
+  */
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.145 0 0);
@@ -78,6 +100,17 @@
 }
 
 @theme inline {
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-gray-dark: var(--gray-dark);
+  --color-gray-medium: var(--gray-medium);
+  --color-gray-light: var(--gray-light);
+  --color-gray-extralight: var(--gray-extralight);
+  /* shadcn/ui base styles
+  DO NOT DELETE: NEWLY INSTALLED COMPONENTS WILL BREAK
+  instead, replace or overwrite with Prompto styles
+  */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -116,15 +149,43 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
-@theme {
-  --font-keania-one: "Keania One", sans-serif;
-}
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+  }
+  /* style system font */
+  .font-inter {
+    font-family: 'Inter', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: <weight>;
+    font-style: normal;
+  }
+  /* text styles */
+  .text-h1 {
+    @apply text-[48px] font-semibold tracking-wide;
+  }
+  .text-h2 {
+    @apply text-[40px] font-semibold tracking-wide;
+  }
+  .text-h3 {
+    @apply text-[32px] font-bold tracking-wide;
+  }
+  .text-h4 {
+    @apply text-[24px] font-semibold tracking-wide;
+  }
+  .text-h5 {
+    @apply text-[24px] font-medium tracking-wide;
+  }
+  .text-button {
+    @apply text-[20px] font-medium;
+  }
+  .text-subheading {
+    @apply text-[20px] font-normal;
+  }
+  .text-subheading {
+    @apply text-[16px] font-normal;
   }
 }

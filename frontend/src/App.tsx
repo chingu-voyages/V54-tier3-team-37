@@ -22,7 +22,7 @@ function App() {
   return (
     <Provider store={store}>
       <AuthWrapper />
-      <div className="flex h-screen w-screen flex-col items-center justify-start">
+      <div className="flex h-screen w-screen flex-col items-center justify-start font-inter">
         <header className="w-full">
           <Nav />
         </header>
