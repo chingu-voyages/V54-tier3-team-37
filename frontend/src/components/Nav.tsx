@@ -1,14 +1,21 @@
+import {
+  Link,
+  useNavigate,
+} from 'react-router-dom';
+
+import { logoutUser } from '@/api/auth';
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '@/store/hooks';
+import { logout } from '@/store/slices/authSlice';
 import { NavLink } from '@/types/ui';
+
 import Container from './Container';
 import { Button } from './ui/button';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAppSelector, useAppDispatch } from '@/store/hooks';
-import { logout } from '@/store/slices/authSlice';
-import { logoutUser } from '@/api/auth';
 
 const navLinks: NavLink[] = [
   { href: '/', text: 'Home' },
-  { href: '/about', text: 'About' },
 ];
 
 const Nav = () => {
