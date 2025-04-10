@@ -2,7 +2,7 @@ import {Router} from "express";
 import {promptController} from "../controllers/index.js";
 import {validateBody} from "../middleware/validateBody.js";
 import {validatePromptFields, validateSavePromptFields} from "../validation/index.js";
-import {authMiddleware} from "../middleware/index.js";
+import {authMiddleware, limiter as rateLimiter} from "../middleware/index.js";
 
 
 export const promptRoute: Router = Router();
@@ -56,7 +56,7 @@ export const promptRoute: Router = Router();
  *       500:
  *         description: Server error
  */
-promptRoute.post("/generate", authMiddleware, validateBody(validatePromptFields), promptController.generatePrompt);
+promptRoute.post("/generate", authMiddleware, rateLimiter, validateBody(validatePromptFields), promptController.generatePrompt);
 
 /**
  * @swagger
