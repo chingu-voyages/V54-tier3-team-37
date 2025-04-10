@@ -60,7 +60,7 @@ export const logout = async (req: Request, res: Response) => {
   try {
     // clear user session
     res.clearCookie("token", cookieOptions);
-    res.header("Clear-Site-Data", "cookies"); // Safari log out header
+    res.header("Clear-Site-Data", '"cookies"'); // Safari log out header
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
     throw new Error(error instanceof Error ? error.message : String(error));
