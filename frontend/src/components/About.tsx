@@ -17,7 +17,7 @@ import { Separator } from './ui/separator';
 
 const About = () => {
   return (
-    <div className="text-muted-foreground w-full">
+    <div className="w-full">
       <AboutWhat />
       <AboutFeatures />
       <AboutWhy />
