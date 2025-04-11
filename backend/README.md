@@ -185,7 +185,7 @@ yarn prisma generate
 
 ---
 
-## &nbsp;<img src="https://static-00.iconduck.com/assets.00/nodemon-icon-449x512-m36gnbqo.png" alt="Nodemon Logo" width="22"/>&nbsp; Start the application with nodemon
+## <a id="start-the-application-with-nodemon"></a> &nbsp;<img src="https://static-00.iconduck.com/assets.00/nodemon-icon-449x512-m36gnbqo.png" alt="Nodemon Logo" width="22"/>&nbsp; Start the application with nodemon
 
 With the following configuration hot reloading with `nodemon` is available. Pay attention to the fact that changes made to the `nodemon` config directly will require restarting the application in order to see the changes.
 To start the application, navigate to the backend folder and run:
@@ -202,7 +202,7 @@ yarn workspace backend start
 
 ---
 
-## &nbsp;<img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/Jest.svg" alt="Jest Logo" width="22"/>&nbsp; Test with Jest
+## <a id="test-with-jest"></a> &nbsp;<img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/Jest.svg" alt="Jest Logo" width="22"/>&nbsp; Test with Jest
 
 Testing with Jest and TypeScript is enabled.
 To run the tests, navigate to the backend folder and run:
@@ -219,7 +219,7 @@ yarn workspace backend test
 
 ---
 
-## &nbsp;<img src="https://img.icons8.com/ios11/512/FFFFFF/github.png" alt="GitHub Logo" width="30"/>&nbsp; Continuous Integration
+## <a id="continuous-integration"></a> &nbsp;<img src="https://img.icons8.com/ios11/512/FFFFFF/github.png" alt="GitHub Logo" width="30"/>&nbsp; Continuous Integration
 
 To ensure consistent code quality a GitHub workflow is set up.
 The workflow checks for linting and type errors, generates prisma and runs tests.
