@@ -1,3 +1,5 @@
+import { getCookie } from '@/utils/getCookie';
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const getCurrentUser = async () => {
@@ -5,26 +7,23 @@ export const getCurrentUser = async () => {
     throw new Error('Error: VITE_API_BASE_URL is not defined in the environment variables');
   }
 
-  console.log(' Making request to /users/me with credentials: "include"');
-
+  const token = getCookie('token');
+  if (!token) {
+    console.warn('No token found in cookies');
+  }
+  const headers: HeadersInit = {
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
   const fetchOptions: RequestInit = {
     method: 'GET',
     credentials: 'include',
+    headers: headers,
   };
 
   const res = await fetch(`${API_BASE_URL}/users/me`, fetchOptions);
-
-  console.log('getCurrentUser Response status:', res.status);
-
-  if (!res.ok) {
-    console.warn(' User not authenticated (401)');
-    throw new Error('User not authenticated');
-  }
+  if (!res.ok) throw new Error('User not authenticated');
 
   const data = await res.json();
-
-  console.log(' Authenticated user data:', data.user);
-
   return data.user;
 };
 
@@ -33,19 +32,9 @@ export const logoutUser = async () => {
     throw new Error('Error: VITE_API_BASE_URL is not defined in the environment variables');
   }
 
-  console.log('Logging out user...');
-
   const res = await fetch(`${API_BASE_URL}/logout`, {
     method: 'POST',
     credentials: 'include',
   });
-
-  console.log(' Logout response status:', res.status);
-
-  if (!res.ok) {
-    console.warn('Logout failed');
-    throw new Error('Logout failed');
-  }
-
-  console.log('User logged out successfully');
+  if (!res.ok) throw new Error('Logout failed');
 };
