@@ -28,16 +28,9 @@ export const configApp = async () => {
   const sessionSecret = String(process.env.SESSION_SECRET);
   app.use(
     session({
-      name: "sid",
       secret: sessionSecret,
       resave: false,
       saveUninitialized: false,
-      cookie: {
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
-        maxAge: 1000 * 60 * 10,
-      },
     })
   );
 

@@ -54,3 +54,14 @@ export const fetchPrompts = async (): Promise<PromptResponse[]> => {
   const data = await res.json();
   return data;
 };
+
+export const deletePrompt = async (promptId: string) => {
+  const res = await fetch(`${API_BASE_URL}/prompts/${promptId}`, {
+    method: 'DELETE',
+    credentials: 'include',
+  });
+
+  if (!res.ok) throw new Error('Failed to delete prompt');
+
+  return await res.json();
+};
