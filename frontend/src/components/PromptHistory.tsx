@@ -1,26 +1,14 @@
 import { useEffect } from 'react';
 
-import {
-  Edit,
-  Plus,
-  Star,
-  Trash,
-} from 'lucide-react';
+import { Edit, Plus, Star, Trash } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-import {
-  useAppDispatch,
-  useAppSelector,
-} from '@/store/hooks';
-import { getPromptHistory } from '@/store/slices/promptSlice';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { getPromptHistory, deletePrompt } from '@/store/slices/promptSlice';
 import { formatDateTime } from '@/utils/formatDate';
+import DeleteDialog from './common/DeletePromptDialog';
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from './ui/accordion';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
 import { Button } from './ui/button';
 
 const PromptHistory = () => {
@@ -94,13 +82,17 @@ const PromptHistory = () => {
                       ))}
                     </div>
 
-                    <Trash
-                      size={18}
-                      className="text-muted-foreground hover:text-destructive cursor-pointer"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        // TODO: Handle delete
-                      }}
+                    <DeleteDialog
+                      onConfirm={() => dispatch(deletePrompt(prompt.id))}
+                      title="Are you sure you want to delete this prompt?"
+                      description="This action cannot be undone. The prompt will be permanently removed from your history."
+                      trigger={
+                        <Trash
+                          size={18}
+                          className="text-muted-foreground hover:text-destructive cursor-pointer"
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                      }
                     />
                     <Edit
                       size={18}
