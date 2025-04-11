@@ -1,6 +1,5 @@
 import {
     checkDuplicatePrompt,
-    deleteAllPromptsService,
     deletePromptService,
     getAllPromptsService,
     getPromptService,
@@ -32,15 +31,27 @@ export const generatePrompt = async (req: Request<unknown, unknown, PromptInput>
             score = 0
         } = req.body;
 
+        const promptText = `
+        The user has provided structured inputs to create an AI prompt using the Pentagram format.
+        Your task is to craft the best possible version of this prompt — it should be clean, natural, and ready to use in any AI assistant.
+        
+        Inputs:
+        Role: ${role}
+        Context: ${context}
+        Task: ${task}
+        Output: ${output}
+        Constraints: ${constraints}
+        Language: ${language}
+        
+        Instructions:
+        - Begin directly with the rewritten prompt. It must be a complete, self-contained prompt that can be copy-pasted into an AI assistant without additional context.
+        - Use clear, natural language. Make it fluid, professional, and easy to understand.
+        - Avoid filler or casual intros like "Let's get started" or "Here's a challenge for you".
+        - Do not include any section headers like "Context:", "Task:", etc.
+        - Capture the intent, tone, and purpose behind the inputs while refining and enhancing the wording.       
+        - Respond only in ${language}.
+        `.trim();
 
-        const promptText = [
-            `You are a ${role}.`,
-            `Context: ${context}`,
-            `Task: ${task}`,
-            `Expected Output: ${output}`,
-            `Constraints: ${constraints}`,
-            `Language: ${language}`
-        ].join('\n');
 
         const aiResponse = await generateGeminiResponse(promptText);
 
@@ -280,22 +291,22 @@ export const deletePrompt = async (req: Request, res: Response): Promise<void> =
  * @param req - Express request with `userId`
  * @param res - Express response
  */
-export const deleteAllPrompts = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const userId = req.userId;
-
-        if (!userId) {
-            res.status(400).json({error: "Missing userId"});
-            return;
-        }
-
-        await deleteAllPromptsService(userId);
-
-        res.status(204).send();
-    } catch (error) {
-        console.error("Error deleting all prompts:", error);
-        res.status(500).json({error: "Something went wrong"});
-    }
-};
+// export const deleteAllPrompts = async (req: Request, res: Response): Promise<void> => {
+//     try {
+//         const userId = req.userId;
+//
+//         if (!userId) {
+//             res.status(400).json({error: "Missing userId"});
+//             return;
+//         }
+//
+//         await deleteAllPromptsService(userId);
+//
+//         res.status(204).send();
+//     } catch (error) {
+//         console.error("Error deleting all prompts:", error);
+//         res.status(500).json({error: "Something went wrong"});
+//     }
+// };
 
 
