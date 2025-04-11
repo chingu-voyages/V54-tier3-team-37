@@ -1,6 +1,5 @@
 import {
     checkDuplicatePrompt,
-    deleteAllPromptsService,
     deletePromptService,
     getAllPromptsService,
     getPromptService,
