@@ -60,9 +60,10 @@ We have encountered a challenge involving third-party cookies and how Netlify is
 
 ## Features
 
-- Feature 1: Prompt engineering.
-- Feature 2: Prompt history.
-- Feature 3: User authentication.
+- Feature 1: Prompt structuring.
+- Feature 2: AI response.
+- Feature 3: Prompt history.
+- Feature 4: User authentication.
 
 ## Technologies Used
 
@@ -183,7 +184,7 @@ yarn run build
 
 Build the backend application:
 ```bash
-docker run build
+ docker build -t backend-app .
 ```
 
 ## Deployment Checklist
