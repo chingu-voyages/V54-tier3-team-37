@@ -29,9 +29,9 @@
 
 ## <a id="about-project"></a>ℹ️ About Project
 
-Prompto is a backend application built to generate high-quality prompts that enable more accurate communication with large language models (LLMs). The goal of Prompto is to help users interact with LLMs more efficiently by providing a Pentagram-format input form, which guides prompt construction and improves the quality of model responses.
+Prompto is a backend application built to generate high-quality prompts that enable more accurate communication with large language models (LLMs).The goal of Prompto is to help users interact with LLMs more efficiently by providing a Pentagram-format input form, which guides prompt construction and improves the quality of model responses.
 
-Prompto is built using Node.js and Express, containerized with Docker for consistent deployment. It is a backend application that is a part of a full-stack MERN application. PostgreSQL is our database of choice with Prisma ORM for schema modeling and database interactions. For more technical details for developers, see section _Technologies & Dependencies used_. The app was built by a team of 2, during a 6 week time period, see more in the section _Backend developers_.
+Prompto is built using Node.js and Express, containerized with Docker for consistent deployment. It is a backend application that is a part of a full-stack MERN application. PostgreSQL is our database of choice with Prisma ORM for schema modeling and database interactions. The service ensures secure sign-in through the use of authentication functionality provided by Google and GitHub directly, without relying on third-party software. For more technical details for developers, see section _Technologies & Dependencies used_. The app was built by a team of 2, during a 6 week time period, see more in the section _Backend developers_.
 
 ---
 
@@ -131,7 +131,7 @@ Explore the interactive Swagger documentation: [Prompto API](https://v54-tier3-t
   Gemini integration involves these steps:
 
   1.  A user initiates a POST request with a Pentagram-structured input.
-  2.  The server sends the input to the Gemini API.
+  2.  The server processes the initial input using prompt engineering techniques and sends it to the Gemini API.
   3.  Upon receiving an enhanced prompt, the server sends a follow-up request to get a summary of the prompt.
   4.  Then the prompt is stripped of markdown and sent, along with the summary, to the React frontend.
 
