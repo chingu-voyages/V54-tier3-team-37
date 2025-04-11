@@ -1,4 +1,9 @@
-import { postGeminiRequest, savePrompt, fetchPrompts } from '@/api/prompt';
+import {
+  postGeminiRequest,
+  savePrompt,
+  fetchPrompts,
+  deletePrompt as deletePromptApi,
+} from '@/api/prompt';
 import type { PromptBody, PromptResponse } from '@/types/prompt';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
@@ -63,6 +68,21 @@ export const getPromptHistory = createAsyncThunk(
   }
 );
 
+export const deletePrompt = createAsyncThunk(
+  'prompts/deletePrompt',
+  async (promptId: string, { rejectWithValue }) => {
+    try {
+      await deletePromptApi(promptId);
+      return promptId;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('Failed to delete prompt');
+    }
+  }
+);
+
 export const promptSlice = createSlice({
   name: 'prompts',
   initialState,
@@ -110,6 +130,13 @@ export const promptSlice = createSlice({
       })
       .addCase(getPromptHistory.rejected, (state, action) => {
         state.loading = 'failed';
+        state.error = (action.payload as string) || null;
+      })
+
+      .addCase(deletePrompt.fulfilled, (state, action: PayloadAction<string>) => {
+        state.promptHistory = state.promptHistory.filter((p) => p.id !== action.payload);
+      })
+      .addCase(deletePrompt.rejected, (state, action) => {
         state.error = (action.payload as string) || null;
       });
   },
