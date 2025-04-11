@@ -39,9 +39,9 @@
 - [Usage](#usage)
 - [Build Instructions](#build-instructions)
 - [Deployment Checklist](#deployment-checklist)
-- [Special Thanks](#special-thanks)
 - [Contributing](#contributing)
 - [License](#license)
+- [Special Thanks](#special-thanks)
 - [Team Members](#team-members)
 
 ---
@@ -221,6 +221,14 @@ You know the drill:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
+## Special Thanks
+
+We as a team would like to thank Chingu platform and community for this opportunity to learn, improve and collaborate. Thank you Chingu!
+
+Chingu is a platform that helps developers and other people in tech related roles practice in-demand skills and accelerate their learning through collaboration and project-building.
+
+Learn more about Chingu platform at https://www.chingu.io/
 
 ## Team Members
 
