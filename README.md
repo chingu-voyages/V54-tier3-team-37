@@ -29,7 +29,7 @@
 
 ## Table of Contents
 
-- [Description](#desctiption)
+- [Description](#description)
 - [Current Status](#current-status)
 - [Features](#️features)
 - [Technologies Used](#technologies-used)
