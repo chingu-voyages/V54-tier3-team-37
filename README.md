@@ -121,14 +121,21 @@ We have encountered a challenge involving third-party cookies and how Netlify is
 
 2. Install dependencies:
 
-  ```bash
-  yarn install
-  ```
+    ```bash
+    yarn install
+    ```
 
 ## Configuration
 
 1. Create `.env` files in both frontend/ and backend/ directories
 2. Add required environment variables:
+<br>
+
+Frontend `.env`:
+  | Variable                 | Description                                                              |
+| ------------------------ | ------------------------------------------------------------------------ |
+| **VITE_API_BASE_URL**    | The URL of the backend server.      |
+<br>
 
   Backend `.env`:
   | Variable                 | Description                                                              |
@@ -145,10 +152,6 @@ We have encountered a challenge involving third-party cookies and how Netlify is
 | **SESSION_SECRET**       | Secret used for secure OAuth state handling.                             |
 | **NODE_ENV**             | Sets the environment mode: `development`, `production`, or `test`.       |
 
-Frontend `.env`:
-  | Variable                 | Description                                                              |
-| ------------------------ | ------------------------------------------------------------------------ |
-| **VITE_API_BASE_URL**    | The URL of the backend server.                                           |
 <br>
 3. Generate Prisma Client to interact with the database:
 
@@ -185,32 +188,31 @@ docker run build
 
 ## Deployment Checklist
 
-### Below example taken from [Brendan](https://github.com/BKSchatzki)'s [project](https://github.com/BKSchatzki/partyroombloom).
+### Set up deployment services:
+- ✅ Ensure the React app is deployed to Netlify.
+- ✅ Deploy the backend Docker image to Render.
+- ✅ Verify PostgreSQL database connection to Neon.
 
-- Vercel Build and Deployment Settings:
-  - Framework Settings is set to Next.js defaults:
-    - Build Command: `npm run build` or `next build`
-    - Output Directory: Next.js default
-    - Install Command: `yarn install`, `pnpm install`, `npm install`, or `bun install`
-    - Development Command: `next`
-  - Root directory field is empty
-  - Node.js version is 20.x
-- Environment Variables all filled in Vercel Project Settings, especially note:
-  - Your PostgreSQL database URL
-  - Your OpenAI API key
-  - The Client ID and secret in your created application on GCP, found on the same page as the authorized origins and URIs (below)
-- Application created in GCP, with OAuth 2.0 Client ID:
-  - Authorized JavaScript origins:
-    - <http://localhost:3000>
-    - The subdomain at <https://project-name.vercel.app>
-    - Any domains on which you are hosting the site
-  - Authorized redirect URIs should have the following paths for each of the Authorized JavaScript Origins:
-    - /api/auth/callback/google
-    - /login/google/callback
+### Environment configurations:
+- ✅ Set up all necessary environment variables for production, such as database URL, OAuth secrets.
+- ✅ Configure OAuth for Google and GitHub on the backend.
+- ✅ Ensure Google Gemini is correctly configured and accessible.
+
+### Authentication and authorization:
+- ✅ Test Google OAuth and GitHub OAuth flows to ensure proper token handling and login/logout behavior.
+- ✅ Ensure JWT tokens are properly sent and received in headers.
+
+### Database:
+- ✅ Generate Prisma Client to set up the database schema.
+
+### Testing:
+- ✅ Run tests to ensure all features work as expected.
+
+### Deployment validation:
+- ✅ Confirm that the app is live on Netlify and accessible via Render.
+- ✅ Test the production URL to ensure the application functions as expected in a live environment.
 
 ## Contributing
-
-You know the drill:
 
 1. Fork the repository
 2. Create a feature branch
