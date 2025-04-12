@@ -26,11 +26,7 @@ export const configApp = async () => {
 
   const sessionSecret = String(process.env.SESSION_SECRET);
   app.use(
-    session({
-      secret: sessionSecret,
-      resave: false,
-      saveUninitialized: true,
-    })
+    session({ secret: sessionSecret, resave: false, saveUninitialized: true })
   );
 
   app.use("/", authRoute);
