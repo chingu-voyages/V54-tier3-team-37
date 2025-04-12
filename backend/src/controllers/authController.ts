@@ -94,6 +94,12 @@ export const googleCallback = async (req: Request, res: Response) => {
 const sendCookieAndRedirect = (res: Response, user: User) => {
   try {
     const token = generateToken(user);
+    console.warn("===================");
+    console.warn("Logging in sendCookieAndRedirect()");
+    console.warn("Redirecting to React with the following token and options:");
+    console.warn(token);
+    console.warn(cookieOptions);
+    console.warn("===================");
     res.cookie("token", token, cookieOptions);
     res.header("Authorization", `Bearer ${token}`); // Fallback for privacy blockers
     res.redirect(LOGGED_IN_REACT_ADDRESS);

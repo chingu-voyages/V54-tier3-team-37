@@ -6,13 +6,18 @@ export const verifyJWT = async (token: string) => {
 };
 
 export const decode = (token: string) => {
+  console.warn("===================");
+  console.warn("Logging in decode()");
+  console.warn(`Current JWT secret: ${String(process.env.JWT_SECRET)}`);
+  console.warn(`Attempting to verify token: ${token}`);
   try {
     // Decode the token
     const decoded = jwt.verify(
       token,
       String(process.env.JWT_SECRET)
     ) as jwt.JwtPayload;
-
+    console.log(`Returning from decode(): ${decoded}`);
+    console.warn("===================");
     return decoded;
   } catch (error: unknown) {
     console.error(
