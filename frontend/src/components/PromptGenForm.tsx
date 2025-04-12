@@ -4,7 +4,7 @@ import { Info } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { LanguageSelect, PentagramField } from '@/types/prompt';
+import { LanguageSelect } from '@/types/prompt';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Button } from './ui/button';
@@ -23,6 +23,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/t
 
 import { useAppDispatch } from '@/store/hooks';
 import { sendPromptToGemini } from '@/store/slices/promptSlice';
+import { pentagramFields } from '@/utils/pentagramField';
 
 const formSchema = z.object({
   role: z.string().trim().min(1, { message: 'A defined role is required' }),
@@ -51,54 +52,6 @@ const PromptGenForm = ({
   isGenerated,
 }: PromptGenFormProps) => {
   const dispatch = useAppDispatch();
-
-  const pentagramFields: PentagramField[] = [
-    {
-      name: 'role',
-      label: 'Role',
-      type: 'textarea',
-      placeholder:
-        'E.g. You are a friendly and enthusiastic social media influencer who promotes eco-friendly living.',
-      tooltip: 'Define the role or identity for the AI. This guides the tone and style.',
-      required: true,
-    },
-    {
-      name: 'context',
-      label: 'Context',
-      type: 'textarea',
-      placeholder:
-        'E.g. We want to encourage people to make small changes in their daily lives to reduce their environmental impact.',
-      tooltip: 'Provide background information to help the AI understand the task.',
-      required: true,
-    },
-    {
-      name: 'task',
-      label: 'Task',
-      type: 'textarea',
-      placeholder:
-        'E.g. Write a short social media post that inspires people to adopt one simple sustainable habit.',
-      tooltip: 'Clearly state what action you want the AI to take.',
-      required: true,
-    },
-    {
-      name: 'output',
-      label: 'Output',
-      type: 'textarea',
-      placeholder:
-        'E.g. The post should be concise, positive, and include a call to action. It should be suitable for platforms like Instagram or Twitter.',
-      tooltip: "Specify the desired format, style, and tone of the AI tool's response.",
-      required: true,
-    },
-    {
-      name: 'constraints',
-      label: 'Constraints',
-      type: 'textarea',
-      placeholder:
-        'E.g. Avoid using overly technical jargon. Keep the message positive and avoid any negative or guilt-inducing language.',
-      tooltip: 'Set any limitations or restrictions for the AI to follow.',
-      required: true,
-    },
-  ];
 
   const languageSelect: LanguageSelect = {
     name: 'language',
@@ -134,7 +87,6 @@ const PromptGenForm = ({
       geminiSummary: null,
     };
 
-    console.log('PAYLOAD:', payload);
     try {
       await dispatch(sendPromptToGemini(payload)).unwrap();
       setIsGenerated(true);
@@ -261,14 +213,36 @@ const PromptGenForm = ({
             ))}
           </CardContent>
         </Card>
-        <Button
-          size="lg"
-          className="cursor-pointer p-8 text-xl"
-          type="submit"
-          disabled={isLoading}
-        >
-          {isLoading ? 'Wait...' : isGenerated ? 'Regenerate' : 'Generate'}
-        </Button>
+        <div className="flex items-center justify-center gap-6">
+          <Button
+            type="button"
+            variant="outline"
+            className="cursor-pointer p-6 text-lg"
+            onClick={() => {
+              form.reset();
+              setFormValues({
+                role: '',
+                context: '',
+                task: '',
+                output: '',
+                constraints: '',
+                language: 'EN',
+              });
+              setIsGenerated(false);
+            }}
+          >
+            Clear Form
+          </Button>
+
+          <Button
+            size="lg"
+            className="cursor-pointer p-6 text-lg"
+            type="submit"
+            disabled={isLoading}
+          >
+            {isLoading ? 'Wait...' : isGenerated ? 'Regenerate' : 'Generate'}
+          </Button>
+        </div>
       </form>
     </Form>
   );
