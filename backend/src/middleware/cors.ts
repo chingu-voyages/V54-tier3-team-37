@@ -1,7 +1,10 @@
 import { CorsOptions } from "cors";
 import { NextFunction, Request, Response } from "express";
 
-const allowedOrigins = process.env.HOME_REACT_ADDRESS?.split(",");
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://prompto37.netlify.app",
+];
 
 export const corsOptions: CorsOptions = {
   // Handle origins dynamically
