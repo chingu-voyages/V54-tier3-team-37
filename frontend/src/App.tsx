@@ -1,9 +1,5 @@
 import { Provider } from 'react-redux';
-import {
-  Navigate,
-  Route,
-  Routes,
-} from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import About from './components/About';
 import Auth from './components/Auth';
@@ -21,10 +17,7 @@ function App() {
   return (
     <Provider store={store}>
       <AuthWrapper />
-      <div className="flex h-screen w-screen flex-col items-center justify-start font-inter text-prompto-gray-dark">
-        <header className="w-full">
-          <Nav />
-        </header>
+      <div className="font-inter flex h-screen w-screen flex-col items-center justify-start text-prompto-gray-dark">
         <Routes>
           <Route
             path="/"
@@ -49,7 +42,12 @@ function App() {
           >
             <Route
               index
-              element={<Navigate to="history" replace />}
+              element={
+                <Navigate
+                  to="history"
+                  replace
+                />
+              }
             />
             <Route
               path="generate"

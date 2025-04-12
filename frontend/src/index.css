@@ -156,36 +156,51 @@
   body {
     @apply bg-background text-foreground;
   }
-  /* style system font */
-  .font-inter {
-    font-family: 'Inter', sans-serif;
-    font-optical-sizing: auto;
-    font-weight: <weight>;
-    font-style: normal;
-  }
-  /* text styles */
-  .text-h1 {
-    @apply text-[48px] font-semibold tracking-wide;
-  }
-  .text-h2 {
-    @apply text-[40px] font-semibold tracking-wide;
-  }
-  .text-h3 {
-    @apply text-[32px] font-bold tracking-wide;
-  }
-  .text-h4 {
-    @apply text-[24px] font-semibold tracking-wide;
-  }
-  .text-h5 {
-    @apply text-[24px] font-medium tracking-wide;
-  }
-  .text-button {
-    @apply text-[20px] font-medium;
-  }
-  .text-subheading {
-    @apply text-[20px] font-normal;
-  }
-  .text-copy {
-    @apply text-[16px] font-normal;
-  }
+}
+
+/* style system font */
+.font-inter {
+  font-family: 'Inter', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+}
+
+/* text styles */
+.text-h1 {
+  font-size: 48px;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+.text-h2 {
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+.text-h3 {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 0.025em;
+}
+.text-h4 {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+.text-h5 {
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 0.025em;
+}
+.text-button {
+  font-size: 20px;
+  font-weight: 500;
+}
+.text-subheading {
+  font-size: 20px;
+  font-weight: 400;
+}
+.text-copy {
+  font-size: 16px;
+  font-weight: 400;
 }
