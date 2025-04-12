@@ -1,12 +1,12 @@
 # Prompto: Backend Application with Seamless OAuth and Gemini Integration
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Node-brightgreen" alt="Node.js Badge"/>
-  <img src="https://img.shields.io/badge/Express-black" alt="Express Badge"/>
-  <img src="https://img.shields.io/badge/Docker-blue" alt="Docker Badge"/>
-  <img src="https://img.shields.io/badge/Prisma-blueviolet" alt="Prisma Badge"/>
-  <img src="https://img.shields.io/badge/OAuth2-orange" alt="OAuth2 Badge"/>
-  <img src="https://img.shields.io/badge/Gemini-blue" alt="Gemini Badge"/>
+  <img src="https://img.shields.io/badge/Node-43853D?style=flat&logo=node.js&logoColor=white" alt="Node.js Badge"/>
+  <img src="https://img.shields.io/badge/Express-000000?style=flat&logo=express&logoColor=white" alt="Express Badge"/>
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white" alt="Docker Badge"/>
+  <img src="https://img.shields.io/badge/Prisma-0C344B?style=flat&logo=prisma&logoColor=white" alt="Prisma Badge"/>
+  <img src="https://img.shields.io/badge/OAuth2-F29400?style=flat" alt="OAuth2 Badge"/>
+  <img src="https://img.shields.io/badge/Gemini-5C6BC0?style=flat" alt="Gemini Badge"/>
 </p>
 
 ---
@@ -29,9 +29,9 @@
 
 ## <a id="about-project"></a>ℹ️ About Project
 
-Prompto is a backend application built to generate high-quality prompts that enable more accurate communication with large language models (LLMs). The goal of Prompto is to help users interact with LLMs more efficiently by providing a Pentagram-format input form, which guides prompt construction and improves the quality of model responses.
+Prompto is a backend application built to generate high-quality prompts that enable more accurate communication with large language models (LLMs).The goal of Prompto is to help users interact with LLMs more efficiently by providing a Pentagram-format input form, which guides prompt construction and improves the quality of model responses.
 
-Prompto is built using Node.js and Express, containerized with Docker for consistent deployment. It is a backend application that is a part of a full-stack MERN application. PostgreSQL is our database of choice with Prisma ORM for schema modeling and database interactions. For more technical details for developers, see section _Technologies & Dependencies used_. The app was built by a team of 2, during a 6 week time period, see more in the section _Backend developers_.
+Prompto is built using Node.js and Express, containerized with Docker for consistent deployment. It is a backend application that is a part of a full-stack application. PostgreSQL is our database of choice with Prisma ORM for schema modeling and database interactions. The service ensures secure sign-in through the use of authentication functionality provided by Google and GitHub directly, without relying on third-party software. For more technical details for developers, see section _Technologies & Dependencies used_. The app was built by a team of 2, during a 6 week time period, see more in the section _Backend developers_.
 
 ---
 
@@ -63,7 +63,7 @@ Explore the interactive Swagger documentation: [Prompto API](https://v54-tier3-t
 - **API & Documentation:** `swagger-jsdoc`, `swagger-ui-express`, `zod`
 - **Utility:** `uuid`, `js-yaml`
 - **Containerization:** Docker
-- **Deployment:** Render
+- **Deployment:** Render, Neon
 - **Testing:** Jest
 - **Code quality:** `husky`, `eslint`
 
@@ -131,7 +131,7 @@ Explore the interactive Swagger documentation: [Prompto API](https://v54-tier3-t
   Gemini integration involves these steps:
 
   1.  A user initiates a POST request with a Pentagram-structured input.
-  2.  The server sends the input to the Gemini API.
+  2.  The server processes the initial input using prompt engineering techniques and sends it to the Gemini API.
   3.  Upon receiving an enhanced prompt, the server sends a follow-up request to get a summary of the prompt.
   4.  Then the prompt is stripped of markdown and sent, along with the summary, to the React frontend.
 
@@ -185,7 +185,7 @@ yarn prisma generate
 
 ---
 
-## &nbsp;<img src="https://static-00.iconduck.com/assets.00/nodemon-icon-449x512-m36gnbqo.png" alt="Nodemon Logo" width="22"/>&nbsp; Start the application with nodemon
+## <a id="start-the-application-with-nodemon"></a> &nbsp;<img src="https://static-00.iconduck.com/assets.00/nodemon-icon-449x512-m36gnbqo.png" alt="Nodemon Logo" width="22"/>&nbsp; Start the application with nodemon
 
 With the following configuration hot reloading with `nodemon` is available. Pay attention to the fact that changes made to the `nodemon` config directly will require restarting the application in order to see the changes.
 To start the application, navigate to the backend folder and run:
@@ -202,7 +202,7 @@ yarn workspace backend start
 
 ---
 
-## &nbsp;<img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/Jest.svg" alt="Jest Logo" width="22"/>&nbsp; Test with Jest
+## <a id="test-with-jest"></a> &nbsp;<img src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/Jest.svg" alt="Jest Logo" width="22"/>&nbsp; Test with Jest
 
 Testing with Jest and TypeScript is enabled.
 To run the tests, navigate to the backend folder and run:
@@ -219,7 +219,7 @@ yarn workspace backend test
 
 ---
 
-## &nbsp;<img src="https://img.icons8.com/ios11/512/FFFFFF/github.png" alt="GitHub Logo" width="30"/>&nbsp; Continuous Integration
+## <a id="continuous-integration"></a> &nbsp;<img src="https://img.icons8.com/ios11/512/FFFFFF/github.png" alt="GitHub Logo" width="30"/>&nbsp; Continuous Integration
 
 To ensure consistent code quality a GitHub workflow is set up.
 The workflow checks for linting and type errors, generates prisma and runs tests.
