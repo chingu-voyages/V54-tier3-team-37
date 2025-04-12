@@ -30,7 +30,7 @@ export const configApp = async () => {
     session({
       secret: sessionSecret,
       resave: false,
-      saveUninitialized: false,
+      saveUninitialized: true,
     })
   );
 
