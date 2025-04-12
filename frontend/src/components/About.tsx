@@ -1,18 +1,8 @@
 import { cn } from '@/lib/cn';
-import {
-  AboutFeatureCard,
-  AboutPersona,
-  AboutReason,
-  AboutStep,
-} from '@/types/ui';
+import { AboutFeatureCard, AboutPersona, AboutReason, AboutStep } from '@/types/ui';
 
 import Container from './Container';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from './ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Separator } from './ui/separator';
 
 const About = () => {
@@ -53,7 +43,7 @@ const AboutWhat = () => {
       <Container className="gap-32 pt-16 pb-32">
         <div>
           <h2 className="text-center text-3xl font-bold uppercase">Welcome to Prompto</h2>
-          <Separator className="border-muted-foreground mx-auto mt-4 max-w-1/2 border-2" />
+          <Separator className="mx-auto mt-4 max-w-1/2 border-2 border-muted-foreground" />
         </div>
         <div className="tracking-tighter max-sm:flex max-sm:flex-col max-sm:gap-16 sm:grid sm:grid-cols-2">
           <div className="grid h-fit w-fit grid-cols-2 text-center tracking-tighter">
@@ -61,7 +51,7 @@ const AboutWhat = () => {
               <div
                 key={persona.name}
                 className={cn(
-                  `bg-muted flex size-40 flex-col justify-end p-8`,
+                  `flex size-40 flex-col justify-end bg-muted p-8`,
                   index % 2 === 0 && 'mt-8 mr-8 self-end'
                 )}
               >
@@ -120,11 +110,11 @@ const AboutFeatures = () => {
   ];
 
   return (
-    <section className="max-sm:bg-muted sm:from-muted sm:to-background w-full sm:bg-gradient-to-b sm:from-50% sm:to-50%">
+    <section className="w-full max-sm:bg-muted sm:bg-gradient-to-b sm:from-muted sm:from-50% sm:to-background sm:to-50%">
       <Container className="gap-24 pt-16 pb-48">
         <div>
           <h2 className="text-center text-3xl font-bold">Key Features</h2>
-          <Separator className="border-muted-foreground mx-auto mt-4 max-w-1/2 border-2" />
+          <Separator className="mx-auto mt-4 max-w-1/2 border-2 border-muted-foreground" />
         </div>
         <div className="w-full gap-8 text-center tracking-tighter max-sm:flex max-sm:flex-col max-sm:gap-16 sm:grid sm:h-112 sm:grid-cols-4">
           {cards.map((card, index) => (
@@ -133,7 +123,7 @@ const AboutFeatures = () => {
               className={cn(`h-fit rounded-none py-16`, index % 2 === 0 && 'self-end')}
             >
               <CardHeader className="gap-8">
-                <div className="bg-muted m-auto size-8"></div>
+                <div className="m-auto size-8 bg-muted"></div>
                 <CardTitle className="text-xl font-bold">{card.heading}</CardTitle>
               </CardHeader>
               <CardContent>{card.description}</CardContent>
@@ -170,7 +160,7 @@ const AboutWhy = () => {
           <h2 className="text-center text-3xl font-bold uppercase">
             Why Choose Our AI Prompt Generator
           </h2>
-          <Separator className="border-muted-foreground mx-auto mt-4 max-w-1/2 border-2" />
+          <Separator className="mx-auto mt-4 max-w-1/2 border-2 border-muted-foreground" />
         </div>
         <div className="tracking-tighter max-sm:flex max-sm:flex-col-reverse max-sm:gap-16 sm:grid sm:grid-cols-2 sm:gap-32">
           <div className="space-y-16 tracking-tighter">
@@ -184,7 +174,7 @@ const AboutWhy = () => {
               </div>
             ))}
           </div>
-          <div className="bg-muted w-full max-sm:h-48 sm:h-full"></div>
+          <div className="w-full bg-muted max-sm:h-48 sm:h-full"></div>
         </div>
       </Container>
     </section>
@@ -315,7 +305,7 @@ const AboutHow = () => {
       <Container className="gap-32 pt-16 pb-32">
         <div>
           <h2 className="text-3xl font-bold uppercase">How to Use Prompto's AI Prompt Generator</h2>
-          <Separator className="border-muted-foreground mx-auto mt-4 max-w-1/2 border-2" />
+          <Separator className="mx-auto mt-4 max-w-1/2 border-2 border-muted-foreground" />
         </div>
 
         <ol className="space-y-16 text-lg">
@@ -343,7 +333,7 @@ const AboutHow = () => {
                   step.items[0].description
                 )}
               </div>
-              <div className="bg-muted mt-12 h-full w-full max-sm:h-48"></div>
+              <div className="mt-12 h-full w-full bg-muted max-sm:h-48"></div>
             </li>
           ))}
         </ol>

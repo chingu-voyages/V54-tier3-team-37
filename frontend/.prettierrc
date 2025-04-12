@@ -2,16 +2,17 @@
   "arrowParens": "always",
   "bracketSameLine": false,
   "jsxSingleQuote": false,
+  "plugins": [
+    "prettier-plugin-tailwindcss"
+  ],
   "printWidth": 100,
   "requireConfig": false,
   "semi": true,
   "singleAttributePerLine": true,
   "singleQuote": true,
   "tabWidth": 2,
+  "tailwindStylesheet": "./src/index.css",
   "trailingComma": "es5",
   "useEditorConfig": false,
-  "useTabs": false,
-  "plugins": [
-    "prettier-plugin-tailwindcss"
-  ]
+  "useTabs": false
 }
