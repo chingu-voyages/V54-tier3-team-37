@@ -9,7 +9,6 @@ import { authRoute, promptRoute, userRoute } from "../routes/index.js";
 
 export const configApp = async () => {
   const app = express();
-  app.set("trust proxy", 1);
   app.use(express.json());
 
   if (process.env.NODE_ENV !== "test") {
