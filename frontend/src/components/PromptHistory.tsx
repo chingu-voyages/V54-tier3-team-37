@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { Edit, Plus, Star, Trash } from 'lucide-react';
+import { Plus, Trash } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
@@ -10,6 +10,7 @@ import DeleteDialog from './common/DeletePromptDialog';
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
 import { Button } from './ui/button';
+import Star from './icons/StartIcon';
 
 const PromptHistory = () => {
   const dispatch = useAppDispatch();
@@ -73,12 +74,16 @@ const PromptHistory = () => {
                   <div className="flex items-center gap-4">
                     <div className="flex gap-1">
                       {[...Array(5)].map((_, i) => (
-                        <Star
+                        <div
                           key={i}
-                          size={16}
-                          className={i < prompt.score ? 'text-yellow-500' : 'text-muted-foreground'}
                           onClick={(e) => e.stopPropagation()}
-                        />
+                        >
+                          <Star
+                            width={16}
+                            height={16}
+                            color={i < prompt.score ? '#FDD902' : '#9CA3AF'}
+                          />
+                        </div>
                       ))}
                     </div>
 
@@ -94,15 +99,6 @@ const PromptHistory = () => {
                         />
                       }
                     />
-                    <Edit
-                      size={18}
-                      className="text-muted-foreground hover:text-primary cursor-pointer"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        // TODO: Handle edit
-                      }}
-                    />
-
                     <AccordionTrigger
                       className="!m-0 w-5 !p-0"
                       onClick={(e) => e.stopPropagation()}

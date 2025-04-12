@@ -3,12 +3,13 @@ import {
   savePrompt,
   fetchPrompts,
   deletePrompt as deletePromptApi,
+  updatePromptScoreApi,
 } from '@/api/prompt';
 import type { PromptBody, PromptResponse } from '@/types/prompt';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface PromptState {
-  output: string | null;
+  output: PromptResponse | null;
   loading: 'idle' | 'pending' | 'succeeded' | 'failed';
   error: string | null;
   promptHistory: PromptResponse[];
@@ -83,6 +84,21 @@ export const deletePrompt = createAsyncThunk(
   }
 );
 
+export const updatePromptScoreOnServer = createAsyncThunk(
+  'prompts/updatePromptScoreOnServer',
+  async ({ promptId, score }: { promptId: string; score: number }, { rejectWithValue }) => {
+    try {
+      await updatePromptScoreApi(promptId, score);
+      return { promptId, score };
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('Failed to update score');
+    }
+  }
+);
+
 export const promptSlice = createSlice({
   name: 'prompts',
   initialState,
@@ -92,6 +108,11 @@ export const promptSlice = createSlice({
       state.error = null;
       state.loading = 'idle';
     },
+    updatePromptScore: (state, action: PayloadAction<number>) => {
+      if (state.output) {
+        state.output.score = action.payload;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -100,7 +121,7 @@ export const promptSlice = createSlice({
         state.error = null;
         state.output = null;
       })
-      .addCase(sendPromptToGemini.fulfilled, (state, action: PayloadAction<string>) => {
+      .addCase(sendPromptToGemini.fulfilled, (state, action: PayloadAction<PromptResponse>) => {
         state.loading = 'succeeded';
         state.output = action.payload;
       })
@@ -113,8 +134,9 @@ export const promptSlice = createSlice({
         state.loading = 'pending';
         state.error = null;
       })
-      .addCase(savePromptToDatabase.fulfilled, (state) => {
+      .addCase(savePromptToDatabase.fulfilled, (state, action: PayloadAction<PromptResponse>) => {
         state.loading = 'succeeded';
+        state.output = action.payload;
       })
       .addCase(savePromptToDatabase.rejected, (state, action) => {
         state.loading = 'failed';
@@ -138,9 +160,18 @@ export const promptSlice = createSlice({
       })
       .addCase(deletePrompt.rejected, (state, action) => {
         state.error = (action.payload as string) || null;
+      })
+
+      .addCase(updatePromptScoreOnServer.fulfilled, (state, action) => {
+        if (state.output && state.output.id === action.payload.promptId) {
+          state.output.score = action.payload.score;
+        }
+      })
+      .addCase(updatePromptScoreOnServer.rejected, (state, action) => {
+        state.error = (action.payload as string) || null;
       });
   },
 });
 
-export const { clearPromptOutput } = promptSlice.actions;
+export const { clearPromptOutput, updatePromptScore } = promptSlice.actions;
 export default promptSlice.reducer;

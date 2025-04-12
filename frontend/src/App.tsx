@@ -1,9 +1,5 @@
 import { Provider } from 'react-redux';
-import {
-  Navigate,
-  Route,
-  Routes,
-} from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import About from './components/About';
 import AboutPage from './components/AboutPage';
@@ -17,6 +13,7 @@ import PrivateRoute from './components/PrivateRoute';
 import PromptHistory from './components/PromptHistory';
 import PromptGenPage from './pages/PromptGenPage';
 import { store } from './store';
+import { Toaster } from './components/ui/sonner';
 
 function App() {
   return (
@@ -26,6 +23,7 @@ function App() {
         <header className="w-full">
           <Nav />
         </header>
+        <Toaster />
         <Routes>
           <Route
             path="/"
@@ -54,7 +52,12 @@ function App() {
           >
             <Route
               index
-              element={<Navigate to="history" replace />}
+              element={
+                <Navigate
+                  to="history"
+                  replace
+                />
+              }
             />
             <Route
               path="generate"
