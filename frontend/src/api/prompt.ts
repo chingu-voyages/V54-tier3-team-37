@@ -65,3 +65,20 @@ export const deletePrompt = async (promptId: string) => {
 
   return await res.json();
 };
+
+export const updatePromptScoreApi = async (promptId: string, score: number) => {
+  const res = await fetch(`${API_BASE_URL}/prompts/${promptId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify({ score }),
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to update prompt score');
+  }
+
+  return await res.json();
+};
