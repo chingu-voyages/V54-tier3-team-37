@@ -4,7 +4,10 @@ import { Info } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { useAppDispatch } from '@/store/hooks';
+import { sendPromptToGemini } from '@/store/slices/promptSlice';
 import { LanguageSelect } from '@/types/prompt';
+import { pentagramFields } from '@/utils/pentagramField';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Button } from './ui/button';
@@ -20,10 +23,6 @@ import {
 } from './ui/select';
 import { Textarea } from './ui/textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
-
-import { useAppDispatch } from '@/store/hooks';
-import { sendPromptToGemini } from '@/store/slices/promptSlice';
-import { pentagramFields } from '@/utils/pentagramField';
 
 const formSchema = z.object({
   role: z.string().trim().min(1, { message: 'A defined role is required' }),
