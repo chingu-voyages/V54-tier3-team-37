@@ -11,21 +11,21 @@ export const pentagramFields: PentagramField[] = [
     required: true,
   },
   {
-    name: 'context',
-    label: 'Context',
-    type: 'textarea',
-    placeholder:
-      'E.g. We want to encourage people to make small changes in their daily lives to reduce their environmental impact.',
-    tooltip: 'Provide background information to help the AI understand the task.',
-    required: true,
-  },
-  {
     name: 'task',
     label: 'Task',
     type: 'textarea',
     placeholder:
       'E.g. Write a short social media post that inspires people to adopt one simple sustainable habit.',
     tooltip: 'Clearly state what action you want the AI to take.',
+    required: true,
+  },
+  {
+    name: 'context',
+    label: 'Context',
+    type: 'textarea',
+    placeholder:
+      'E.g. We want to encourage people to make small changes in their daily lives to reduce their environmental impact.',
+    tooltip: 'Provide background information to help the AI understand the task.',
     required: true,
   },
   {

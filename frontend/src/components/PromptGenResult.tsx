@@ -1,18 +1,20 @@
 import { useCallback, useState } from 'react';
+
 import { CheckCircle, Copy, HelpCircle, Save } from 'lucide-react';
+import { toast } from 'sonner';
+
 import { cn } from '@/lib/cn';
-import { Button } from './ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import {
   savePromptToDatabase,
   updatePromptScore,
   updatePromptScoreOnServer,
 } from '@/store/slices/promptSlice';
-
 import type { FormValues, PromptResponse } from '@/types/prompt';
-import { toast } from 'sonner';
+
 import Star from './icons/StartIcon';
+import { Button } from './ui/button';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card';
 
 type PromptGenResultProps = {
   formValues: FormValues | null;
@@ -90,23 +92,34 @@ const PromptGenResult = ({ formValues }: PromptGenResultProps) => {
   };
 
   return (
-    <Card className={cn('w-full text-center', output && 'bg-muted')}>
+    <Card className={cn('w-full text-center', output ? 'bg-[#E6E5FF]' : 'bg-white')}>
       <CardHeader>
-        <CardTitle className="text-2xl">Generated Prompt</CardTitle>
+        <CardTitle className="pt-4 text-[24px] font-semibold text-prompto-accent">
+          Generated Prompt
+        </CardTitle>
       </CardHeader>
-      <CardContent className="min-h-32 px-16 py-8">
-        <p
-          className={cn(
-            'whitespace-pre-line',
-            output?.geminiText &&
-              'bg-background border-muted-foreground rounded-lg border p-4 text-start text-pretty'
-          )}
-        >
-          {output?.geminiText || 'Your generated prompts will appear here'}
-        </p>
+      <CardContent className="flex min-h-32 flex-col items-center gap-4 px-16 py-4">
+        {output ? (
+          <p
+            className={cn(
+              'whitespace-pre-line',
+              output?.geminiText &&
+                'rounded-lg bg-white p-6 text-start text-pretty text-prompto-gray-dark'
+            )}
+          >
+            {output?.geminiText
+              ? `" ${output?.geminiText} "`
+              : 'Your generated prompts will appear here'}
+          </p>
+        ) : (
+          <>
+            <img src="/jetpack-man.png" />
+            <p className="pb-4 text-prompto-gray-dark">Your generated prompt will appear here.</p>
+          </>
+        )}
       </CardContent>
       {output?.geminiText && (
-        <CardFooter className="flex items-center justify-between gap-4">
+        <CardFooter className="flex items-center justify-between gap-4 px-16">
           <div className="flex items-center gap-1">
             {[...Array(5)].map((_, i) => {
               const isSaved = Boolean(output?.id);
@@ -135,20 +148,20 @@ const PromptGenResult = ({ formValues }: PromptGenResultProps) => {
           </div>
           <div className="flex items-center gap-2">
             <Button
-              size="lg"
-              onClick={handleCopy}
-              className="cursor-pointer"
-            >
-              <Copy size={16} />
-              Copy
-            </Button>
-            <Button
-              size="lg"
               onClick={handleSave}
-              className="cursor-pointer"
+              variant="outline"
+              className="min-w-32 text-[20px] text-prompto-primary hover:bg-prompto-primary hover:text-white active:bg-accent"
             >
               <Save size={16} />
               Save
+            </Button>
+            <Button
+              onClick={handleCopy}
+              variant="primary"
+              className="min-w-32 bg-prompto-accent text-[20px] text-white inset-ring-prompto-accent"
+            >
+              <Copy size={16} />
+              Copy
             </Button>
           </div>
         </CardFooter>

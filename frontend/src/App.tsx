@@ -26,6 +26,7 @@ function App() {
               <>
                 <Hero />
                 <About />
+                <Footer />
               </>
             }
           />
@@ -62,7 +63,6 @@ function App() {
           {/* Optional: Add a 404 Not Found route */}
           {/* <Route path="*" element={<NotFoundPage />} /> */}
         </Routes>
-        <Footer />
       </div>
     </Provider>
   );

@@ -26,8 +26,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/t
 
 const formSchema = z.object({
   role: z.string().trim().min(1, { message: 'A defined role is required' }),
-  context: z.string().trim().min(1, { message: 'Background context is required' }),
   task: z.string().trim().min(1, { message: 'A clear task is required' }),
+  context: z.string().trim().min(1, { message: 'Background context is required' }),
   output: z.string().trim().min(1, { message: 'A specified output is required' }),
   constraints: z.string().trim().min(1, { message: 'Constraints and limits are required' }),
   language: z.string().default('EN'),
@@ -100,11 +100,13 @@ const PromptGenForm = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex w-full flex-col items-center gap-16"
+        className="flex w-full flex-col items-center gap-8"
       >
         <Card className="w-full">
           <CardHeader>
-            <CardTitle className="text-center text-2xl">AI Prompt Generator Form</CardTitle>
+            <CardTitle className="text-center text-[24px] font-semibold tracking-wide text-prompto-primary">
+              AI Prompt Generator Form
+            </CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-2 gap-8 pb-8">
             {/* Role field */}
@@ -115,7 +117,9 @@ const PromptGenForm = ({
                 <FormItem className="relative">
                   <FormLabel className="flex flex-col items-start">
                     <div className="flex items-center gap-2">
-                      <span className="text-lg">Role</span>
+                      <span className="text-lg">
+                        Role <span className="text-red-500">*</span>
+                      </span>
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger asChild>
@@ -185,7 +189,9 @@ const PromptGenForm = ({
                   <FormItem className="relative">
                     <FormLabel className="flex flex-col items-start">
                       <div className="flex items-center gap-2">
-                        <span className="text-lg">{fieldDef.label}</span>
+                        <span className="text-lg">
+                          {fieldDef.label} <span className="text-red-500">*</span>
+                        </span>
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
@@ -216,7 +222,7 @@ const PromptGenForm = ({
           <Button
             type="button"
             variant="outline"
-            className="cursor-pointer p-6 text-lg"
+            className="text-[20px] text-prompto-primary"
             onClick={() => {
               form.reset();
               setFormValues({
@@ -234,10 +240,10 @@ const PromptGenForm = ({
           </Button>
 
           <Button
-            size="lg"
-            className="cursor-pointer p-6 text-lg"
             type="submit"
+            variant="primary"
             disabled={isLoading}
+            className="text-[20px] text-white"
           >
             {isLoading ? 'Wait...' : isGenerated ? 'Regenerate' : 'Generate'}
           </Button>
