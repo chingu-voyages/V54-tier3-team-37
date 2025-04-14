@@ -32,8 +32,18 @@ const DeleteDialog = ({
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={(e) => e.stopPropagation()}>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm}>Delete</AlertDialogAction>
+          <AlertDialogCancel
+            onClick={(e) => e.stopPropagation()}
+            className="border-prompto-primary bg-transparent text-[20px] text-prompto-primary inset-ring-2 inset-ring-prompto-primary hover:bg-[#E6E5FF] focus-visible:border-white focus-visible:ring-white/50 active:bg-[#AEA7FF]"
+          >
+            Cancel
+          </AlertDialogCancel>
+          <AlertDialogAction
+            onClick={onConfirm}
+            className="'bg-destructive dark:focus-visible:ring-destructive/40' text-[20px] text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20"
+          >
+            Delete
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

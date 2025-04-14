@@ -1,15 +1,20 @@
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 
-import { CheckCircle, Copy, Plus, Trash } from 'lucide-react';
+import { CheckCircle, Copy, HelpCircle, Plus, Trash } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { deletePrompt, getPromptHistory } from '@/store/slices/promptSlice';
+import {
+  deletePrompt,
+  getPromptHistory,
+  updatePromptScoreOnServer,
+} from '@/store/slices/promptSlice';
+import { PromptResponse } from '@/types/prompt';
 import { formatDateTime } from '@/utils/formatDate';
 
 import DeleteDialog from './common/DeletePromptDialog';
-import Star from './icons/StartIcon';
+import StarRating from './StarRating';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
 import { Button } from './ui/button';
 
@@ -29,13 +34,29 @@ const PromptHistory = () => {
     return <div className="py-16 text-center text-red-500">Error: {error}</div>;
   }
 
-  const handleCopy = (prompt) => {
+  const handleCopy = (prompt: PromptResponse) => {
     if (prompt) {
-      navigator.clipboard.writeText(prompt.geminiText);
+      navigator.clipboard.writeText(prompt?.geminiText || '');
       toast.success('Prompt copied to clipboard!', {
         icon: <CheckCircle className="text-green-600" />,
       });
     }
+  };
+
+  const handleStarRate = (promptId: string, newScore: number) => {
+    dispatch(updatePromptScoreOnServer({ promptId: promptId, score: newScore }))
+      .unwrap()
+      .then(() => {
+        toast.success('Rating saved!', {
+          icon: <CheckCircle className="text-green-600" />,
+        });
+      })
+      .catch((err) => {
+        toast.error('Failed to save rating.', {
+          icon: <HelpCircle className="text-red-600" />,
+          description: typeof err === 'string' ? err : 'Try again later.',
+        });
+      });
   };
 
   return (
@@ -56,7 +77,7 @@ const PromptHistory = () => {
           type="multiple"
           className="space-y-4"
         >
-          {promptHistory.map((prompt, index) => {
+          {promptHistory.map((prompt) => {
             const promptDetails = [
               ['Role', prompt.role],
               ['Task', prompt.task],
@@ -82,20 +103,11 @@ const PromptHistory = () => {
                   </div>
 
                   <div className="relative flex h-full items-center gap-4">
-                    <div className="flex gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <div
-                          key={i}
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <Star
-                            width={16}
-                            height={16}
-                            color={i < prompt.score ? '#FDD902' : '#9CA3AF'}
-                          />
-                        </div>
-                      ))}
-                    </div>
+                    <StarRating
+                      currentScore={prompt.score}
+                      isSaved={true}
+                      onRate={(newScore) => handleStarRate(prompt.id, newScore)}
+                    />
 
                     <DeleteDialog
                       onConfirm={() => dispatch(deletePrompt(prompt.id))}
@@ -122,18 +134,21 @@ const PromptHistory = () => {
                   onClick={(e) => e.stopPropagation()}
                 />
 
-                <AccordionContent className="px-6 pb-6 text-base leading-relaxed text-muted-foreground">
+                <AccordionContent className="flex flex-col gap-6 px-6 py-6 text-base leading-relaxed text-muted-foreground">
                   <div className="space-y-2">
                     {promptDetails.map(([label, value]) => (
-                      <p key={label}>
-                        <strong className="text-foreground">{label}:</strong> {value}
+                      <p
+                        key={label}
+                        className="flex gap-3"
+                      >
+                        <span className="min-w-32 font-semibold">{label}:</span> {value}
                       </p>
                     ))}
                   </div>
 
                   <div className="mt-6">
-                    <p className="mb-2 font-semibold text-foreground">Prompto Result:</p>
-                    <p className="text-base leading-relaxed text-muted-foreground">
+                    <p className="mb-2 font-semibold">Prompto Result:</p>
+                    <p className="pr-6 text-base leading-relaxed">
                       “{prompt.geminiText ? prompt.geminiText.replace(/\n/g, ' ').trim() : ''}”
                     </p>
                   </div>

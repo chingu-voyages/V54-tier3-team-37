@@ -108,7 +108,7 @@ const PromptGenResult = ({ formValues }: PromptGenResultProps) => {
             )}
           >
             {output?.geminiText
-              ? `" ${output?.geminiText} "`
+              ? `“${output?.geminiText}”`
               : 'Your generated prompts will appear here'}
           </p>
         ) : (
