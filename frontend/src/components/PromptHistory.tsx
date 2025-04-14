@@ -26,14 +26,6 @@ const PromptHistory = () => {
     dispatch(getPromptHistory());
   }, [dispatch]);
 
-  if (loading === 'pending') {
-    return <div className="py-16 text-center text-muted-foreground">Loading prompts...</div>;
-  }
-
-  if (error) {
-    return <div className="py-16 text-center text-red-500">Error: {error}</div>;
-  }
-
   const handleCopy = (prompt: PromptResponse) => {
     if (prompt) {
       navigator.clipboard.writeText(prompt?.geminiText || '');
@@ -58,6 +50,34 @@ const PromptHistory = () => {
         });
       });
   };
+
+  if (loading === 'pending') {
+    return <div className="py-16 text-center text-muted-foreground">Loading prompts...</div>;
+  }
+
+  if (error) {
+    return <div className="py-16 text-center text-red-500">Error: {error}</div>;
+  }
+
+  // const noPromptTest = true;
+  // if (noPromptTest) {
+  //   return (
+  //     <div className="flex flex-col items-center gap-8 pt-32">
+  //       <img src="/paper-exclamation.png" />
+  //       <p className="text-[20px] text-prompto-gray-dark">
+  //         You don't have any saved prompts to review
+  //       </p>
+  //       <Button variant="primary">
+  //         <Link
+  //           to="/dashboard/generate"
+  //           className="flex items-center gap-2 text-white"
+  //         >
+  //           <Plus /> Create New Prompt
+  //         </Link>
+  //       </Button>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="flex w-full flex-col gap-16 py-16">
@@ -158,8 +178,19 @@ const PromptHistory = () => {
           })}
         </Accordion>
       ) : (
-        <div className="mt-12 text-center text-muted-foreground">
-          You don’t have any saved prompts yet.
+        <div className="flex flex-col items-center gap-8 pt-32">
+          <img src="/paper-exclamation.png" />
+          <p className="text-[20px] text-prompto-gray-dark">
+            You don't have any saved prompts to review
+          </p>
+          <Button variant="primary">
+            <Link
+              to="/dashboard/generate"
+              className="flex items-center gap-2 text-white"
+            >
+              <Plus /> Create New Prompt
+            </Link>
+          </Button>
         </div>
       )}
     </div>

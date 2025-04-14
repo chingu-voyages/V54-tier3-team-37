@@ -92,7 +92,7 @@ const PromptGenResult = ({ formValues }: PromptGenResultProps) => {
   };
 
   return (
-    <Card className={cn('w-full text-center', output ? 'bg-[#E6E5FF]' : 'bg-white')}>
+    <Card className={cn('w-full text-center', output ? 'bg-[#F2F1FF]' : 'bg-white')}>
       <CardHeader>
         <CardTitle className="pt-4 text-[24px] font-semibold text-prompto-accent">
           Generated Prompt
