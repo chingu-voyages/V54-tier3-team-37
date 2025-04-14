@@ -149,14 +149,14 @@ const PromptGenForm = ({
               control={form.control}
               name="language"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-lg">{languageSelect.label}</FormLabel>
+                <FormItem className="flex flex-col">
+                  <FormLabel className="h-min text-lg">{languageSelect.label}</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger className="min-w-[180px] text-lg">
+                      <SelectTrigger className="size-full min-w-[180px] text-lg">
                         <SelectValue placeholder="Select a language" />
                       </SelectTrigger>
                     </FormControl>
@@ -166,7 +166,7 @@ const PromptGenForm = ({
                           <SelectItem
                             key={option.value}
                             value={option.value}
-                            className="text-lg"
+                            className="h-16 text-lg focus:bg-[#E6E5FF]"
                           >
                             {option.text}
                           </SelectItem>

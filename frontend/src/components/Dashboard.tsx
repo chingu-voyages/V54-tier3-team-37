@@ -1,3 +1,4 @@
+import { History, SquarePlus } from 'lucide-react';
 import { Link, Outlet } from 'react-router-dom';
 
 import Container from './Container';
@@ -13,22 +14,24 @@ const Dashboard = () => {
         </div>
       </div>
       <Container className="items-start px-0">
-        <div className="mx-auto grid min-h-screen max-w-7xl grid-cols-[256px_1fr]">
-          <div className="bg-[#E6E5FF] p-8">
-            <ul className="space-y-4 text-lg">
+        <div className="mx-auto grid min-h-screen w-full max-w-7xl grid-cols-[256px_1fr]">
+          <div className="bg-[#E6E5FF] px-2 py-8">
+            <ul className="flex flex-col gap-8 pt-8 text-lg">
               <li className="relative pl-6">
                 <Link
                   to="generate"
-                  className="before:absolute before:top-1/2 before:left-0 before:size-4 before:-translate-y-1/2 before:bg-muted-foreground hover:underline"
+                  className="flex items-center gap-3"
                 >
+                  <SquarePlus />
                   Generate Prompt
                 </Link>
               </li>
               <li className="relative pl-6">
                 <Link
                   to="history"
-                  className="before:absolute before:top-1/2 before:left-0 before:size-4 before:-translate-y-1/2 before:bg-muted-foreground hover:underline"
+                  className="flex items-center gap-3"
                 >
+                  <History />
                   History
                 </Link>
               </li>

@@ -1,16 +1,17 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
-import { Plus, Trash } from 'lucide-react';
+import { CheckCircle, Copy, Plus, Trash } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
 
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { getPromptHistory, deletePrompt } from '@/store/slices/promptSlice';
+import { deletePrompt, getPromptHistory } from '@/store/slices/promptSlice';
 import { formatDateTime } from '@/utils/formatDate';
-import DeleteDialog from './common/DeletePromptDialog';
 
+import DeleteDialog from './common/DeletePromptDialog';
+import Star from './icons/StartIcon';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
 import { Button } from './ui/button';
-import Star from './icons/StartIcon';
 
 const PromptHistory = () => {
   const dispatch = useAppDispatch();
@@ -21,22 +22,31 @@ const PromptHistory = () => {
   }, [dispatch]);
 
   if (loading === 'pending') {
-    return <div className="text-muted-foreground text-center">Loading prompts...</div>;
+    return <div className="py-16 text-center text-muted-foreground">Loading prompts...</div>;
   }
 
   if (error) {
-    return <div className="text-center text-red-500">Error: {error}</div>;
+    return <div className="py-16 text-center text-red-500">Error: {error}</div>;
   }
 
+  const handleCopy = (prompt) => {
+    if (prompt) {
+      navigator.clipboard.writeText(prompt.geminiText);
+      toast.success('Prompt copied to clipboard!', {
+        icon: <CheckCircle className="text-green-600" />,
+      });
+    }
+  };
+
   return (
-    <div className="flex w-full flex-col gap-16 pb-16">
+    <div className="flex w-full flex-col gap-16 py-16">
       <div className="flex items-center justify-end">
-        <Button size="lg">
+        <Button variant="primary">
           <Link
             to="/dashboard/generate"
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 text-white"
           >
-            <Plus /> Generate New Prompt
+            <Plus /> Create Prompt
           </Link>
         </Button>
       </div>
@@ -46,7 +56,7 @@ const PromptHistory = () => {
           type="multiple"
           className="space-y-4"
         >
-          {promptHistory.map((prompt) => {
+          {promptHistory.map((prompt, index) => {
             const promptDetails = [
               ['Role', prompt.role],
               ['Task', prompt.task],
@@ -59,19 +69,19 @@ const PromptHistory = () => {
               <AccordionItem
                 key={prompt.id}
                 value={prompt.id}
-                className="rounded-xl border bg-white shadow-sm"
+                className="relative rounded-xl border bg-white pb-6 shadow-sm"
               >
-                <div className="flex w-full items-start justify-between px-6 py-4">
-                  <div className="flex max-w-[70%] flex-col gap-1">
-                    <h3 className="text-xl font-semibold break-words">
+                <div className="flex w-full items-start justify-between px-6 py-4 pb-6">
+                  <div className="flex max-w-[70%] flex-col gap-6">
+                    <h3 className="text-lg break-words">
                       {prompt.geminiSummary || 'Untitled Prompt'}
                     </h3>
-                    <p className="text-muted-foreground text-sm">
-                      Created on: <strong>{formatDateTime(prompt.createdAt)}</strong>
+                    <p className="text-sm text-prompto-gray-medium">
+                      Created on: {formatDateTime(prompt.createdAt)}
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-4">
+                  <div className="relative flex h-full items-center gap-4">
                     <div className="flex gap-1">
                       {[...Array(5)].map((_, i) => (
                         <div
@@ -94,19 +104,25 @@ const PromptHistory = () => {
                       trigger={
                         <Trash
                           size={18}
-                          className="text-muted-foreground hover:text-destructive cursor-pointer"
+                          className="cursor-pointer text-muted-foreground hover:text-destructive"
                           onClick={(e) => e.stopPropagation()}
                         />
                       }
                     />
-                    <AccordionTrigger
-                      className="!m-0 w-5 !p-0"
-                      onClick={(e) => e.stopPropagation()}
-                    />
+                    <button
+                      onClick={() => handleCopy(prompt)}
+                      className="cursor-pointer"
+                    >
+                      <Copy size={16} />
+                    </button>
                   </div>
                 </div>
+                <AccordionTrigger
+                  className="absolute right-4 bottom-4 !m-0 w-5 cursor-pointer !p-0"
+                  onClick={(e) => e.stopPropagation()}
+                />
 
-                <AccordionContent className="text-muted-foreground px-6 pb-6 text-base leading-relaxed">
+                <AccordionContent className="px-6 pb-6 text-base leading-relaxed text-muted-foreground">
                   <div className="space-y-2">
                     {promptDetails.map(([label, value]) => (
                       <p key={label}>
@@ -116,8 +132,8 @@ const PromptHistory = () => {
                   </div>
 
                   <div className="mt-6">
-                    <p className="text-foreground mb-2 font-semibold">Prompto Result:</p>
-                    <p className="text-muted-foreground text-base leading-relaxed">
+                    <p className="mb-2 font-semibold text-foreground">Prompto Result:</p>
+                    <p className="text-base leading-relaxed text-muted-foreground">
                       “{prompt.geminiText ? prompt.geminiText.replace(/\n/g, ' ').trim() : ''}”
                     </p>
                   </div>
@@ -127,7 +143,7 @@ const PromptHistory = () => {
           })}
         </Accordion>
       ) : (
-        <div className="text-muted-foreground mt-12 text-center">
+        <div className="mt-12 text-center text-muted-foreground">
           You don’t have any saved prompts yet.
         </div>
       )}
