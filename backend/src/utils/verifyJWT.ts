@@ -8,7 +8,6 @@ export const verifyJWT = async (token: string) => {
 export const decode = (token: string) => {
   console.log("===================");
   console.log("Logging in decode()");
-  console.log(`Current JWT secret: ${String(process.env.JWT_SECRET)}`);
   console.log(`Attempting to verify token: ${token}`);
   try {
     // Decode the token
@@ -16,7 +15,8 @@ export const decode = (token: string) => {
       token,
       String(process.env.JWT_SECRET)
     ) as jwt.JwtPayload;
-    console.log(`Returning from decode(): ${decoded}`);
+    console.log(`Returning from decode():`);
+    console.log(decoded);
     console.log("===================");
     return decoded;
   } catch (error: unknown) {
