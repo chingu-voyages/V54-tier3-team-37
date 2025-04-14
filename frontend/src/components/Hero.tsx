@@ -1,8 +1,23 @@
+import { useNavigate } from 'react-router-dom';
+
+import { useAppSelector } from '@/store/hooks';
+
 import Container from './Container';
 import Nav from './Nav';
 import { Button } from './ui/button';
 
 const Hero = () => {
+  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+  const navigate = useNavigate();
+
+  const handleGetStartedClick = () => {
+    if (isLoggedIn) {
+      navigate('/dashboard');
+    } else {
+      navigate('/auth');
+    }
+  };
+
   return (
     <section className="flex min-h-screen w-full flex-col bg-[url('hero-image.png')] bg-cover text-center text-white">
       <header className="w-full">
@@ -20,6 +35,7 @@ const Hero = () => {
           <Button
             variant="secondary"
             size="lg"
+            onClick={handleGetStartedClick}
             className="place-self-end"
           >
             Get Started
