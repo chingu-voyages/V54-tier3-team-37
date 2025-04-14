@@ -10,7 +10,7 @@ export type AboutPersona = {
 export type AboutFeatureCard = {
   heading: string;
   description: string;
-  imgSrc: string;
+  icon: React.ReactNode;
 };
 
 export type AboutReason = {

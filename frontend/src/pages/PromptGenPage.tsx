@@ -10,12 +10,12 @@ const PromptGenPage = () => {
   const [isGenerated, setIsGenerated] = useState(false);
 
   return (
-    <section className="flex w-full flex-col items-center justify-center gap-16 px-4 py-10">
+    <section className="flex w-full flex-col items-center justify-center gap-8 px-4 py-10">
       <div className="space-y-4 text-center">
-        <h1 className="text-2xl">
+        <h1 className="text-[24px] font-semibold text-prompto-accent">
           Create Effective Prompts for AI Systems with Our Intuitive Generator
         </h1>
-        <p>
+        <p className="mx-auto max-w-5/6 text-[20px] text-prompto-gray-medium">
           Fill in the details below to generate a clear, well-structured, and effective prompt
           tailored to your needs.
         </p>

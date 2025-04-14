@@ -1,15 +1,11 @@
-import { NavLink } from '@/types/ui';
+import { Link, useNavigate } from 'react-router-dom';
+
+import { logoutUser } from '@/api/auth';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { logout } from '@/store/slices/authSlice';
+
 import Container from './Container';
 import { Button } from './ui/button';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAppSelector, useAppDispatch } from '@/store/hooks';
-import { logout } from '@/store/slices/authSlice';
-import { logoutUser } from '@/api/auth';
-
-const navLinks: NavLink[] = [
-  { href: '/', text: 'Home' },
-  { href: '/about', text: 'About' },
-];
 
 const Nav = () => {
   const dispatch = useAppDispatch();
@@ -27,46 +23,53 @@ const Nav = () => {
   };
 
   return (
-    <nav className="text-background bg-muted-foreground flex w-full items-center justify-between py-8">
+    <nav className="flex w-full items-center justify-between py-8 text-background">
       <Container className="flex-row justify-between">
         <div className="flex items-center gap-4">
           <Link
             to="/"
             className="font-keania-one text-4xl lowercase"
           >
-            Prompto
+            <img src="/logo-white.png" />
           </Link>
         </div>
         <div className="flex items-center gap-14">
-          <ul className="flex items-center gap-12 text-2xl">
-            {navLinks.map((link) => (
-              <li key={link.text}>
-                <Link to={link.href}>{link.text}</Link>
-              </li>
-            ))}
-          </ul>
-
           {isLoggedIn ? (
             <div className="flex items-center gap-4">
               {user?.displayName && (
-                <span className="text-foreground text-xl">Hi, {user.displayName}</span>
+                <div className="flex items-center gap-8">
+                  <span className="text-xl text-white">Hi, {user.displayName}!</span>
+                  <Button
+                    variant="primary"
+                    className="p-0"
+                  >
+                    <Link
+                      to="/dashboard"
+                      className="px-5 py-3"
+                    >
+                      Dashboard
+                    </Link>
+                  </Button>
+                </div>
               )}
-              <Button
-                variant="outline"
-                size="lg"
-                className="text-foreground cursor-pointer rounded-2xl py-6 text-2xl"
+              <button
                 onClick={handleLogout}
+                className="text-button active:prompto-gray-dark inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 place-self-center rounded-lg bg-transparent px-5 py-3 whitespace-nowrap text-white transition-all duration-300 outline-none hover:bg-[#E6E5FF] hover:text-prompto-gray-dark focus-visible:border-white focus-visible:ring-[3px] focus-visible:ring-white/50 active:scale-95 active:bg-[#AEA7FF] disabled:pointer-events-none disabled:opacity-50 has-[>svg]:px-4 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
               >
                 Log out
-              </Button>
+              </button>
             </div>
           ) : (
             <Button
-              variant="outline"
-              size="lg"
-              className="text-foreground cursor-pointer rounded-2xl py-6 text-2xl"
+              variant="secondary"
+              className="p-0"
             >
-              <Link to="/auth">Sign In</Link>
+              <Link
+                to="/auth"
+                className="px-5 py-3"
+              >
+                Sign In
+              </Link>
             </Button>
           )}
         </div>

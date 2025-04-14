@@ -1,43 +1,51 @@
-import {
-  Link,
-  Outlet,
-} from 'react-router-dom';
+import { History, SquarePlus } from 'lucide-react';
+import { Link, NavLink, Outlet } from 'react-router-dom';
+
+import { cn } from '@/lib/cn';
 
 import Container from './Container';
 
 const Dashboard = () => {
   return (
-    <section className="from-muted to-background w-full bg-gradient-to-r from-50% to-50%">
-      <Container>
-        <div className="grid w-full grid-cols-[256px_1fr]">
-          <div className="bg-muted p-8">
-            <Link
-              to="/"
-              className="font-keania-one text-3xl lowercase"
-            >
-              Prompto
-            </Link>
-          </div>
-          <div className="bg-background p-8">
-            <h2 className="text-3xl font-bold">Dashboard</h2>
-          </div>
-          <div className="bg-muted p-8">
-            <ul className="space-y-4 text-lg">
-              <li className="relative pl-6">
-                <Link
+    <section className="w-full bg-gradient-to-r from-[#F2F1FF] from-50% to-white to-50%">
+      <div className="border-b-2 border-prompto-gray-light bg-white p-8">
+        <div className="mx-auto max-w-7xl">
+          <Link to="/">
+            <img src="/logo-color.png" />
+          </Link>
+        </div>
+      </div>
+      <Container className="items-start px-0">
+        <div className="mx-auto grid min-h-screen w-full max-w-7xl grid-cols-[256px_1fr]">
+          <div className="bg-[#F2F1FF] px-2 py-8">
+            <ul className="flex flex-col items-start gap-2 pt-8 text-lg">
+              <li className="relative w-full px-2">
+                <NavLink
                   to="generate"
-                  className="before:bg-muted-foreground before:absolute before:top-1/2 before:left-0 before:size-4 before:-translate-y-1/2 hover:underline"
+                  className={({ isActive }) =>
+                    cn(
+                      'flex items-center gap-3 rounded-lg p-4',
+                      isActive && 'bg-[#E6E5FF] text-prompto-primary'
+                    )
+                  }
                 >
+                  <SquarePlus />
                   Generate Prompt
-                </Link>
+                </NavLink>
               </li>
-              <li className="relative pl-6">
-                <Link
+              <li className="relative w-full px-2">
+                <NavLink
                   to="history"
-                  className="before:bg-muted-foreground before:absolute before:top-1/2 before:left-0 before:size-4 before:-translate-y-1/2 hover:underline"
+                  className={({ isActive }) =>
+                    cn(
+                      'flex items-center gap-3 rounded-lg p-4',
+                      isActive && 'bg-[#E6E5FF] text-prompto-primary'
+                    )
+                  }
                 >
+                  <History />
                   History
-                </Link>
+                </NavLink>
               </li>
             </ul>
           </div>
