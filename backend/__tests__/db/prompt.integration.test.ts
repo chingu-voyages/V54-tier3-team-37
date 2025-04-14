@@ -1,12 +1,13 @@
-import { afterAll, beforeAll, describe, expect, it } from "@jest/globals";
-import { prisma } from "../../__mocks__/prismaTestUtils";
-import {
-  createTestUser,
-  createTestPrompt,
-  deleteTestUser,
-} from "../../__mocks__/prismaTestUtils";
+import { afterAll, beforeAll, describe, expect, it } from '@jest/globals';
 
-describe("PromptOutput model integration tests", () => {
+import {
+  createTestPrompt,
+  createTestUser,
+  deleteTestUser,
+  prisma,
+} from '../../__mocks__/prismaTestUtils';
+
+describe('PromptOutput model integration tests', () => {
   let userId: string;
   let promptId: string;
 
@@ -19,24 +20,24 @@ describe("PromptOutput model integration tests", () => {
   });
 
   afterAll(async () => {
-    await prisma.prompt.deleteMany();
+    // await prisma.prompt.deleteMany();
     await deleteTestUser(userId);
     await prisma.$disconnect();
   });
 
-  it("should create and retrieve a prompt", async () => {
+  it('should create and retrieve a prompt', async () => {
     const created = await prisma.prompt.create({
       data: {
         userId,
-        role: "student",
-        context: "Explain the solar system",
-        output: "The solar system consists of the sun and planets...",
-        task: "Educational content generation",
-        constraints: "Short summary under 100 words",
-        language: "EN",
+        role: 'student',
+        context: 'Explain the solar system',
+        output: 'The solar system consists of the sun and planets...',
+        task: 'Educational content generation',
+        constraints: 'Short summary under 100 words',
+        language: 'EN',
         score: 5,
-        geminiText: "Gemini generated detailed explanation",
-        geminiSummary: "Summary from Gemini",
+        geminiText: 'Gemini generated detailed explanation',
+        geminiSummary: 'Summary from Gemini',
       },
     });
 
@@ -47,36 +48,35 @@ describe("PromptOutput model integration tests", () => {
     });
 
     expect(found).not.toBeNull();
-    expect(found?.role).toBe("student");
-    expect(found?.language).toBe("EN");
+    expect(found?.role).toBe('student');
+    expect(found?.language).toBe('EN');
     expect(found?.score).toBe(5);
-    expect(found?.geminiText).toContain("Gemini");
+    expect(found?.geminiText).toContain('Gemini');
   });
 
-
-  it("should update the score and geminiSummary", async () => {
+  it('should update the score and geminiSummary', async () => {
     const updated = await prisma.prompt.update({
       where: { id: promptId },
       data: {
         score: 8,
-        geminiSummary: "Updated Gemini summary",
+        geminiSummary: 'Updated Gemini summary',
       },
     });
 
     expect(updated.score).toBe(8);
-    expect(updated.geminiSummary).toBe("Updated Gemini summary");
+    expect(updated.geminiSummary).toBe('Updated Gemini summary');
   });
 
-  it("should delete a prompt", async () => {
+  it('should delete a prompt', async () => {
     const created = await prisma.prompt.create({
       data: {
         userId,
-        role: "tester",
-        context: "Delete me",
-        output: "This is temporary",
-        task: "Testing deletion",
-        constraints: "None",
-        language: "EN",
+        role: 'tester',
+        context: 'Delete me',
+        output: 'This is temporary',
+        task: 'Testing deletion',
+        constraints: 'None',
+        language: 'EN',
       },
     });
 
@@ -91,7 +91,7 @@ describe("PromptOutput model integration tests", () => {
     expect(found).toBeNull();
   });
 
-  it("should cascade delete prompts when user is deleted", async () => {
+  it('should cascade delete prompts when user is deleted', async () => {
     const tempUser = await createTestUser();
     const tempUserId = tempUser.id;
 
@@ -99,21 +99,21 @@ describe("PromptOutput model integration tests", () => {
       data: [
         {
           userId: tempUserId,
-          role: "cascade1",
-          context: "Cascade context 1",
-          output: "Cascade output 1",
-          task: "Cascade test 1",
-          constraints: "None",
-          language: "EN",
+          role: 'cascade1',
+          context: 'Cascade context 1',
+          output: 'Cascade output 1',
+          task: 'Cascade test 1',
+          constraints: 'None',
+          language: 'EN',
         },
         {
           userId: tempUserId,
-          role: "cascade2",
-          context: "Cascade context 2",
-          output: "Cascade output 2",
-          task: "Cascade test 2",
-          constraints: "None",
-          language: "EN",
+          role: 'cascade2',
+          context: 'Cascade context 2',
+          output: 'Cascade output 2',
+          task: 'Cascade test 2',
+          constraints: 'None',
+          language: 'EN',
         },
       ],
     });
