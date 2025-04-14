@@ -9,10 +9,6 @@ export const authMiddleware = async (
   next: NextFunction
 ) => {
   // Extract the token from cookies or headers
-  console.log("===================");
-  console.log("Logging in authMiddleware");
-  console.log(`Cookies: ${req.cookies.token}`);
-  console.log(`Headers: ${req.headers.authorization}`);
   const token =
     req.cookies.token ??
     (req.headers.authorization &&

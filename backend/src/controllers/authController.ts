@@ -46,10 +46,6 @@ const handleCallback = async (
   } catch (error) {
     console.error(error);
     const redirectUrl = `${HOME_REACT_ADDRESS}/?error=${error}`;
-    // =======================================
-    // log for testing purposes
-    console.log(`Redirecting to: ${redirectUrl}`);
-    // =======================================
     res.redirect(String(redirectUrl));
   } finally {
     (req.session as GSession)[sessionState] = "";
@@ -94,12 +90,6 @@ export const googleCallback = async (req: Request, res: Response) => {
 const sendCookieAndRedirect = (res: Response, user: User) => {
   try {
     const token = generateToken(user);
-    console.log("===================");
-    console.log("Logging in sendCookieAndRedirect()");
-    console.log("Redirecting to React with the following token and options:");
-    console.log(token);
-    console.log(cookieOptions);
-    console.log("===================");
     res.cookie("token", token, cookieOptions);
     res.header("Authorization", `Bearer ${token}`); // Fallback for privacy blockers
     res.redirect(LOGGED_IN_REACT_ADDRESS);
