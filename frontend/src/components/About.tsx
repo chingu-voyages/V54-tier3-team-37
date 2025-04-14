@@ -1,7 +1,7 @@
 import { Cog, Handshake, Save, Star } from 'lucide-react';
 
 import { cn } from '@/lib/cn';
-import { AboutFeatureCard, AboutReason, AboutStep } from '@/types/ui';
+import { AboutFeatureCard, AboutReason } from '@/types/ui';
 
 import Container from './Container';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
