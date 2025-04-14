@@ -104,7 +104,7 @@ const PromptGenResult = ({ formValues }: PromptGenResultProps) => {
             className={cn(
               'whitespace-pre-line',
               output?.geminiText &&
-                'rounded-lg bg-white p-6 text-start text-pretty text-prompto-gray-dark'
+                'w-full rounded-lg bg-white p-6 text-start text-pretty text-prompto-gray-dark'
             )}
           >
             {output?.geminiText
