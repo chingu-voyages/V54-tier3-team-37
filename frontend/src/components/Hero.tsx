@@ -22,7 +22,7 @@ const Hero = () => {
     <section className="relative flex min-h-screen w-full flex-col bg-cover text-center text-white">
       <img
         src="/hero-image.png"
-        className="absolute top-0 left-0 -z-10 size-full"
+        className="absolute top-0 left-0 -z-10 size-full object-cover"
       />
       <header className="w-full">
         <Nav />
