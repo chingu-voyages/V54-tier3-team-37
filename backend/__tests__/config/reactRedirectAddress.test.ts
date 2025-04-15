@@ -21,7 +21,7 @@ describe("React redirect address", () => {
   });
 
   test("sets correct development url in undefined environment", async () => {
-    process.env.NODE_ENV = "";
+    process.env.NODE_ENV = "" as typeof process.env.NODE_ENV;
     const { HOME_REACT_ADDRESS } = await import(
       "../../src/config/reactRedirectAddress"
     );
@@ -33,6 +33,6 @@ describe("React redirect address", () => {
     const { HOME_REACT_ADDRESS } = await import(
       "../../src/config/reactRedirectAddress"
     );
-    expect(HOME_REACT_ADDRESS).toContain("netlify");
+    expect(HOME_REACT_ADDRESS).toContain("prompto");
   });
 });

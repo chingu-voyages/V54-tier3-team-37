@@ -2,16 +2,11 @@ import express from "express";
 import request from "supertest";
 import cookieParser from "cookie-parser";
 import {beforeAll, beforeEach, describe, expect, it} from "@jest/globals";
-import {userRoute} from "../../src/routes";
+import {userRoute} from "../../src/routes/userRoutes";
 import {createMockUser, MockUser} from "../../__mocks__/mockUsersRoute";
-import {findUserById} from "../../src/controllers";
 import {deleteUserById, getUserById} from "../../src/controllers/userController";
 import {getSignedTestJWT, JWT_SECRET} from "../../__mocks__/getSignedTestJWT";
-
-
-jest.mock("../../src/controllers/findOrCreateUser", () => ({
-    findUserById: jest.fn(),
-}));
+import { authMiddleware } from "../../src/middleware/authMiddleware"
 
 jest.mock("../../src/controllers/userController", () => {
     return {
@@ -20,14 +15,13 @@ jest.mock("../../src/controllers/userController", () => {
     };
 });
 
-
 let app: express.Express;
 
 beforeAll(() => {
     app = express();
     app.use(cookieParser());
     app.use(express.json());
-    app.use("/users", userRoute);
+    app.use("/users", authMiddleware, userRoute);
 });
 
 describe("GET /users/me", () => {
@@ -39,7 +33,6 @@ describe("GET /users/me", () => {
         mockUser = createMockUser();
         token = getSignedTestJWT(mockUser);
 
-        (findUserById as jest.Mock).mockResolvedValue(mockUser);
         (getUserById as jest.Mock).mockResolvedValue(mockUser);
         (deleteUserById as jest.Mock).mockResolvedValue(mockUser);
 
@@ -68,14 +61,14 @@ describe("GET /users/me", () => {
         expect(res.body.message).toBe("Token not provided");
     });
 
-    it("should return 401 if user is not found during auth", async () => {
-        (findUserById as jest.Mock).mockResolvedValue(null);
+    it("should return 404 if user is not found during auth", async () => {
+        (getUserById as jest.Mock).mockResolvedValue(null);
 
         const res = await request(app)
             .get("/users/me")
             .set("Cookie", [`token=${token}`]);
 
-        expect(res.status).toBe(401);
+        expect(res.status).toBe(404);
         expect(res.body.error).toBe("User not found");
     });
 
@@ -126,12 +119,12 @@ describe("GET /users/me", () => {
         expect(res.body.message).toBe("Token not provided");
     });
 
-    it("should return 401 if user not found during auth", async () => {
-        (findUserById as jest.Mock).mockResolvedValue(null);
+    it("should return 404 if user not found during auth", async () => {
+        (getUserById as jest.Mock).mockResolvedValue(null);
         const res = await request(app)
             .delete("/users/me")
             .set("Cookie", [`token=${token}`]);
-        expect(res.status).toBe(401);
+        expect(res.status).toBe(404);
         expect(res.body.error).toBe("User not found");
     });
 

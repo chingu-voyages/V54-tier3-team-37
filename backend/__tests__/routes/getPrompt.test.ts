@@ -6,20 +6,15 @@ import {createMockUser, MockUser} from "../../__mocks__/mockUsersRoute";
 import cookieParser from "cookie-parser";
 import {promptRoute} from "../../src/routes";
 import {getMockPrompt} from "../../__mocks__/mockPrompts";
-import {findUserById} from "../../src/controllers";
 import {getUserById} from "../../src/controllers/userController";
 import {getPromptService} from "../../src/services/promptService";
+import { authMiddleware } from "../../src/middleware";
 
 let app: express.Express;
 
 jest.mock("../../src/services/promptService", () => ({
     getPromptService: jest.fn(),
 }));
-
-jest.mock("../../src/controllers/findOrCreateUser", () => ({
-    findUserById: jest.fn(),
-}));
-
 
 jest.mock("../../src/controllers/userController", () => ({
     getUserById: jest.fn(),
@@ -30,7 +25,7 @@ beforeAll(() => {
     app = express();
     app.use(cookieParser());
     app.use(express.json());
-    app.use("/prompts", promptRoute);
+    app.use("/prompts", authMiddleware, promptRoute);
 });
 
 
@@ -46,7 +41,6 @@ describe("prompt controller", () => {
         mockUser = createMockUser();
         token = getSignedTestJWT(mockUser);
 
-        (findUserById as jest.Mock).mockResolvedValue(mockUser);
         (getUserById as jest.Mock).mockResolvedValue(mockUser);
     });
 
