@@ -12,5 +12,6 @@ export default {
   moduleNameMapper: {
     "^(\\.{1,2}/.*)\\.js$": "$1",
   },
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   setupFiles: ["dotenv/config"],
 };
