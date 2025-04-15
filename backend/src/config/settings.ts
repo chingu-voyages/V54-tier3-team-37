@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import cors from "cors";
 
-import { corsOptions, securityHeaders } from "../middleware/index.js";
+import { corsOptions, securityHeaders, authMiddleware } from "../middleware/index.js";
 import { authRoute, promptRoute, userRoute } from "../routes/index.js";
 
 export const configApp = async () => {
@@ -30,8 +30,8 @@ export const configApp = async () => {
   );
 
   app.use("/", authRoute);
-  app.use("/users", userRoute);
-  app.use("/prompts", promptRoute);
+  app.use("/users", authMiddleware, userRoute);
+  app.use("/prompts", authMiddleware, promptRoute);
 
   return app;
 };

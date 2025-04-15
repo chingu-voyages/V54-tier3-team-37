@@ -1,12 +1,12 @@
 import {beforeAll, beforeEach, describe, expect, it} from "@jest/globals";
 import request from "supertest";
 import express from "express";
+import cookieParser from "cookie-parser";
 import {getSignedTestJWT, JWT_SECRET} from "../../__mocks__/getSignedTestJWT";
 import {createMockUser, MockUser} from "../../__mocks__/mockUsersRoute";
-import cookieParser from "cookie-parser";
 import {promptRoute} from "../../src/routes";
-import {findUserById} from "../../src/controllers";
 import {getUserById} from "../../src/controllers/userController";
+import { authMiddleware } from "../../src/middleware";
 import {checkDuplicatePrompt, savePromptService, updatePromptScoreService} from "../../src/services/promptService";
 import {validPrompt} from "../../__mocks__/mockPrompts";
 
@@ -16,10 +16,6 @@ jest.mock("../../src/services/promptService", () => ({
     savePromptService: jest.fn(),
     updatePromptScoreService: jest.fn(),
     checkDuplicatePrompt: jest.fn(),
-}));
-
-jest.mock("../../src/controllers/findOrCreateUser", () => ({
-    findUserById: jest.fn(),
 }));
 
 
@@ -32,7 +28,7 @@ beforeAll(() => {
     app = express();
     app.use(cookieParser());
     app.use(express.json());
-    app.use("/prompts", promptRoute);
+    app.use("/prompts", authMiddleware, promptRoute);
 });
 
 
@@ -48,7 +44,6 @@ describe("prompt controller", () => {
         mockUser = createMockUser();
         token = getSignedTestJWT(mockUser);
 
-        (findUserById as jest.Mock).mockResolvedValue(mockUser);
         (getUserById as jest.Mock).mockResolvedValue(mockUser);
     });
 

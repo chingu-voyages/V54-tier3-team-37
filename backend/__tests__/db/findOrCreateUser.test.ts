@@ -2,7 +2,7 @@ import {
   createTestUser,
   deleteTestUser,
 } from "../../__mocks__/prismaTestUtils";
-import { findOrCreateUserId } from "../../src/controllers/findOrCreateUser";
+import { findOrCreateUserId } from "../../src/controllers/userController";
 import { mockUsers } from "../../__mocks__/mockUsers";
 
 describe("findOrCreateuserId", () => {

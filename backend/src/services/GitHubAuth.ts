@@ -12,7 +12,7 @@ import {
   GITHUB_REDIRECT_URL,
   GITHUB_CALLBACK_URL,
 } from "../config/authConfig.js";
-import { findOrCreateUserId } from "../controllers/index.js";
+import { findOrCreateUserId } from "../controllers/userController.js";
 import { extractCode } from "../utils/index.js";
 import { throwGitHubError } from "./errors.js";
 
