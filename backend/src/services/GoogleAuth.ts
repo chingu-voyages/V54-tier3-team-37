@@ -7,7 +7,7 @@ import {
   GOOGLE_CALLBACK_URL,
   GOOGLE_OAUTH_SCOPES,
 } from "../config/authConfig.js";
-import { findOrCreateUserId } from "../controllers/index.js";
+import { findOrCreateUserId } from "../controllers/userController.js";
 import { throwGoogleError } from "./errors.js";
 import { GSession } from "../types/index.js";
 
