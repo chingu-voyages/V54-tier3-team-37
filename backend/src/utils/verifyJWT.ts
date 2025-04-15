@@ -12,7 +12,6 @@ export const decode = (token: string) => {
       token,
       String(process.env.JWT_SECRET)
     ) as jwt.JwtPayload;
-
     return decoded;
   } catch (error: unknown) {
     console.error(

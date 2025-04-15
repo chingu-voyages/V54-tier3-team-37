@@ -13,3 +13,12 @@ declare global {
     }
   }
 }
+
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv extends z.infer<typeof envSchema> {
+      // Explicitly list a variable to silence 'no members' warning
+      NODE_ENV: "development" | "production" | "test";
+    }
+  }
+}

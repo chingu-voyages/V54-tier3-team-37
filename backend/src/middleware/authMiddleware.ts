@@ -1,15 +1,18 @@
 import { Request, Response, NextFunction } from "express";
 
-import { findUserById } from "../controllers/index.js";
-import { verifyJWT } from "../utils/index.js";
+import { findUserById } from "../controllers/findOrCreateUser.js";
+import { verifyJWT } from "../utils/verifyJWT.js";
 
 export const authMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  // Extract the token from cookies
-  const token = req.cookies.token;
+  // Extract the token from cookies or headers
+  const token =
+    req.cookies.token ??
+    (req.headers.authorization &&
+      extractHeaderToken(req.headers.authorization));
 
   if (!token) {
     res
@@ -46,4 +49,10 @@ export const authMiddleware = async (
     });
     return;
   }
+};
+
+const extractHeaderToken = (authorization: string) => {
+  const [bearer, token] = authorization.split(" ");
+  if (bearer.trim() !== "Bearer") return;
+  return token;
 };

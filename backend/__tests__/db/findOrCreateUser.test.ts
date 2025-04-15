@@ -1,4 +1,7 @@
-import prisma from "../../src/prisma";
+import {
+  createTestUser,
+  deleteTestUser,
+} from "../../__mocks__/prismaTestUtils";
 import { findOrCreateUserId } from "../../src/controllers/findOrCreateUser";
 import { mockUsers } from "../../__mocks__/mockUsers";
 
@@ -8,12 +11,7 @@ describe("findOrCreateuserId", () => {
     for (const mockUser of validMockUsers) {
       let newUser;
       try {
-        newUser = await prisma.user.create({
-          data: {
-            email: mockUser.email,
-            displayName: mockUser.displayName,
-          },
-        });
+        newUser = await createTestUser(mockUser);
 
         if (!newUser) throw Error("failed to create a test user");
 
@@ -24,11 +22,9 @@ describe("findOrCreateuserId", () => {
 
         expect(userId).toBe(newUser.id);
 
-        const deleted = await prisma.user.delete({
-          where: { id: newUser.id },
-        });
+        const deleted = await deleteTestUser(userId);
 
-        expect(deleted.id).toBe(newUser.id);
+        expect(deleted.id).toBe(userId);
       } catch (error) {
         throw new Error(error.message ? error.message : String(error));
       }
@@ -46,9 +42,7 @@ describe("findOrCreateuserId", () => {
 
         expect(userId).toBeDefined();
 
-        const deleted = await prisma.user.delete({
-          where: { id: userId },
-        });
+        const deleted = await deleteTestUser(userId);
 
         expect(deleted.id).toBe(userId);
       } catch (error) {

@@ -9,7 +9,7 @@ import {
 } from "../config/authConfig.js";
 import { findOrCreateUserId } from "../controllers/index.js";
 import { throwGoogleError } from "./errors.js";
-import { GSession } from "../types/index.ts";
+import { GSession } from "../types/index.js";
 
 class GoogleAuth {
   private authClient: Auth.OAuth2Client;

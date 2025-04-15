@@ -1,9 +1,6 @@
-import {
-  Github,
-  Linkedin,
-} from 'lucide-react';
+import { Github, Linkedin } from 'lucide-react';
 
-import { TeamMember } from '@/types/types';
+import { TeamMember } from '@/types/ui';
 
 import Container from './Container';
 
@@ -62,23 +59,21 @@ const roles = Array.from(new Set(teamMembers.map((member) => member.role)));
 
 const Footer = () => {
   return (
-    <footer className="text-background bg-muted-foreground w-full py-16">
+    <footer className="w-full bg-prompto-accent py-16 text-white">
       <Container className="flex-row justify-between">
-        <div className="flex items-center gap-4">
-          <span className="font-keania-one text-7xl lowercase">Prompto</span>
-        </div>
-        <ul className="flex flex-col gap-4 text-lg">
+        <img src="/logo-p-color.png" />
+        <ul className="flex flex-col text-lg">
           {roles.map((role) => (
             <li
               key={role}
-              className="flex justify-between gap-8"
+              className="flex justify-between gap-4"
             >
-              <span className="min-w-32 shrink-0 text-right">{role}</span>
+              <span className="mr-16 min-w-32 shrink-0 text-right text-[#C9C5FF]">{role}</span>
               <ul className="w-full">
                 {teamMembers.map((member) => (
                   <li key={member.name}>
                     {member.role === role ? (
-                      <div className="flex items-center justify-between gap-8">
+                      <div className="mb-4 flex items-center justify-between gap-8">
                         <span>{member.name}</span>
                         <div className="flex gap-4">
                           <a

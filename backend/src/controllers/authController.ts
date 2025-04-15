@@ -1,18 +1,13 @@
-import { CookieOptions, Request, Response } from "express";
+import { Request, Response } from "express";
 import { githubAuth, googleAuth } from "../services/index.js";
 
 import {
   LOGGED_IN_REACT_ADDRESS,
   HOME_REACT_ADDRESS,
+  cookieOptions,
 } from "../config/index.js";
 import { generateToken, generateRandomHexString } from "../utils/index.js";
 import { GSession, User } from "../types/index.js";
-
-const cookieOptions: CookieOptions = {
-  httpOnly: true,
-  secure: true,
-  sameSite: "lax",
-};
 
 const handleSignIn = async (
   req: Request,
@@ -25,7 +20,11 @@ const handleSignIn = async (
     (req.session as GSession)[sessionState] = state;
     // Generate a url that asks permissions defined scopes
     const authorizationUrl = authService.generateAuthUrl(state);
-    if (!authorizationUrl) return;
+    if (!authorizationUrl) {
+      res.status(500).json({ error: "Failed to redirect to OAuth interface" });
+      return;
+    }
+
     // Redirect the user to authorizationUrl
     res.redirect(authorizationUrl);
   } catch (error) {
@@ -47,10 +46,6 @@ const handleCallback = async (
   } catch (error) {
     console.error(error);
     const redirectUrl = `${HOME_REACT_ADDRESS}/?error=${error}`;
-    // =======================================
-    // Warn for testing purposes
-    console.warn(`Redirecting to: ${redirectUrl}`);
-    // =======================================
     res.redirect(String(redirectUrl));
   } finally {
     (req.session as GSession)[sessionState] = "";
@@ -96,7 +91,8 @@ const sendCookieAndRedirect = (res: Response, user: User) => {
   try {
     const token = generateToken(user);
     res.cookie("token", token, cookieOptions);
-    res.redirect(`${LOGGED_IN_REACT_ADDRESS}?userId=${user.id}`);
+    res.header("Authorization", `Bearer ${token}`); // Fallback for privacy blockers
+    res.redirect(LOGGED_IN_REACT_ADDRESS);
   } catch (error) {
     throw new Error(error instanceof Error ? error.message : String(error));
   }

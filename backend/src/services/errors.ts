@@ -33,3 +33,35 @@ export const throwGitHubError = (error: unknown): never => {
   }
   throw new GitHubAPIError(String(error));
 };
+
+export class UnauthorizedError extends Error {
+  constructor(message = "Unauthorized") {
+    super(message);
+    this.name = "UnauthorizedError";
+    Object.setPrototypeOf(this, UnauthorizedError.prototype);
+  }
+}
+
+export class ValidationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ValidationError";
+    Object.setPrototypeOf(this, ValidationError.prototype);
+  }
+}
+
+export class DuplicatePromptError extends Error {
+  constructor(message = "Prompt already exists") {
+    super(message);
+    this.name = "DuplicatePromptError";
+    Object.setPrototypeOf(this, DuplicatePromptError.prototype);
+  }
+}
+
+export class GeminiAPIError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "GeminiAPIError";
+    Object.setPrototypeOf(this, GeminiAPIError.prototype);
+  }
+}
