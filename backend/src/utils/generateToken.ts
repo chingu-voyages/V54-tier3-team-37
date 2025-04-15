@@ -1,6 +1,5 @@
 import jwt, { SignOptions } from "jsonwebtoken";
 
-import { APP_NAME } from "../config/index.js";
 import { User } from "../types/index.js";
 
 export const generateToken = ({ email, displayName, id }: User): string => {
@@ -10,7 +9,7 @@ export const generateToken = ({ email, displayName, id }: User): string => {
   const options: SignOptions = {
     algorithm: "HS256",
     expiresIn: "1d",
-    issuer: APP_NAME,
+    issuer: "Prompto",
   };
   const token = jwt.sign(
     { sub: id, email, displayName },
