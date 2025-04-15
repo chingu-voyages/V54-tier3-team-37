@@ -52,11 +52,11 @@ Prompto is a full-stack application built to generate high-quality prompts that 
 
 ## Current Status
 
-The application is available online if accessed through Google Chrome or Mozilla Firefox with third-party cookies enabled.
+The application is available online across browsers.
 
 - Deployment challenge
 
-We have encountered a challenge involving third-party cookies and how Netlify is processing them. We learnt that `.netlify.app` is on [Mozilla Public Suffix List](!https://publicsuffix.org/), which means that cookies set by our server will not be attached to subsequent requests. We have opted to send our authentication token in the headers instead of cookies due to the aforementioned circumstances.
+We have encountered a challenge involving third-party cookies and how Netlify is processing them. We learnt that `.netlify.app` is on [Mozilla Public Suffix List](!https://publicsuffix.org/), which means that cookies set by our server will not be attached to subsequent requests. We have opted to use a custom domain due to the aforementioned circumstances.
 
 ## Features
 
