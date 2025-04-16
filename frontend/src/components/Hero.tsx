@@ -19,7 +19,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative flex min-h-screen w-full flex-col bg-cover text-center text-white">
+    <section className="relative flex min-h-[calc(100vh)] w-full flex-col bg-cover text-center text-white">
       <img
         src="/hero-image.png"
         className="absolute top-0 left-0 -z-10 size-full object-cover"
@@ -27,7 +27,7 @@ const Hero = () => {
       <header className="w-full">
         <Nav />
       </header>
-      <Container className="gap-16 py-40">
+      <Container className="gap-16 py-20 lg:py-60">
         <h1 className="text-h1 max-w-4xl">
           Unlock the Power of AI with Perfect Prompts, Every Time
         </h1>
@@ -35,18 +35,21 @@ const Hero = () => {
           Effortlessly craft AI prompts that delivery consistent, high-quality results—no experience
           required.
         </p>
-        <div className="grid grid-cols-2 gap-8">
+        <div className="flex items-center gap-4 max-sm:flex-col sm:gap-8">
           <Button
             variant="secondary"
             size="lg"
             onClick={handleGetStartedClick}
-            className="place-self-end"
+            className="max-sm:w-full"
           >
             Get Started
           </Button>
-          <button className="text-h5 active:prompto-gray-dark inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 place-self-center rounded-lg bg-transparent px-6 py-4 whitespace-nowrap text-white transition-all duration-300 outline-none hover:bg-[#E6E5FF] hover:text-prompto-gray-dark focus-visible:border-white focus-visible:ring-[3px] focus-visible:ring-white/50 active:scale-95 active:bg-[#AEA7FF] disabled:pointer-events-none disabled:opacity-50 has-[>svg]:px-4 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4">
+          <Button
+            variant="ghost"
+            size="lg"
+          >
             See How It Works
-          </button>
+          </Button>
         </div>
       </Container>
     </section>

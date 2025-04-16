@@ -108,7 +108,7 @@ const PromptGenForm = ({
               AI Prompt Generator Form
             </CardTitle>
           </CardHeader>
-          <CardContent className="grid grid-cols-2 gap-8 pb-8">
+          <CardContent className="grid gap-8 pb-8 lg:grid-cols-2">
             {/* Role field */}
             <FormField
               control={form.control}
@@ -135,7 +135,7 @@ const PromptGenForm = ({
                   <FormControl>
                     <Textarea
                       placeholder={pentagramFields[0].placeholder}
-                      className="h-24 resize-none"
+                      className="h-24 resize-none max-sm:h-32"
                       {...field}
                     />
                   </FormControl>
@@ -207,7 +207,7 @@ const PromptGenForm = ({
                     <FormControl>
                       <Textarea
                         placeholder={fieldDef.placeholder}
-                        className="h-24 resize-none"
+                        className="h-24 resize-none max-sm:h-32"
                         {...field}
                       />
                     </FormControl>
@@ -218,11 +218,11 @@ const PromptGenForm = ({
             ))}
           </CardContent>
         </Card>
-        <div className="flex items-center justify-center gap-6">
+        <div className="flex w-full items-center justify-center gap-6 max-sm:flex-col">
           <Button
             type="button"
             variant="outline"
-            className="text-[20px] text-prompto-primary"
+            className="max-w-48 text-[20px] text-prompto-primary max-sm:w-full"
             onClick={() => {
               form.reset();
               setFormValues({
@@ -238,12 +238,11 @@ const PromptGenForm = ({
           >
             Clear Form
           </Button>
-
           <Button
             type="submit"
             variant="primary"
             disabled={isLoading}
-            className="text-[20px] text-white"
+            className="max-w-48 text-[20px] text-white max-sm:w-full"
           >
             {isLoading ? 'Wait...' : isGenerated ? 'Regenerate' : 'Generate'}
           </Button>

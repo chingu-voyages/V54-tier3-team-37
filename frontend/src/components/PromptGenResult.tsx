@@ -98,7 +98,7 @@ const PromptGenResult = ({ formValues }: PromptGenResultProps) => {
           Generated Prompt
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex min-h-32 flex-col items-center gap-4 px-16 py-4">
+      <CardContent className="flex min-h-32 flex-col items-center gap-4 py-4 lg:px-16">
         {output ? (
           <p
             className={cn(
@@ -119,8 +119,8 @@ const PromptGenResult = ({ formValues }: PromptGenResultProps) => {
         )}
       </CardContent>
       {output?.geminiText && (
-        <CardFooter className="flex items-center justify-between gap-4 px-16">
-          <div className="flex items-center gap-1">
+        <CardFooter className="flex items-center justify-between gap-10 px-16 max-lg:flex-col lg:gap-4">
+          <div className="flex shrink-0 items-center gap-1">
             {[...Array(5)].map((_, i) => {
               const isSaved = Boolean(output?.id);
               const isFilled = hoverScore !== null ? i < hoverScore : isSaved && i < output.score;
@@ -146,11 +146,11 @@ const PromptGenResult = ({ formValues }: PromptGenResultProps) => {
               );
             })}
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4 max-sm:w-full max-sm:flex-col sm:gap-2">
             <Button
               onClick={handleSave}
               variant="outline"
-              className="min-w-32 text-[20px] text-prompto-primary hover:bg-prompto-primary hover:text-white active:bg-accent"
+              className="max-w-48 min-w-32 text-[20px] text-prompto-primary hover:bg-prompto-primary hover:text-white active:bg-accent max-sm:w-full"
             >
               <Save size={16} />
               Save
@@ -158,7 +158,7 @@ const PromptGenResult = ({ formValues }: PromptGenResultProps) => {
             <Button
               onClick={handleCopy}
               variant="primary"
-              className="min-w-32 bg-prompto-accent text-[20px] text-white inset-ring-prompto-accent"
+              className="max-w-48 min-w-32 bg-prompto-accent text-[20px] text-white inset-ring-prompto-accent max-sm:w-full"
             >
               <Copy size={16} />
               Copy
