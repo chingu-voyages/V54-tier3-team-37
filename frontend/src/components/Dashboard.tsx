@@ -26,7 +26,7 @@ const Dashboard = () => {
 
   return (
     <section className="w-full bg-gradient-to-r from-[#F2F1FF] from-50% to-white to-50%">
-      <div className="border-b-2 border-prompto-gray-light bg-white p-7">
+      <div className="border-b-2 border-prompto-gray-light bg-white py-7 sm:px-7">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4">
           <Link to="/">
             <img src="/logo-color.png" />
@@ -40,9 +40,9 @@ const Dashboard = () => {
         </div>
       </div>
       <Container className="items-start px-0">
-        <div className="mx-auto grid min-h-screen w-full max-w-7xl grid-cols-[256px_1fr]">
-          <div className="bg-[#F2F1FF] px-2 py-8">
-            <ul className="flex flex-col items-start gap-2 pt-8 text-lg">
+        <div className="mx-auto grid w-full max-w-7xl md:min-h-screen md:grid-cols-[256px_1fr]">
+          <div className="bg-[#F2F1FF] px-2 py-4 md:py-8">
+            <ul className="flex flex-col items-start gap-2 text-lg md:pt-8">
               <li className="relative w-full px-2">
                 <NavLink
                   to="generate"
@@ -73,7 +73,7 @@ const Dashboard = () => {
               </li>
             </ul>
           </div>
-          <div className="bg-background px-8">
+          <div className="bg-background px-4 sm:px-8">
             <Outlet />
           </div>
         </div>
