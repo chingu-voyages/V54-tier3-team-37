@@ -35,7 +35,7 @@ const AboutWhat = () => {
             <span className="pointer-events-none absolute -top-10 left-0 -z-10 text-5xl font-semibold tracking-wider text-prompto-gray-extralight max-sm:-top-20 max-sm:-left-8">
               Students
             </span>
-            <span className="pointer-events-none absolute -top-0 right-20 -z-10 text-3xl font-semibold tracking-wider text-prompto-gray-extralight max-sm:-top-12 max-sm:-right-8">
+            <span className="pointer-events-none absolute top-6 right-20 -z-10 text-3xl font-semibold tracking-wider text-prompto-gray-extralight max-sm:-top-12 max-sm:-right-8">
               Bloggers
             </span>
             <span className="max-sm: max-sm: pointer-events-none absolute -right-5 bottom-0 -z-10 text-5xl font-semibold tracking-wider text-prompto-gray-extralight max-sm:top-10">
@@ -99,7 +99,7 @@ const AboutFeatures = () => {
   ];
 
   return (
-    <section className="w-full bg-gradient-to-b from-[#e4cfff] from-0% via-[#a3daff] via-75% to-background to-100% sm:via-50% sm:to-50%">
+    <section className="w-full bg-gradient-to-b from-[#e4cfff] from-0% via-[#a3daff] via-75% to-background to-100% lg:via-50% lg:to-50%">
       <Container className="gap-24 pt-16 pb-48">
         <div>
           <h2 className="text-center text-3xl font-bold tracking-wide text-prompto-accent uppercase">
@@ -107,7 +107,7 @@ const AboutFeatures = () => {
           </h2>
           <Separator className="mx-auto mt-4 max-w-1/2 border-2 border-prompto-accent" />
         </div>
-        <div className="w-full gap-8 text-center tracking-tighter max-sm:flex max-sm:flex-col max-sm:gap-16 sm:grid sm:h-112 sm:grid-cols-4">
+        <div className="w-full gap-8 text-center tracking-tighter max-sm:flex max-sm:flex-col max-sm:gap-16 sm:grid sm:grid-cols-2 lg:grid-cols-4">
           {cards.map((card, index) => (
             <Card
               key={card.heading}
@@ -149,14 +149,14 @@ const AboutWhy = () => {
 
   return (
     <section className="w-full sm:px-8">
-      <Container className="gap-32 pt-16 pb-32 max-sm:gap-16">
+      <Container className="gap-32 pt-16 pb-32 max-lg:gap-16">
         <div>
           <h2 className="text-center text-3xl font-bold tracking-wide text-prompto-accent uppercase">
             Why Choose Our AI Prompt Generator
           </h2>
           <Separator className="mx-auto mt-4 max-w-1/2 border-2 border-prompto-accent" />
         </div>
-        <div className="tracking-tighter max-sm:flex max-sm:flex-col-reverse max-sm:gap-16 sm:grid sm:grid-cols-2 sm:gap-32">
+        <div className="tracking-tighter max-md:flex max-md:flex-col-reverse max-md:gap-16 md:grid md:grid-cols-2 md:gap-32">
           <div className="space-y-8 tracking-wide">
             {reasons.map((reason) => (
               <div
