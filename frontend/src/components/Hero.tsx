@@ -19,7 +19,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative flex min-h-screen w-full flex-col bg-cover text-center text-white">
+    <section className="relative flex min-h-[calc(100vh-10rem)] w-full flex-col bg-cover text-center text-white">
       <img
         src="/hero-image.png"
         className="absolute top-0 left-0 -z-10 size-full object-cover"

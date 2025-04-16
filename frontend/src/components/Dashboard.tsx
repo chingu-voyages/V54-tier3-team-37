@@ -1,18 +1,42 @@
 import { History, SquarePlus } from 'lucide-react';
-import { Link, NavLink, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 
+import { logoutUser } from '@/api/auth';
 import { cn } from '@/lib/cn';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { logout } from '@/store/slices/authSlice';
 
+import AvatarDropdown from './AvatarDropdown';
 import Container from './Container';
 
 const Dashboard = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { isLoggedIn, user } = useAppSelector((state) => state.auth);
+
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+      dispatch(logout());
+      navigate('/');
+    } catch (err) {
+      console.error('Logout failed:', err);
+    }
+  };
+
   return (
     <section className="w-full bg-gradient-to-r from-[#F2F1FF] from-50% to-white to-50%">
-      <div className="border-b-2 border-prompto-gray-light bg-white p-8">
-        <div className="mx-auto max-w-7xl">
+      <div className="border-b-2 border-prompto-gray-light bg-white p-7">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4">
           <Link to="/">
             <img src="/logo-color.png" />
           </Link>
+          {isLoggedIn && user && (
+            <AvatarDropdown
+              user={user}
+              handleLogout={handleLogout}
+            />
+          )}
         </div>
       </div>
       <Container className="items-start px-0">

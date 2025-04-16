@@ -22,7 +22,7 @@ export default About;
 
 const AboutWhat = () => {
   return (
-    <section className="w-full from-background from-80% to-[#e4cfff] max-sm:bg-gradient-to-b sm:px-8">
+    <section className="w-full from-transparent from-80% to-[#e4cfff] max-sm:bg-gradient-to-b sm:px-8">
       <Container className="gap-32 pt-16 pb-32">
         <div>
           <h2 className="text-center text-3xl font-bold tracking-wide text-prompto-accent uppercase">
