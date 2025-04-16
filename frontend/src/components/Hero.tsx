@@ -19,10 +19,10 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative flex min-h-[calc(100vh)] w-full flex-col bg-cover text-center text-white">
+    <section className="relative flex h-screen min-h-fit w-full flex-col text-center text-white sm:min-h-screen">
       <img
         src="/hero-image.png"
-        className="absolute top-0 left-0 -z-10 size-full object-cover"
+        className="absolute top-0 left-0 -z-10 min-h-full min-w-full object-cover"
       />
       <header className="w-full">
         <Nav />
