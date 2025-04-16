@@ -24,7 +24,7 @@ const Nav = () => {
   };
 
   return (
-    <nav className="flex w-full items-center justify-between py-8 text-background">
+    <nav className="flex w-full items-center justify-between py-8 text-background sm:px-7">
       <Container className="flex-row justify-between">
         <div className="flex items-center gap-4">
           <Link
