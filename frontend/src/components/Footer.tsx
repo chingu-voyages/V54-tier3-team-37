@@ -60,20 +60,22 @@ const roles = Array.from(new Set(teamMembers.map((member) => member.role)));
 const Footer = () => {
   return (
     <footer className="w-full bg-prompto-accent py-16 text-white">
-      <Container className="flex-row justify-between">
+      <Container className="justify-between sm:flex-row">
         <img src="/logo-p-color.png" />
-        <ul className="flex flex-col text-lg">
+        <ul className="flex w-full flex-col px-4 text-lg">
           {roles.map((role) => (
             <li
               key={role}
-              className="flex justify-between gap-4"
+              className="flex justify-between gap-4 max-sm:flex-col max-sm:items-start"
             >
-              <span className="mr-16 min-w-32 shrink-0 text-right text-[#C9C5FF]">{role}</span>
+              <span className="min-w-32 shrink-0 text-right text-[#C9C5FF] max-sm:text-left sm:mr-16">
+                {role}
+              </span>
               <ul className="w-full">
                 {teamMembers.map((member) => (
                   <li key={member.name}>
                     {member.role === role ? (
-                      <div className="mb-4 flex items-center justify-between gap-8">
+                      <div className="mb-4 flex items-center justify-between gap-8 px-4">
                         <span>{member.name}</span>
                         <div className="flex gap-4">
                           <a

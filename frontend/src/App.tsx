@@ -17,7 +17,7 @@ function App() {
   return (
     <Provider store={store}>
       <AuthWrapper />
-      <div className="font-inter flex h-screen w-screen flex-col items-center justify-start text-prompto-gray-dark">
+      <div className="font-inter flex h-screen flex-col items-center justify-start text-prompto-gray-dark">
         <Toaster />
         <Routes>
           <Route
