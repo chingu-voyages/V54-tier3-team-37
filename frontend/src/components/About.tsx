@@ -5,6 +5,13 @@ import { AboutFeatureCard, AboutReason } from '@/types/ui';
 
 import Container from './Container';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from './ui/carousel';
 import { Separator } from './ui/separator';
 
 const About = () => {
@@ -13,7 +20,7 @@ const About = () => {
       <AboutWhat />
       <AboutFeatures />
       <AboutWhy />
-      {/* <AboutHow /> */}
+      <AboutHow />
     </div>
   );
 };
@@ -173,6 +180,124 @@ const AboutWhy = () => {
             className="place-self-center"
           />
         </div>
+      </Container>
+    </section>
+  );
+};
+
+const AboutHow = () => {
+  const steps = [
+    {
+      heading: 'Login or Sign Up',
+      content: (
+        <p>
+          Login to your existing account or Sign Up if you don't have one yet. This will give you
+          access to the prompt generation features.
+        </p>
+      ),
+      imgSrc: '/step-1.png',
+      imgAlt: 'blah picture',
+    },
+    {
+      heading: 'Fill in the form',
+      content: (
+        <ul className="mx-auto grid w-5/6 list-disc grid-cols-2 gap-4">
+          <li>
+            <strong>Role:</strong> Define the role or identity you want the AI model to adopt. This
+            helps guide the tone and style of the response.
+          </li>
+          <li>
+            <strong>Output:</strong> Detail the format, style, and tone of the AI's response. Do you
+            need a creative piece, a formal report, or a technical document?
+          </li>
+          <li>
+            <strong>Task:</strong> Clearly specify the action or output you want from the AI model.
+            Be direct and concise about what you need.
+          </li>
+          <li>
+            <strong>Context:</strong> Provide background information relevant to the task. This
+            ensures the AI understands the situation or specific task at hand.
+          </li>
+          <li>
+            <strong>Constraints:</strong> Set any limitations or guidelines the AI must follow, such
+            as accessibility requirements, word count limits, or content restrictions.
+          </li>
+        </ul>
+      ),
+      imgSrc: '/step-2.png',
+      imgAlt: 'blah picture',
+    },
+    {
+      heading: 'Click "Generate Prompt"',
+      content: (
+        <p>
+          Once all fields are filled, click the <strong>"Generate Prompt"</strong> button to
+          generate your custom prompt based on the input provided.
+        </p>
+      ),
+      imgSrc: '/step-3.png',
+      imgAlt: 'blah picture',
+    },
+    /*
+Copy: The generated prompt will appear in the "Result" section. You can copy it by selecting the text and using Ctrl+C (Cmd+C) or the "Copy" button.
+
+Save for Future Use: If you plan to use the prompt later, save it the app for quick access.
+
+Regenerate: If you’re not satisfied with the result, click "Regenerate" to create a new version of the prompt with potentially different output.
+*/
+    {
+      heading: 'View the result',
+      content: (
+        <ul className="mx-auto grid w-5/6 list-disc gap-4">
+          <li>
+            <strong>Copy:</strong> The generated prompt will appear in the <strong>"Result"</strong>{' '}
+            section. You can copy it by selecting the text and using <strong>Ctrl+C (Cmd+C)</strong>{' '}
+            or the <strong>"Copy"</strong> button.
+          </li>
+          <li>
+            <strong>Save for Future Use:</strong> If you plan to use the prompt later, save it the
+            app for quick access.
+          </li>
+          <li>
+            <strong>Regenerate:</strong> If you’re not satisfied with the result, click "Regenerate"
+            to create a new version of the prompt with potentially different output.
+          </li>
+        </ul>
+      ),
+      imgSrc: '/step-4.png',
+      imgAlt: 'blah picture',
+    },
+  ];
+
+  return (
+    <section className="w-full sm:px-8">
+      <Container className="pt-16 pb-32">
+        <Card>
+          <CardContent>
+            <Carousel>
+              <CarouselContent>
+                {steps.map((step) => (
+                  <CarouselItem
+                    key={step.heading}
+                    className="flex flex-col items-center justify-between gap-12 pb-12 text-prompto-gray-dark"
+                  >
+                    <h4 className="text-h4">{step.heading}</h4>
+                    <div className="flex h-full flex-col items-center justify-between gap-8">
+                      <div>{step.content}</div>
+                      <img
+                        src={step.imgSrc}
+                        alt={step.imgAlt}
+                        className="w-3/4 pb-12"
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious variant="link" />
+              <CarouselNext variant="link" />
+            </Carousel>
+          </CardContent>
+        </Card>
       </Container>
     </section>
   );
