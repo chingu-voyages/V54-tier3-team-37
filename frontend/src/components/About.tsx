@@ -210,12 +210,12 @@ const AboutHow = () => {
         </p>
       ),
       imgSrc: '/step-1.png',
-      imgAlt: 'blah picture',
+      imgAlt: 'Step 1 Image',
     },
     {
       heading: 'Fill in the form',
       content: (
-        <ul className="mx-auto grid w-11/12 list-disc grid-cols-2 gap-4">
+        <ul className="mx-auto grid w-11/12 list-disc gap-4 sm:grid-cols-2">
           <li>
             <strong>Role:</strong> Define the role or identity you want the AI model to adopt. This
             helps guide the tone and style of the response.
@@ -239,7 +239,7 @@ const AboutHow = () => {
         </ul>
       ),
       imgSrc: '/step-2.png',
-      imgAlt: 'blah picture',
+      imgAlt: 'Step 2 Image',
     },
     {
       heading: 'Click "Generate Prompt"',
@@ -250,7 +250,7 @@ const AboutHow = () => {
         </p>
       ),
       imgSrc: '/step-3.png',
-      imgAlt: 'blah picture',
+      imgAlt: 'Step 3 Image',
     },
     {
       heading: 'View the result',
@@ -272,7 +272,7 @@ const AboutHow = () => {
         </ul>
       ),
       imgSrc: '/step-4.png',
-      imgAlt: 'blah picture',
+      imgAlt: 'Step 4 Image',
     },
   ];
 
@@ -285,7 +285,7 @@ const AboutHow = () => {
           </h2>
           <Separator className="mx-auto mt-4 max-w-1/2 border-2 border-prompto-accent" />
         </div>
-        <Card className="shadow-xl shadow-prompto-primary/50">
+        <Card className="max-w-screen shadow-xl shadow-prompto-primary/50">
           <CardContent>
             <Carousel setApi={setApi}>
               <div className="flex justify-center gap-8 pt-4 pb-8">
@@ -302,22 +302,24 @@ const AboutHow = () => {
                 {steps.map((step) => (
                   <CarouselItem
                     key={step.heading}
-                    className="flex flex-col items-center justify-between gap-12 pb-12 text-prompto-gray-dark"
+                    className="flex h-fit flex-col items-center justify-between gap-12 pb-12 text-prompto-gray-dark"
                   >
                     <h3 className="text-h4">{step.heading}</h3>
-                    <div className="flex h-full flex-col items-center justify-between gap-8">
-                      <div>{step.content}</div>
+                    <div className="flex h-full flex-col items-center justify-between gap-8 max-sm:flex-col-reverse">
+                      <div className="px-4">{step.content}</div>
                       <img
                         src={step.imgSrc}
                         alt={step.imgAlt}
-                        className="w-5/6 pb-16"
+                        className="w-5/6 sm:pb-16"
                       />
                     </div>
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious variant="link" />
-              <CarouselNext variant="link" />
+              <div className="max-sm:hidden">
+                <CarouselPrevious variant="link" />
+                <CarouselNext variant="link" />
+              </div>
             </Carousel>
           </CardContent>
         </Card>
