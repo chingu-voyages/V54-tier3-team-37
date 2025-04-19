@@ -1,10 +1,20 @@
+import { useEffect, useState } from 'react';
+
 import { Cog, Handshake, Save, Star } from 'lucide-react';
 
+import { type CarouselApi, CarouselDot } from '@/components/ui/carousel';
 import { cn } from '@/lib/cn';
 import { AboutFeatureCard, AboutReason } from '@/types/ui';
 
 import Container from './Container';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from './ui/carousel';
 import { Separator } from './ui/separator';
 
 const About = () => {
@@ -13,7 +23,7 @@ const About = () => {
       <AboutWhat />
       <AboutFeatures />
       <AboutWhy />
-      {/* <AboutHow /> */}
+      <AboutHow />
     </div>
   );
 };
@@ -173,6 +183,146 @@ const AboutWhy = () => {
             className="place-self-center"
           />
         </div>
+      </Container>
+    </section>
+  );
+};
+
+const AboutHow = () => {
+  const [api, setApi] = useState<CarouselApi>();
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  useEffect(() => {
+    if (!api) return;
+
+    api.on('scroll', () => {
+      setSelectedIndex(api.selectedScrollSnap());
+    });
+  }, [api]);
+
+  const steps = [
+    {
+      heading: 'Login or Sign Up',
+      content: (
+        <p className="mx-auto w-11/12">
+          Login to your existing account or Sign Up if you don't have one yet. This will give you
+          access to the prompt generation features.
+        </p>
+      ),
+      imgSrc: '/step-1.png',
+      imgAlt: 'Step 1 Image',
+    },
+    {
+      heading: 'Fill in the form',
+      content: (
+        <ul className="mx-auto grid w-11/12 list-disc gap-4 sm:grid-cols-2">
+          <li>
+            <strong>Role:</strong> Define the role or identity you want the AI model to adopt. This
+            helps guide the tone and style of the response.
+          </li>
+          <li>
+            <strong>Output:</strong> Detail the format, style, and tone of the AI's response. Do you
+            need a creative piece, a formal report, or a technical document?
+          </li>
+          <li>
+            <strong>Task:</strong> Clearly specify the action or output you want from the AI model.
+            Be direct and concise about what you need.
+          </li>
+          <li>
+            <strong>Context:</strong> Provide background information relevant to the task. This
+            ensures the AI understands the situation or specific task at hand.
+          </li>
+          <li>
+            <strong>Constraints:</strong> Set any limitations or guidelines the AI must follow, such
+            as accessibility requirements, word count limits, or content restrictions.
+          </li>
+        </ul>
+      ),
+      imgSrc: '/step-2.png',
+      imgAlt: 'Step 2 Image',
+    },
+    {
+      heading: 'Click "Generate Prompt"',
+      content: (
+        <p className="mx-auto w-11/12">
+          Once all fields are filled, click the <strong>"Generate Prompt"</strong> button to
+          generate your custom prompt based on the input provided.
+        </p>
+      ),
+      imgSrc: '/step-3.png',
+      imgAlt: 'Step 3 Image',
+    },
+    {
+      heading: 'View the result',
+      content: (
+        <ul className="mx-auto grid w-11/12 list-disc gap-4">
+          <li>
+            <strong>Copy:</strong> The generated prompt will appear in the <strong>"Result"</strong>{' '}
+            section. You can copy it by selecting the text and using <strong>Ctrl+C (Cmd+C)</strong>{' '}
+            or the <strong>"Copy"</strong> button.
+          </li>
+          <li>
+            <strong>Save for Future Use:</strong> If you plan to use the prompt later, save it the
+            app for quick access.
+          </li>
+          <li>
+            <strong>Regenerate:</strong> If you’re not satisfied with the result, click "Regenerate"
+            to create a new version of the prompt with potentially different output.
+          </li>
+        </ul>
+      ),
+      imgSrc: '/step-4.png',
+      imgAlt: 'Step 4 Image',
+    },
+  ];
+
+  return (
+    <section className="w-full sm:px-8">
+      <Container className="gap-32 pt-16 pb-32">
+        <div>
+          <h2 className="text-center text-3xl font-bold tracking-wide text-prompto-accent uppercase">
+            How to Use Prompto's AI Prompt Generator?
+          </h2>
+          <Separator className="mx-auto mt-4 max-w-1/2 border-2 border-prompto-accent" />
+        </div>
+        <Card className="max-w-screen shadow-xl shadow-prompto-primary/50">
+          <CardContent>
+            <Carousel setApi={setApi}>
+              <div className="flex justify-center gap-8 pt-4 pb-8">
+                {Array.from('s'.repeat(steps.length)).map((_, i) => (
+                  <CarouselDot
+                    key={i}
+                    index={i}
+                    selectedIndex={selectedIndex}
+                    scrollToIndex={(i) => api?.scrollTo(i)}
+                  />
+                ))}
+              </div>
+              <CarouselContent>
+                {steps.map((step) => (
+                  <CarouselItem
+                    key={step.heading}
+                    className="flex h-fit flex-col items-center justify-between gap-12 pb-12 text-prompto-gray-dark"
+                  >
+                    <h3 className="text-h4">{step.heading}</h3>
+                    <div className="flex h-full flex-col items-center justify-between gap-8 max-sm:flex-col-reverse">
+                      <div className="px-4">{step.content}</div>
+                      <img
+                        src={step.imgSrc}
+                        alt={step.imgAlt}
+                        className="w-5/6 sm:pb-16"
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <div className="max-sm:hidden">
+                <CarouselPrevious variant="link" />
+                <CarouselNext variant="link" />
+              </div>
+            </Carousel>
+          </CardContent>
+        </Card>
       </Container>
     </section>
   );
