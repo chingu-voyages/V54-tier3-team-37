@@ -1,7 +1,8 @@
 import * as React from 'react';
+import { useCallback } from 'react';
 
 import useEmblaCarousel, { type UseEmblaCarouselType } from 'embla-carousel-react';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Circle } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
@@ -227,10 +228,53 @@ function CarouselNext({
   );
 }
 
+interface CarouselDotProps extends React.ComponentProps<typeof Button> {
+  index: number;
+  selectedIndex: number;
+  scrollToIndex: (index: number) => void;
+}
+function CarouselDot({
+  index,
+  selectedIndex,
+  scrollToIndex,
+  className,
+  ...props
+}: CarouselDotProps) {
+  return (
+    <button
+      data-slot="carousel-next"
+      className={cn(
+        'flex cursor-pointer flex-col items-center',
+        index > 0 &&
+          'before:absolute before:top-8 before:w-16 before:-translate-x-1/2 before:border before:border-dashed before:border-black',
+        selectedIndex >= index
+          ? 'before:border-prompto-secondary'
+          : 'before:border-prompto-gray-light',
+        className
+      )}
+      onClick={() => scrollToIndex(index)}
+      {...props}
+    >
+      <div
+        className={cn(
+          'z-10 size-8 rounded-full',
+          selectedIndex >= index ? 'bg-prompto-secondary' : 'bg-prompto-gray-light'
+        )}
+      ></div>
+      <span
+        className={selectedIndex >= index ? 'text-prompto-gray-dark' : 'text-prompto-gray-light'}
+      >
+        Step {index + 1}
+      </span>
+    </button>
+  );
+}
+
 export {
   Carousel,
   type CarouselApi,
   CarouselContent,
+  CarouselDot,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,

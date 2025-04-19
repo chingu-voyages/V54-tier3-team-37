@@ -1,5 +1,8 @@
+import { useEffect, useState } from 'react';
+
 import { Cog, Handshake, Save, Star } from 'lucide-react';
 
+import { type CarouselApi, CarouselDot } from '@/components/ui/carousel';
 import { cn } from '@/lib/cn';
 import { AboutFeatureCard, AboutReason } from '@/types/ui';
 
@@ -186,11 +189,22 @@ const AboutWhy = () => {
 };
 
 const AboutHow = () => {
+  const [api, setApi] = useState<CarouselApi>();
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  useEffect(() => {
+    if (!api) return;
+
+    api.on('scroll', () => {
+      setSelectedIndex(api.selectedScrollSnap());
+    });
+  }, [api]);
+
   const steps = [
     {
       heading: 'Login or Sign Up',
       content: (
-        <p>
+        <p className="mx-auto w-11/12">
           Login to your existing account or Sign Up if you don't have one yet. This will give you
           access to the prompt generation features.
         </p>
@@ -201,7 +215,7 @@ const AboutHow = () => {
     {
       heading: 'Fill in the form',
       content: (
-        <ul className="mx-auto grid w-5/6 list-disc grid-cols-2 gap-4">
+        <ul className="mx-auto grid w-11/12 list-disc grid-cols-2 gap-4">
           <li>
             <strong>Role:</strong> Define the role or identity you want the AI model to adopt. This
             helps guide the tone and style of the response.
@@ -230,7 +244,7 @@ const AboutHow = () => {
     {
       heading: 'Click "Generate Prompt"',
       content: (
-        <p>
+        <p className="mx-auto w-11/12">
           Once all fields are filled, click the <strong>"Generate Prompt"</strong> button to
           generate your custom prompt based on the input provided.
         </p>
@@ -238,17 +252,10 @@ const AboutHow = () => {
       imgSrc: '/step-3.png',
       imgAlt: 'blah picture',
     },
-    /*
-Copy: The generated prompt will appear in the "Result" section. You can copy it by selecting the text and using Ctrl+C (Cmd+C) or the "Copy" button.
-
-Save for Future Use: If you plan to use the prompt later, save it the app for quick access.
-
-Regenerate: If you’re not satisfied with the result, click "Regenerate" to create a new version of the prompt with potentially different output.
-*/
     {
       heading: 'View the result',
       content: (
-        <ul className="mx-auto grid w-5/6 list-disc gap-4">
+        <ul className="mx-auto grid w-11/12 list-disc gap-4">
           <li>
             <strong>Copy:</strong> The generated prompt will appear in the <strong>"Result"</strong>{' '}
             section. You can copy it by selecting the text and using <strong>Ctrl+C (Cmd+C)</strong>{' '}
@@ -271,23 +278,39 @@ Regenerate: If you’re not satisfied with the result, click "Regenerate" to cre
 
   return (
     <section className="w-full sm:px-8">
-      <Container className="pt-16 pb-32">
-        <Card>
+      <Container className="gap-32 pt-16 pb-32">
+        <div>
+          <h2 className="text-center text-3xl font-bold tracking-wide text-prompto-accent uppercase">
+            How to Use Prompto's AI Prompt Generator?
+          </h2>
+          <Separator className="mx-auto mt-4 max-w-1/2 border-2 border-prompto-accent" />
+        </div>
+        <Card className="shadow-xl shadow-prompto-primary/50">
           <CardContent>
-            <Carousel>
+            <Carousel setApi={setApi}>
+              <div className="flex justify-center gap-8 pt-4 pb-8">
+                {Array.from('s'.repeat(steps.length)).map((_, i) => (
+                  <CarouselDot
+                    key={i}
+                    index={i}
+                    selectedIndex={selectedIndex}
+                    scrollToIndex={(i) => api?.scrollTo(i)}
+                  />
+                ))}
+              </div>
               <CarouselContent>
                 {steps.map((step) => (
                   <CarouselItem
                     key={step.heading}
                     className="flex flex-col items-center justify-between gap-12 pb-12 text-prompto-gray-dark"
                   >
-                    <h4 className="text-h4">{step.heading}</h4>
+                    <h3 className="text-h4">{step.heading}</h3>
                     <div className="flex h-full flex-col items-center justify-between gap-8">
                       <div>{step.content}</div>
                       <img
                         src={step.imgSrc}
                         alt={step.imgAlt}
-                        className="w-3/4 pb-12"
+                        className="w-5/6 pb-16"
                       />
                     </div>
                   </CarouselItem>
