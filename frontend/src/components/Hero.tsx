@@ -19,10 +19,10 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative flex h-screen min-h-fit w-full flex-col text-center text-white sm:max-h-screen">
+    <section className="relative flex h-screen min-h-fit w-full flex-col text-center text-white sm:max-h-screen lg:min-h-7/8">
       <img
         src="/hero-image.png"
-        className="absolute top-0 left-0 -z-10 min-w-full object-cover max-sm:min-h-full sm:max-h-full"
+        className="absolute top-0 left-0 -z-10 size-full object-cover"
       />
       <header className="w-full">
         <Nav />
