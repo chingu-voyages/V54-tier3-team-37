@@ -1,5 +1,6 @@
 import {GoogleGenerativeAI} from "@google/generative-ai";
 import {GeminiResponseType} from "../types/promptTypes.js";
+import {AudioRequest} from "../types/audioTypes.js";
 
 // Initialize Gemini AI with the API key from environment variables
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
@@ -54,6 +55,39 @@ export const generateGeminiResponse = async (promptText: string): Promise<Gemini
     }
 };
 
+export const generateGeminiAudioResponse = async (
+    { audioBuffer, mimeType }: AudioRequest
+): Promise<string> => {
+    try {
+
+        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+        const base64Audio = audioBuffer.toString('base64');
+
+        const result = await model.generateContent({
+            contents: [{
+                role: "user",
+                parts: [
+                    { text: "Generate a transcript of this audio:" },
+                    {
+                        inlineData: {
+                            data: base64Audio,
+                            mimeType: "audio/wav"
+                        }
+                    }
+                ]
+            }]
+        });
+
+        return stripMarkdown(result.response.text());
+
+    } catch (error) {
+        console.error("Gemini Audio Error:", error);
+        throw error;
+    }
+};
+
+
+
 /**
  * Strips Markdown formatting from the given text.
  *
@@ -71,3 +105,6 @@ function stripMarkdown(text: string): string {
         .replace(/\n{2,}/g, '\n\n') // Normalize spacing
         .trim(); // Remove leading/trailing whitespace
 }
+
+
+
