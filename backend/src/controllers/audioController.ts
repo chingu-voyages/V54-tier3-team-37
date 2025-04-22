@@ -5,7 +5,8 @@ import {generateGeminiAudioResponse} from "../services/geminiService.js";
 export const transcribePrompt = async (req: Request, res: Response) => {
     try {
         if (!req.file) {
-            return res.status(400).json({error: 'No audio file provided'});
+           res.status(400).json({error: 'No audio file provided'});
+           return;
         }
 
         const result = await generateGeminiAudioResponse({
