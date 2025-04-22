@@ -71,7 +71,7 @@ export const generateGeminiAudioResponse = async (
                     {
                         inlineData: {
                             data: base64Audio,
-                            mimeType: "audio/wav"
+                            mimeType
                         }
                     }
                 ]
