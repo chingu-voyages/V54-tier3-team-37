@@ -23,7 +23,7 @@ const Hero = () => {
       <header className="w-full">
         <Nav />
       </header>
-      <Container className="gap-16 py-20 lg:py-60">
+      <Container className="gap-16 py-20">
         <h1 className="text-h1 max-w-4xl">
           Unlock the Power of AI with Perfect Prompts, Every Time
         </h1>
