@@ -19,11 +19,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative flex min-h-fit w-full flex-col text-center text-white lg:min-h-7/8">
-      <img
-        src="/hero-image.png"
-        className="absolute top-0 left-0 -z-10 size-full object-cover"
-      />
+    <section className="flex w-full flex-col bg-[url(/hero-image.png)] bg-cover text-center text-white lg:min-h-7/8">
       <header className="w-full">
         <Nav />
       </header>
