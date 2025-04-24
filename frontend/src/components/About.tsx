@@ -306,7 +306,7 @@ const AboutHow = () => {
                   >
                     <h3 className="text-h4">{step.heading}</h3>
                     <div className="flex h-full flex-col-reverse items-center justify-between gap-8">
-                      <p className="px-4 sm:pb-16">{step.content}</p>
+                      <div className="px-4 sm:pb-16">{step.content}</div>
                       <img
                         src={step.imgSrc}
                         alt={step.imgAlt}

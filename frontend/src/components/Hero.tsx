@@ -19,7 +19,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="flex w-full flex-col bg-[url(/hero-image.png)] bg-cover text-center text-white lg:min-h-7/8">
+    <section className="flex w-full flex-col bg-[url(/hero-image.png)] bg-cover text-center text-white">
       <header className="w-full">
         <Nav />
       </header>
