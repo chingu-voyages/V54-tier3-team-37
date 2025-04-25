@@ -18,7 +18,12 @@ export default function Auth() {
         to="/"
         className="absolute top-0 left-0 py-8"
       >
-        <img src="/logo-color.png" />
+        <img
+          src="/PromptoLogo.svg"
+          width="192"
+          height="58"
+          alt="Prompto Logo"
+        />
       </Link>
       <Card className="relative w-full max-w-3xl gap-16 rounded-2xl border border-border p-6 shadow-xl shadow-prompto-primary/50">
         <Link to="/">

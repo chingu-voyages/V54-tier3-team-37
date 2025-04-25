@@ -47,7 +47,7 @@ const PromptHistory = () => {
     <div className="flex w-full flex-col gap-16 py-16">
       <div className="flex items-center justify-between gap-4">
         <Select onValueChange={(val) => setSortOrder(val)}>
-          <SelectTrigger className="h-[62px] w-[160px]">
+          <SelectTrigger className="h-[62px] w-[150px] text-[16px]">
             <SelectValue placeholder="Sort By" />
           </SelectTrigger>
           <SelectContent>

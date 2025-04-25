@@ -29,7 +29,12 @@ const Dashboard = () => {
       <div className="border-b-2 border-prompto-gray-light bg-white py-7 sm:px-7">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4">
           <Link to="/">
-            <img src="/logo-color.png" />
+            <img
+              src="/PromptoLogo.svg"
+              width="192"
+              height="58"
+              alt="Prompto Logo"
+            />
           </Link>
           {isLoggedIn && user && (
             <AvatarDropdown
