@@ -10,6 +10,7 @@ import { LanguageSelect } from '@/types/prompt';
 import { pentagramFields } from '@/utils/pentagramField';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import SpeechInputButton from './SpeechInputButton';
 import { Button } from './ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './ui/form';
@@ -33,7 +34,7 @@ const formSchema = z.object({
   language: z.string().default('EN'),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+export type FormValues = z.infer<typeof formSchema>;
 
 type PromptGenFormProps = {
   setFormValues: (values: FormValues) => void;
@@ -74,6 +75,8 @@ const PromptGenForm = ({
       language: 'EN',
     },
   });
+
+  const watchedLanguage = form.watch('language');
 
   const onSubmit = async (values: FormValues) => {
     setIsLoading(true);
@@ -139,6 +142,11 @@ const PromptGenForm = ({
                       {...field}
                     />
                   </FormControl>
+                  <SpeechInputButton
+                    fieldName={field.name} // Pass the field name (e.g., "role", "context")
+                    form={form} // Pass the form instance
+                    language={watchedLanguage} // Pass the currently selected language code ('EN', 'ES', 'FR')
+                  />
                   <FormMessage className="absolute -bottom-6 left-0" />
                 </FormItem>
               )}
@@ -211,6 +219,11 @@ const PromptGenForm = ({
                         {...field}
                       />
                     </FormControl>
+                    <SpeechInputButton
+                      fieldName={field.name} // Pass the field name (e.g., "role", "context")
+                      form={form} // Pass the form instance
+                      language={watchedLanguage} // Pass the currently selected language code ('EN', 'ES', 'FR')
+                    />
                     <FormMessage className="absolute -bottom-6 left-0" />
                   </FormItem>
                 )}
