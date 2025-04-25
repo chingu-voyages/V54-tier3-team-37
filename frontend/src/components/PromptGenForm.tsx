@@ -66,6 +66,7 @@ const PromptGenForm = ({
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
+    mode: 'onChange',
     defaultValues: {
       role: '',
       context: '',
@@ -235,7 +236,7 @@ const PromptGenForm = ({
           <Button
             type="button"
             variant="outline"
-            className="max-w-48 text-[20px] text-prompto-primary max-sm:w-full"
+            className={`max-w-48 text-[20px] max-sm:w-full ${!form.formState.isDirty ? 'cursor-not-allowed border-[#AFAEB0] text-[#AFAEB0]' : 'text-prompto-primary'} `}
             onClick={() => {
               form.reset();
               setFormValues({
@@ -248,14 +249,15 @@ const PromptGenForm = ({
               });
               setIsGenerated(false);
             }}
+            disabled={!form.formState.isDirty}
           >
             Clear Form
           </Button>
           <Button
             type="submit"
             variant="primary"
-            disabled={isLoading}
-            className="max-w-48 text-[20px] text-white max-sm:w-full"
+            className={`max-w-48 text-[20px] max-sm:w-full ${!form.formState.isValid || isLoading ? 'cursor-not-allowed bg-[#AFAEB0] text-white' : 'text-white'} `}
+            disabled={!form.formState.isValid || isLoading}
           >
             {isLoading ? 'Wait...' : isGenerated ? 'Regenerate' : 'Generate'}
           </Button>
