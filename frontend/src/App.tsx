@@ -8,7 +8,6 @@ import Dashboard from './components/Dashboard';
 import Footer from './components/Footer';
 import Hero from './components/Hero';
 import PrivateRoute from './components/PrivateRoute';
-// import PrivateRoute from './components/PrivateRoute';
 import PromptHistory from './components/PromptHistory';
 import { Toaster } from './components/ui/sonner';
 import PromptGenPage from './pages/PromptGenPage';
