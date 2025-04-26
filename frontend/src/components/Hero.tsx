@@ -19,15 +19,11 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative flex min-h-fit w-full flex-col text-center text-white lg:min-h-7/8">
-      <img
-        src="/hero-image.png"
-        className="absolute top-0 left-0 -z-10 size-full object-cover"
-      />
+    <section className="flex w-full flex-col bg-[url(/hero-image.png)] bg-cover text-center text-white">
       <header className="w-full">
         <Nav />
       </header>
-      <Container className="gap-16 py-20 lg:py-60">
+      <Container className="gap-16 py-20">
         <h1 className="text-h1 max-w-4xl">
           Unlock the Power of AI with Perfect Prompts, Every Time
         </h1>

@@ -58,7 +58,7 @@ class GoogleAuth {
   authenticate = async (req: Request) => {
     try {
       // Extract authorization code that will be exchanged for user tokens
-      const code = extractCode(req, (req.session as GSession).googleAuthState);
+      const code = extractCode(req, (req.session as GSession).google);
       // Because we are communicating directly with a Google server,
       // We can be confident that the token is valid
       const { tokens } = await this.getToken(code);

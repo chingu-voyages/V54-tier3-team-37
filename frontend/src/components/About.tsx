@@ -305,12 +305,12 @@ const AboutHow = () => {
                     className="flex h-fit flex-col items-center justify-between gap-12 pb-12 text-prompto-gray-dark"
                   >
                     <h3 className="text-h4">{step.heading}</h3>
-                    <div className="flex h-full flex-col items-center justify-between gap-8 max-sm:flex-col-reverse">
-                      <div className="px-4">{step.content}</div>
+                    <div className="flex h-full flex-col-reverse items-center justify-between gap-8">
+                      <div className="px-4 sm:pb-16">{step.content}</div>
                       <img
                         src={step.imgSrc}
                         alt={step.imgAlt}
-                        className="w-5/6 sm:pb-16"
+                        className="w-5/6"
                       />
                     </div>
                   </CarouselItem>

@@ -31,7 +31,12 @@ const Nav = () => {
             to="/"
             className="font-keania-one text-4xl lowercase"
           >
-            <img src="/logo-white.png" />
+            <img
+              src="/PromptoLogoWhite.svg"
+              width="192"
+              height="58"
+              alt="Prompto Logo"
+            />
           </Link>
         </div>
         {isLoggedIn ? (

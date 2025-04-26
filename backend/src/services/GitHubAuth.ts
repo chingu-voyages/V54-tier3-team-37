@@ -46,7 +46,7 @@ class GitHubAuth {
   authenticate = async (req: Request) => {
     try {
       // Extract authorization code that will be exchanged for user tokens
-      const code = extractCode(req, (req.session as GSession).githubAuthState);
+      const code = extractCode(req, (req.session as GSession).github);
       // Because we are communicating directly with a GitHub server,
       // We can be confident that the token is valid
       const access_token = await this.getAccessToken(String(code));
