@@ -3185,7 +3185,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-slot@npm:1.2.0, @radix-ui/react-slot@npm:^1.2.0":
+"@radix-ui/react-slot@npm:1.2.0":
   version: 1.2.0
   resolution: "@radix-ui/react-slot@npm:1.2.0"
   dependencies:
@@ -6652,7 +6652,7 @@ __metadata:
     "@radix-ui/react-select": "npm:^2.1.6"
     "@radix-ui/react-separator": "npm:^1.1.2"
     "@radix-ui/react-slider": "npm:^1.2.3"
-    "@radix-ui/react-slot": "npm:^1.2.0"
+    "@radix-ui/react-slot": "npm:1.2.0"
     "@radix-ui/react-tooltip": "npm:^1.1.8"
     "@reduxjs/toolkit": "npm:^2.6.1"
     "@tailwindcss/vite": "npm:^4.0.12"
