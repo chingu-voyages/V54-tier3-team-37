@@ -19,7 +19,7 @@ const buttonVariants = cva(
         ghost:
           'bg-transparent active:bg-[#AEA7FF] hover:bg-[#E6E5FF] text-prompto-gray-dark focus-visible:border-white focus-visible:ring-white/50',
         outline:
-          'bg-transparent active:bg-[#AEA7FF] hover:bg-[#E6E5FF] text-prompto-primary inset-ring-3 inset-ring-prompto-primary border-prompto-primary focus-visible:border-white focus-visible:ring-white/50',
+          'bg-transparent active:bg-[#AEA7FF] hover:bg-[#E6E5FF] text-prompto-primary border-[2px] border-prompto-primary focus-visible:border-white focus-visible:ring-white/50 disabled:border-[#AFAEB0] disabled:text-[#AFAEB0] disabled:opacity-100',
         destructive:
           'bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40',
         link: 'text-primary underline-offset-4 hover:underline',
@@ -27,6 +27,7 @@ const buttonVariants = cva(
       size: {
         default: 'px-5 py-3 text-button has-[>svg]:px-3',
         lg: 'px-6 py-4 text-h5 has-[>svg]:px-4',
+        icon: 'p-3 rounded-full',
       },
     },
     defaultVariants: {

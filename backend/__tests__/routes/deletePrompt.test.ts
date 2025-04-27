@@ -5,9 +5,9 @@ import {getSignedTestJWT, JWT_SECRET} from "../../__mocks__/getSignedTestJWT";
 import {createMockUser, MockUser} from "../../__mocks__/mockUsersRoute";
 import cookieParser from "cookie-parser";
 import {promptRoute} from "../../src/routes";
-import {findUserById} from "../../src/controllers";
 import {getUserById} from "../../src/controllers/userController";
 import {deletePromptService} from "../../src/services/promptService";
+import { authMiddleware } from "../../src/middleware";
 
 let app: express.Express;
 
@@ -16,11 +16,6 @@ jest.mock("../../src/services/promptService", () => ({
     checkDuplicatePrompt: jest.fn(),
     deletePromptService: jest.fn(),
 }));
-
-jest.mock("../../src/controllers/findOrCreateUser", () => ({
-    findUserById: jest.fn(),
-}));
-
 
 jest.mock("../../src/controllers/userController", () => ({
     getUserById: jest.fn(),
@@ -31,7 +26,7 @@ beforeAll(() => {
     app = express();
     app.use(cookieParser());
     app.use(express.json());
-    app.use("/prompts", promptRoute);
+    app.use("/prompts", authMiddleware, promptRoute);
 });
 
 
@@ -49,7 +44,6 @@ describe("prompt controller", () => {
         token = getSignedTestJWT(mockUser);
         promptId = "test-delete-id";
 
-        (findUserById as jest.Mock).mockResolvedValue(mockUser);
         (getUserById as jest.Mock).mockResolvedValue(mockUser);
     });
 

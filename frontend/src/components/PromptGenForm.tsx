@@ -10,6 +10,7 @@ import { LanguageSelect } from '@/types/prompt';
 import { pentagramFields } from '@/utils/pentagramField';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import SpeechInputButton from './SpeechInputButton';
 import { Button } from './ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './ui/form';
@@ -33,7 +34,7 @@ const formSchema = z.object({
   language: z.string().default('EN'),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+export type FormValues = z.infer<typeof formSchema>;
 
 type PromptGenFormProps = {
   setFormValues: (values: FormValues) => void;
@@ -65,6 +66,7 @@ const PromptGenForm = ({
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
+    mode: 'onChange',
     defaultValues: {
       role: '',
       context: '',
@@ -74,6 +76,8 @@ const PromptGenForm = ({
       language: 'EN',
     },
   });
+
+  const watchedLanguage = form.watch('language');
 
   const onSubmit = async (values: FormValues) => {
     setIsLoading(true);
@@ -108,7 +112,7 @@ const PromptGenForm = ({
               AI Prompt Generator Form
             </CardTitle>
           </CardHeader>
-          <CardContent className="grid grid-cols-2 gap-8 pb-8">
+          <CardContent className="grid gap-8 pb-8 lg:grid-cols-2">
             {/* Role field */}
             <FormField
               control={form.control}
@@ -135,10 +139,15 @@ const PromptGenForm = ({
                   <FormControl>
                     <Textarea
                       placeholder={pentagramFields[0].placeholder}
-                      className="h-24 resize-none"
+                      className="h-24 resize-none max-sm:h-32"
                       {...field}
                     />
                   </FormControl>
+                  <SpeechInputButton
+                    fieldName={field.name} // Pass the field name (e.g., "role", "context")
+                    form={form} // Pass the form instance
+                    language={watchedLanguage} // Pass the currently selected language code ('EN', 'ES', 'FR')
+                  />
                   <FormMessage className="absolute -bottom-6 left-0" />
                 </FormItem>
               )}
@@ -207,10 +216,15 @@ const PromptGenForm = ({
                     <FormControl>
                       <Textarea
                         placeholder={fieldDef.placeholder}
-                        className="h-24 resize-none"
+                        className="h-24 resize-none max-sm:h-32"
                         {...field}
                       />
                     </FormControl>
+                    <SpeechInputButton
+                      fieldName={field.name} // Pass the field name (e.g., "role", "context")
+                      form={form} // Pass the form instance
+                      language={watchedLanguage} // Pass the currently selected language code ('EN', 'ES', 'FR')
+                    />
                     <FormMessage className="absolute -bottom-6 left-0" />
                   </FormItem>
                 )}
@@ -218,11 +232,11 @@ const PromptGenForm = ({
             ))}
           </CardContent>
         </Card>
-        <div className="flex items-center justify-center gap-6">
+        <div className="flex w-full items-center justify-center gap-6 max-sm:flex-col">
           <Button
             type="button"
             variant="outline"
-            className="text-[20px] text-prompto-primary"
+            className={`max-w-48 text-[20px] max-sm:w-full ${!form.formState.isDirty ? 'cursor-not-allowed border-[#AFAEB0] text-[#AFAEB0]' : 'text-prompto-primary'} `}
             onClick={() => {
               form.reset();
               setFormValues({
@@ -235,15 +249,15 @@ const PromptGenForm = ({
               });
               setIsGenerated(false);
             }}
+            disabled={!form.formState.isDirty}
           >
             Clear Form
           </Button>
-
           <Button
             type="submit"
             variant="primary"
-            disabled={isLoading}
-            className="text-[20px] text-white"
+            className={`max-w-48 text-[20px] max-sm:w-full ${!form.formState.isValid || isLoading ? 'cursor-not-allowed bg-[#AFAEB0] text-white' : 'text-white'} `}
+            disabled={!form.formState.isValid || isLoading}
           >
             {isLoading ? 'Wait...' : isGenerated ? 'Regenerate' : 'Generate'}
           </Button>

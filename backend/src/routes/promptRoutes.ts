@@ -2,7 +2,7 @@ import {Router} from "express";
 import {promptController} from "../controllers/index.js";
 import {validateBody} from "../middleware/validateBody.js";
 import {validatePromptFields, validateSavePromptFields} from "../validation/index.js";
-import {authMiddleware, limiter as rateLimiter} from "../middleware/index.js";
+import {limiter as rateLimiter} from "../middleware/rateLimiter.js";
 
 
 export const promptRoute: Router = Router();
@@ -56,7 +56,7 @@ export const promptRoute: Router = Router();
  *       500:
  *         description: Server error
  */
-promptRoute.post("/generate", authMiddleware, rateLimiter, validateBody(validatePromptFields), promptController.generatePrompt);
+promptRoute.post("/generate", rateLimiter, validateBody(validatePromptFields), promptController.generatePrompt);
 
 /**
  * @swagger
@@ -117,7 +117,7 @@ promptRoute.post("/generate", authMiddleware, rateLimiter, validateBody(validate
  *       500:
  *         description: Server error
  */
-promptRoute.post("/save", authMiddleware, validateBody(validateSavePromptFields), promptController.savePrompt);
+promptRoute.post("/save", validateBody(validateSavePromptFields), promptController.savePrompt);
 
 /**
  * @swagger
@@ -188,7 +188,7 @@ promptRoute.post("/save", authMiddleware, validateBody(validateSavePromptFields)
  *                   type: string
  *                   example: Something went wrong
  */
-promptRoute.get("/:promptId", authMiddleware, promptController.getPrompt);
+promptRoute.get("/:promptId", promptController.getPrompt);
 
 /**
  * @swagger
@@ -255,7 +255,7 @@ promptRoute.get("/:promptId", authMiddleware, promptController.getPrompt);
  *                   type: string
  *                   example: Something went wrong
  */
-promptRoute.get("/", authMiddleware, promptController.getAllPrompts);
+promptRoute.get("/", promptController.getAllPrompts);
 
 /**
  * @swagger
@@ -343,43 +343,7 @@ promptRoute.get("/", authMiddleware, promptController.getAllPrompts);
  *                 error:
  *                   type: string
  */
-promptRoute.put("/:promptId", authMiddleware, promptController.updateScorePrompt);
-
-// /**
-//  * @swagger
-//  * /prompts:
-//  *   delete:
-//  *     summary: Delete all prompts for the authenticated user
-//  *     description: Removes all prompt records associated with the currently authenticated user.
-//  *     tags:
-//  *       - Prompts
-//  *     security:
-//  *       - cookieAuth: []
-//  *     responses:
-//  *       204:
-//  *         description: All prompts successfully deleted (no content returned)
-//  *       401:
-//  *         description: Unauthorized - user not authenticated
-//  *         content:
-//  *           application/json:
-//  *             schema:
-//  *               type: object
-//  *               properties:
-//  *                 error:
-//  *                   type: string
-//  *                   example: Unauthorized
-//  *       500:
-//  *         description: Internal server error
-//  *         content:
-//  *           application/json:
-//  *             schema:
-//  *               type: object
-//  *               properties:
-//  *                 error:
-//  *                   type: string
-//  *                   example: Something went wrong
-//  */
-// promptRoute.delete("/", authMiddleware, promptController.deleteAllPrompts);
+promptRoute.put("/:promptId", promptController.updateScorePrompt);
 
 /**
  * @swagger
@@ -443,6 +407,5 @@ promptRoute.put("/:promptId", authMiddleware, promptController.updateScorePrompt
  *                   type: string
  *                   example: Something went wrong
  */
-promptRoute.delete("/:promptId", authMiddleware, promptController.deletePrompt);
-
+promptRoute.delete("/:promptId", promptController.deletePrompt);
 

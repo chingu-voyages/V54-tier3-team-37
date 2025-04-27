@@ -7,7 +7,7 @@ import AuthWrapper from './components/AuthWrapper';
 import Dashboard from './components/Dashboard';
 import Footer from './components/Footer';
 import Hero from './components/Hero';
-// import PrivateRoute from './components/PrivateRoute';
+import PrivateRoute from './components/PrivateRoute';
 import PromptHistory from './components/PromptHistory';
 import { Toaster } from './components/ui/sonner';
 import PromptGenPage from './pages/PromptGenPage';
@@ -17,7 +17,7 @@ function App() {
   return (
     <Provider store={store}>
       <AuthWrapper />
-      <div className="font-inter flex h-screen w-screen flex-col items-center justify-start text-prompto-gray-dark">
+      <div className="font-inter flex h-screen flex-col items-center justify-start text-prompto-gray-dark">
         <Toaster />
         <Routes>
           <Route
@@ -37,9 +37,9 @@ function App() {
           <Route
             path="/dashboard"
             element={
-              // <PrivateRoute>
-              <Dashboard />
-              // </PrivateRoute>
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
             }
           >
             <Route

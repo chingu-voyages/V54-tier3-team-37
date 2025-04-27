@@ -7,17 +7,13 @@ import cookieParser from "cookie-parser";
 import {promptRoute} from "../../src/routes";
 import {generateGeminiResponse} from "../../src/services/geminiService";
 import {mockGeminiResponse, promptInput} from "../../__mocks__/mockPrompts";
-import {findUserById} from "../../src/controllers";
 import {getUserById} from "../../src/controllers/userController";
+import { authMiddleware } from "../../src/middleware";
 
 let app: express.Express;
 
 jest.mock("../../src/services/geminiService", () => ({
     generateGeminiResponse: jest.fn(),
-}));
-
-jest.mock("../../src/controllers/findOrCreateUser", () => ({
-    findUserById: jest.fn(),
 }));
 
 
@@ -30,7 +26,7 @@ beforeAll(() => {
     app = express();
     app.use(cookieParser());
     app.use(express.json());
-    app.use("/prompts", promptRoute);
+    app.use("/prompts", authMiddleware, promptRoute);
 });
 
 
@@ -46,7 +42,6 @@ describe("prompt controller", () => {
         mockUser = createMockUser();
         token = getSignedTestJWT(mockUser);
 
-        (findUserById as jest.Mock).mockResolvedValue(mockUser);
         (getUserById as jest.Mock).mockResolvedValue(mockUser);
     });
 
@@ -93,20 +88,20 @@ describe("prompt controller", () => {
         });
     });
 
-    it("should return 401 if user not found", async () => {
-        (findUserById as jest.Mock).mockResolvedValue(null);
+    it("should return 404 if user not found", async () => {
+        (getUserById as jest.Mock).mockResolvedValue(null);
 
         const res = await request(app)
             .post("/prompts/generate")
             .set("Cookie", [`token=${token}`])
             .send(promptInput);
 
-        expect(res.status).toBe(401);
+        expect(res.status).toBe(404);
         expect(res.body).toEqual({error: "User not found"});
     });
 
     it("should return 400 for missing fields", async () => {
-        const invalidPrompt = {...promptInput};
+        const invalidPrompt = {...promptInput} as Partial<typeof promptInput>;
         delete invalidPrompt.role;
 
         const res = await request(app)

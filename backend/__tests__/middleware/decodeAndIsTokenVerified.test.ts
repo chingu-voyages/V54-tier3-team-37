@@ -3,9 +3,6 @@ import { decode, tokenIsVerified } from "../../src/utils/verifyJWT";
 import { mockUsers } from "../../__mocks__/mockUsers";
 import { JWT_SECRET, getSignedTestJWT } from "../../__mocks__/getSignedTestJWT";
 
-// Do not print errors to console
-jest.spyOn(console, "error").mockImplementation(() => {});
-
 jest.mock("../../src/controllers/authController", () => ({
   githubSignIn: jest.fn((req, res) => res.sendStatus(200)),
   githubCallback: jest.fn((req, res) => res.sendStatus(200)),

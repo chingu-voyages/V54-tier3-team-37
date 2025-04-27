@@ -6,20 +6,15 @@ import {createMockUser, MockUser} from "../../__mocks__/mockUsersRoute";
 import cookieParser from "cookie-parser";
 import {promptRoute} from "../../src/routes";
 import {getMockPromptList} from "../../__mocks__/mockPrompts";
-import {findUserById} from "../../src/controllers";
 import {getUserById} from "../../src/controllers/userController";
 import {getAllPromptsService} from "../../src/services/promptService";
+import { authMiddleware } from "../../src/middleware";
 
 let app: express.Express;
 
 jest.mock("../../src/services/promptService", () => ({
     getAllPromptsService: jest.fn(),
 }));
-
-jest.mock("../../src/controllers/findOrCreateUser", () => ({
-    findUserById: jest.fn(),
-}));
-
 
 jest.mock("../../src/controllers/userController", () => ({
     getUserById: jest.fn(),
@@ -30,7 +25,7 @@ beforeAll(() => {
     app = express();
     app.use(cookieParser());
     app.use(express.json());
-    app.use("/prompts", promptRoute);
+    app.use("/prompts", authMiddleware, promptRoute);
 });
 
 
@@ -46,7 +41,6 @@ describe("prompt controller", () => {
         mockUser = createMockUser();
         token = getSignedTestJWT(mockUser);
 
-        (findUserById as jest.Mock).mockResolvedValue(mockUser);
         (getUserById as jest.Mock).mockResolvedValue(mockUser);
     });
 
@@ -88,14 +82,14 @@ describe("prompt controller", () => {
         });
     });
 
-    it("should return 401 if user is not found", async () => {
-        (findUserById as jest.Mock).mockResolvedValue(null);
+    it("should return 404 if user is not found", async () => {
+        (getUserById as jest.Mock).mockResolvedValue(null);
 
         const response = await request(app)
             .get("/prompts")
             .set("Cookie", [`token=${token}`]);
 
-        expect(response.status).toBe(401);
+        expect(response.status).toBe(404);
         expect(response.body).toEqual({
             error: "User not found",
         });

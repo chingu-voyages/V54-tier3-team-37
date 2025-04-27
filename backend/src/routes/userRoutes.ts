@@ -1,5 +1,4 @@
 import {Request, Response, Router} from "express";
-import {authMiddleware} from "../middleware/index.js";
 import {deleteUserById, getUserById} from "../controllers/userController.js";
 import {mapUserToPublic} from "../types/mapper/userMapper.js";
 
@@ -43,7 +42,7 @@ export const userRoute: Router = Router({});
  *       500:
  *         description: Internal server error
  */
-userRoute.get("/me", authMiddleware, async (req: Request, res: Response): Promise<void> => {
+userRoute.get("/me", async (req: Request, res: Response): Promise<void> => {
     try {
         const userId = req.userId;
 
@@ -95,7 +94,7 @@ userRoute.get("/me", authMiddleware, async (req: Request, res: Response): Promis
  *                   type: string
  *                   example: Internal server error
  */
-userRoute.delete("/me", authMiddleware, async (req: Request, res: Response): Promise<void> => {
+userRoute.delete("/me", async (req: Request, res: Response): Promise<void> => {
     try {
         const userId = req.userId;
 
