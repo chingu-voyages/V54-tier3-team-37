@@ -1,5 +1,17 @@
-export const formatDateTime = (isoString: string): string => {
+export const formatDateTime = (
+  isoString: string,
+  optionsType: 'datetime' | 'date' = 'datetime'
+): string => {
   const date = new Date(isoString);
+
+  if (optionsType === 'date') {
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    };
+    return date.toLocaleDateString('en-US', options);
+  }
 
   const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',

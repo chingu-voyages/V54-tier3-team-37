@@ -1,14 +1,17 @@
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 import { useAppSelector } from '@/store/hooks';
 
 import Container from './Container';
 import Nav from './Nav';
 import { Button } from './ui/button';
+import { Dialog, DialogContent, DialogTrigger } from './ui/dialog';
 
 const Hero = () => {
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
 
   const handleGetStartedClick = () => {
     if (isLoggedIn) {
@@ -28,7 +31,7 @@ const Hero = () => {
           Unlock the Power of AI with Perfect Prompts, Every Time
         </h1>
         <p className="text-h5 max-w-2xl">
-          Effortlessly craft AI prompts that delivery consistent, high-quality results—no experience
+          Effortlessly craft AI prompts that deliver consistent, high-quality results—no experience
           required.
         </p>
         <div className="flex items-center gap-4 max-sm:flex-col sm:gap-8">
@@ -40,12 +43,34 @@ const Hero = () => {
           >
             Get Started
           </Button>
-          <Button
-            variant="ghost"
-            size="lg"
+
+          <Dialog
+            open={open}
+            onOpenChange={setOpen}
           >
-            See How It Works
-          </Button>
+            <DialogTrigger asChild>
+              <Button
+                variant="ghost"
+                size="lg"
+                className="max-sm:w-full"
+                onClick={() => setOpen(true)}
+              >
+                See How It Works
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="w-[90vw] max-w-6xl p-4">
+              <div className="aspect-video w-full">
+                <iframe
+                  className="h-full w-full rounded-lg"
+                  src="https://www.youtube.com/embed/1KSk7SBugYM"
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </Container>
     </section>
