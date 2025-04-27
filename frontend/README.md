@@ -20,8 +20,6 @@
 - [Project Setup](#project-setup)
 - [Start the application with Vite](#start-the-application-with-vite)
 - [Test with Jest & React Testing Library](#test-with-jest--react-testing-library)
-- [Continuous Integration](#continuous-integration)
-- [Backend Developers](#backend-developers) <!-- Keeping this link as it refers to the backend team -->
 - [Frontend Developers](#frontend-developers)
 
 ---
@@ -30,7 +28,7 @@
 
 Prompto is the frontend application designed to be the user interface for interacting with the Prompto backend. Its primary goal is to provide a seamless and intuitive experience for users to generate high-quality prompts for Large Language Models (LLMs) based on the Pentagram framework. The frontend focuses on presenting a clean form for structured input, displaying generated results, and managing prompt history, ensuring users can efficiently create and organize their interactions with AI models.
 
-Prompto is built with React and TypeScript, styled using Tailwind CSS for a utility-first approach. It utilizes React Router for navigation and Redux Toolkit for state management, particularly for handling authentication status and managing the prompt generation/history data fetched from the backend. The application is built to be responsive and user-friendly, complementing the backend's powerful prompt generation capabilities.
+Prompto is built with **React 19** and **TypeScript**, styled using **Tailwind CSS** for a utility-first approach. It utilizes **React Router v6** for navigation and **Redux Toolkit** for state management, particularly for handling authentication status and managing the prompt generation/history data fetched from the backend. The application is built to be responsive and user-friendly, complementing the backend's powerful prompt generation capabilities. It leverages **Vite** as its build tool for a fast development experience.
 
 ---
 
@@ -38,7 +36,7 @@ Prompto is built with React and TypeScript, styled using Tailwind CSS for a util
 
 | Feature                    | Description                                                                  |
 | -------------------------- | ---------------------------------------------------------------------------- |
-| **React 18+**              | Modern React framework for a declarative and component-based UI.             |
+| **React 19**               | Latest stable React version for enhanced performance and features.           |
 | **TypeScript**             | Strong typing for improved code reliability and developer experience.        |
 | **Tailwind CSS**           | Utility-first CSS framework for rapid and consistent styling.                |
 | **Redux Toolkit**          | Simplified Redux state management for auth and prompt data.                  |
@@ -53,93 +51,59 @@ Prompto is built with React and TypeScript, styled using Tailwind CSS for a util
 | **Prompt History View**    | Displays saved prompts with details, rating, copy, edit, and delete options. |
 | **Authentication Flow**    | Integrates with backend OAuth for secure access to protected routes.         |
 | **Loading & Error States** | Provides clear visual feedback during data fetching and on errors.           |
+| **Vite**                   | Fast development server and build tool.                                      |
 
 ---
 
 ## <a id="live-demo"></a>📺 Live Demo
 
-Explore the live application: [Frontend Live Demo](https://YOUR_FRONTEND_DEPLOYMENT_URL_HERE.netlify.app/)
-
-**(Note: Replace `YOUR_FRONTEND_DEPLOYMENT_URL_HERE.netlify.app` with your actual deployed frontend URL.)**
+Explore the live application: [Frontend Live Demo](https://prompto37.com)
 
 ---
 
 ## <a id="technologies--dependencies-used"></a>📦 Technologies & Dependencies used
 
-- **UI Framework:** `react`, `react-dom`
-- **Styling:** `tailwindcss`, `postcss`, `autoprefixer`
-- **State Management:** `@reduxjs/toolkit`, `react-redux`
-- **Routing:** `react-router-dom`
-- **Form Management & Validation:** `react-hook-form`, `zod`, `@hookform/resolvers/zod`
-- **UI Components:** `@radix-ui/*` (via shadcn/ui), various `@/components/ui/*`
-- **Icons:** `lucide-react`
-- **Toasts:** `sonner`
-- **Utility:** `clsx`, `tailwind-merge`, `@/lib/cn.ts`, `@/utils/formatDate.ts`, `@/utils/getCookie.ts`, `@/utils/pentagramField.ts`
-- **API Interaction:** `fetch` (native browser API)
-- **Development:** `vite`, `@vitejs/plugin-react`
-- **Testing:** `jest`, `@testing-library/react`, `@testing-library/jest-dom`, `@testing-library/user-event`, `babel-jest`, `identity-obj-proxy`, `@types/dom-speech-recognition`
-- **Code Quality:** `eslint`, `prettier`, `husky`, `lint-staged`
-- **TypeScript:** `typescript`, `@types/react`, `@types/react-dom`, `@types/jest`
+**Dependencies:**
 
-<br>
+- `@hookform/resolvers`: Zod resolver for React Hook Form validation.
+- `@radix-ui/*`: Core libraries for Shadcn/ui components (Accordion, Dialog, Dropdown Menu, etc.).
+- `@reduxjs/toolkit`: Essential tools for efficient Redux development.
+- `@tailwindcss/vite`: Vite plugin for Tailwind CSS.
+- `class-variance-authority`: Utility for creating component variants (used by shadcn/ui).
+- `clsx`: Tiny utility for conditionally joining class names.
+- `embla-carousel-react`: Carousel library for potential use in the UI.
+- `lucide-react`: Modern, accessible, and consistent icon library.
+- `next-themes`: Context provider for managing dark/light themes (might be used).
+- `react`, `react-dom` (**React 19**): Core React libraries.
+- `react-hook-form`: Library for managing form state and validation.
+- `react-icons`: Another popular icon library (suggests you might use icons from here too).
+- `react-redux`: Official React bindings for Redux.
+- `react-router-dom`: Declarative routing for React web applications.
+- `sonner`: A modern toast library.
+- `tailwind-merge`: Utility to confidently merge Tailwind CSS classes without style conflicts.
+- `tailwindcss`: The core Tailwind CSS framework.
+- `tailwindcss-animate`: Tailwind plugin for CSS animations (used by shadcn/ui).
+- `zod`: TypeScript-first schema declaration and validation library.
 
-**dependencies:**
+**DevDependencies:**
 
-- `@hookform/resolvers/zod`
-- `@lucide/react`
-- `@radix-ui/react-accordion`
-- `@radix-ui/react-alert-dialog`
-- `@radix-ui/react-avatar`
-- `@radix-ui/react-dialog`
-- `@radix-ui/react-dropdown-menu`
-- `@radix-ui/react-label`
-- `@radix-ui/react-select`
-- `@radix-ui/react-separator`
-- `@radix-ui/react-slot`
-- `@radix-ui/react-slider`
-- `@radix-ui/react-tooltip`
-- `@reduxjs/toolkit`
-- `class-variance-authority`
-- `clsx`
-- `lucide-react`
-- `react`
-- `react-dom`
-- `react-hook-form`
-- `react-redux`
-- `react-router-dom`
-- `sonner`
-- `tailwind-merge`
-- `tailwindcss-animate`
-- `zod`
-
-**devDependencies:**
-
-- `@testing-library/jest-dom`
-- `@testing-library/react`
-- `@testing-library/user-event`
-- `@types/dom-speech-recognition`
-- `@types/jest`
-- `@types/node`
-- `@types/react`
-- `@types/react-dom`
-- `@typescript-eslint/eslint-plugin`
-- `@typescript-eslint/parser`
-- `@vitejs/plugin-react`
-- `autoprefixer`
-- `babel-jest`
-- `eslint`
-- `eslint-config-prettier`
-- `eslint-plugin-react-hooks`
-- `eslint-plugin-react-refresh`
-- `identity-obj-proxy`
-- `jest`
-- `jest-environment-jsdom`
-- `postcss`
-- `prettier`
-- `prettier-plugin-tailwindcss`
-- `ts-jest`
-- `typescript`
-- `vite`
+- `@babel/*`: Babel presets for compiling React and TypeScript code.
+- `@eslint/js`: ESLint core configuration.
+- `@testing-library/*`: Libraries for testing React components (DOM, React, User Event, Jest DOM matchers).
+- `@types/*`: TypeScript type definitions for various libraries.
+- `@vitejs/plugin-react-swc`: Vite plugin for React using SWC for faster builds.
+- `autoprefixer`, `postcss`: Tools for processing CSS, including adding vendor prefixes.
+- `babel-jest`: Babel integration with Jest.
+- `dom-accessibility-api`: Utilities for querying the DOM based on accessibility properties.
+- `eslint`, `eslint-plugin-react-hooks`, `eslint-plugin-react-refresh`: ESLint for code linting and specific React rules.
+- `globals`: Provides global variables for ESLint configurations.
+- `identity-obj-proxy`: Mocks CSS module imports in Jest tests.
+- `jest`, `jest-environment-jsdom`, `ts-jest`: Jest testing framework, JSDOM environment, and TypeScript preprocessor for Jest.
+- `prettier`, `prettier-plugin-tailwindcss`: Code formatter and a plugin for sorting Tailwind classes.
+- `ts-node`: TypeScript execution environment for Node.js (might be used in scripts or config).
+- `typescript`: The TypeScript language.
+- `typescript-eslint`: ESLint parser and plugins for TypeScript.
+- `vite`: The Vite build tool.
 
 ---
 
@@ -155,8 +119,9 @@ Explore the live application: [Frontend Live Demo](https://YOUR_FRONTEND_DEPLOYM
 - The Prompt Generation page (`/dashboard/generate`) uses React Hook Form with Zod validation for structured input based on the Pentagram format.
 - Speech-to-Text input (Proof-of-Concept) is integrated using the Web Speech API via the `SpeechInputButton` component, allowing users to dictate into form fields directly within the browser.
 - The Prompt History page (`/dashboard/history`) fetches the user's saved prompts from the backend and displays them in an expandable list. Each prompt includes details, rating, copy, edit, and delete options.
-- State updates for prompt history (fetching, deleting, rating) are handled via Redux Toolkit async thunks that interact with the backend API.
+- State updates for prompt history (fetching, deleting, rating) are handled via Redux Toolkit async thunks that interact with the backend API using the native `fetch` API.
 - Visual feedback for asynchronous operations (loading, errors) and user actions (copying, saving rating) is provided using Sonner toasts.
+- Styling is handled using Tailwind CSS, often applied via reusable components from `shadcn/ui`.
 
 ---
 
@@ -175,13 +140,11 @@ cd frontend
 yarn install
 ```
 
-- Create a `.env` file with the following variable:
+- Create a `.env` file at the root of the `frontend` directory with the following variable:
 
 | Variable          | Description                               |
 | ----------------- | ----------------------------------------- |
 | **VITE_BASE_URL** | The base URL of the deployed backend API. |
-
-**(Note: Replace `yarn install` with `npm install` or `pnpm install` if you are not using Yarn workspaces.)**
 
 ---
 
@@ -193,7 +156,7 @@ To start the application, navigate to the frontend folder and run:
 yarn dev
 ```
 
-Or, to start the application from the root folder (if using Yarn workspaces), run:
+Or, if using Yarn workspaces from the project root, run:
 
 ```bash
 yarn workspace frontend dev
@@ -211,7 +174,7 @@ To run the tests, navigate to the frontend folder and run:
 yarn test
 ```
 
-Or, to run the tests from the root folder (if using Yarn workspaces), run:
+Or, if using Yarn workspaces from the project root, run:
 
 ```bash
 yarn workspace frontend test
@@ -219,42 +182,14 @@ yarn workspace frontend test
 
 ---
 
-## <a id="continuous-integration"></a> &nbsp;<img src="https://img.icons8.com/ios11/512/FFFFFF/github.png" alt="GitHub Logo" width="30"/>&nbsp; Continuous Integration
-
-A GitHub workflow is set up to ensure code quality and test coverage on pushes and pull requests.
-
-The workflow typically includes:
-
-```yaml
-# Example steps (adjust based on actual workflow)
-# Install dependencies
-# Linting (ESLint)
-# Type checking (TypeScript)
-# Run tests (Jest)
-```
-
----
-
-## <a id="backend-developers"></a>🖳 Backend developers
-
-Voyage 54 - team 37, May-April 2025
-
-- Aigul Yermagambetova: [GitHub](https://github.com/aigul-ermak) / [LinkedIn](https://www.linkedin.com/in/aigul-ermak/)
-
-_Key Contributions:_ Docker, Prisma ORM, Gemini API, Swagger UI
-
-- Veronika Kolesnikova: [GitHub](https://github.com/kweeuhree) / [LinkedIn](https://www.linkedin.com/in/vekolesnikova)
-
-_Key Contributions:_ OAuth, project configuration
-
----
-
 ## <a id="frontend-developers"></a>🎨 Frontend developers
 
 Voyage 54 - team 37, May-April 2025
 
-- Brendan Schatzki: [GitHub](https://github.com/YOUR_GITHUB_HANDLE) / [LinkedIn](https://www.linkedin.com/in/YOUR_LINKEDIN_URL)
+- Brendan Schatzki: [GitHub](https://github.com/BKSchatzki) / [LinkedIn](https://www.linkedin.com/in/bkschatzki)
 
-_Key Contributions:_ React architecture, Redux Toolkit state management, React Router setup, Form implementation (React Hook Form/Zod), Component development (Hero, Dashboard, PromptGenForm, PromptHistory, SpeechInputButton, etc.), API integration (fetch), Testing (Jest/React Testing Library), Styling (Tailwind CSS/shadcn/ui)
+_Key Contributions:_ Form implementation, component development, styling
 
-**(Note: Replace `YOUR_GITHUB_HANDLE` and `YOUR_LINKEDIN_URL` with your actual GitHub handle and LinkedIn profile URL.)**
+- Luis Castillo: [GitHub](https://github.com/LuisCastilloKC) / [LinkedIn](https://www.linkedin.com/in/luis-castillokc/)
+
+_Key Contributions:_ React architecture, Redux Toolkit state management, React Router setup, API integration, testing
