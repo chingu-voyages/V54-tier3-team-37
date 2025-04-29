@@ -12,62 +12,83 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
  * @returns {Promise<GeminiResponseType>} - A promise that resolves to an object containing the generated text and its summary.
  */
 export const generateGeminiResponse = async (promptText: string): Promise<GeminiResponseType> => {
-    try {
-        const model = genAI.getGenerativeModel({model: "gemini-2.0-flash"});
+    // try {
 
-        const result = await model.generateContent({
-            contents: [
-                {
+    const modelVersions = [
+        "gemini-2.0-flash",
+        "gemini-2.0-flash-001",
+        "gemini-2.0-flash-lite",
+        "gemini-1.5-flash",
+        "gemini-1.5-flash-8b",
+        "gemini-1.5-pro"
+    ];
+
+    for (const modelVersion of modelVersions) {
+        try {
+            const model = genAI.getGenerativeModel({model: modelVersion});
+
+            const result = await model.generateContent({
+                contents: [
+                    {
+                        role: "user",
+                        parts: [{text: promptText}],
+                    },
+                ],
+            });
+
+            const text = stripMarkdown(result.response.text());
+
+            const summaryResult = await model.generateContent({
+                contents: [{
                     role: "user",
-                    parts: [{text: promptText}],
-                },
-            ],
-        });
-
-        const text = stripMarkdown(result.response.text());
-
-        const summaryResult = await model.generateContent({
-            contents: [{
-                role: "user",
-                parts: [{
-                    text: `
-                    You are a smart assistant. Based on the following:
-                    
-                    You are a smart assistant. Based on the interaction below, summarize it in no more than 35 words. 
-                    Avoid using phrases like "the user" or "AI." Write a brief, neutral description of the request and response.
-                    
-                    Prompt:
-                    ${promptText}
-                    
-                    Response:
-                    ${text}
-                    `.trim()
+                    parts: [{
+                        text: `
+                        You are a smart assistant. Based on the interaction below, summarize it in no more than 35 words. 
+                        Avoid using phrases like "the user" or "AI." Write a brief, neutral description of the request and response.
+                        
+                        Prompt:
+                        ${promptText}
+                        
+                        Response:
+                        ${text}
+                        `.trim()
+                    }],
                 }],
-            }],
-        });
+            });
 
-        const summary = summaryResult.response.text().trim();
+            const summary = summaryResult.response.text().trim();
 
-        return {text, summary};
-    } catch (error) {
-        console.error("Gemini Error:", error);
-        throw error;
+            return {text, summary};
+
+        } catch (error: any) {
+            if (error?.status === 500 || error?.status === 503) {
+                console.warn(`Model ${modelVersion} failed with status ${error.status}. Trying next...`);
+                continue; // Try next model
+            }
+
+            console.error("Gemini Fatal Error:", error);
+            throw error;
+        }
+
     }
+
+    throw new Error("All Gemini models failed.");
+
 };
 
 export const generateGeminiAudioResponse = async (
-    { audioBuffer, mimeType }: AudioRequest
+    {audioBuffer, mimeType}: AudioRequest
 ): Promise<string> => {
     try {
 
-        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+        const model = genAI.getGenerativeModel({model: "gemini-2.0-flash"});
         const base64Audio = audioBuffer.toString('base64');
 
         const result = await model.generateContent({
             contents: [{
                 role: "user",
                 parts: [
-                    { text: "Generate a transcript of this audio:" },
+                    {text: "Generate a transcript of this audio:"},
                     {
                         inlineData: {
                             data: base64Audio,
@@ -85,7 +106,6 @@ export const generateGeminiAudioResponse = async (
         throw error;
     }
 };
-
 
 
 /**
