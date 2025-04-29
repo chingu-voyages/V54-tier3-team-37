@@ -6,121 +6,128 @@ import {AudioRequest} from "../types/audioTypes.js";
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 /**
- * Generates a response from the Gemini AI model based on the provided prompt text.
+ * List of Gemini AI model versions to attempt in order of preference.
  *
- * @param {string} promptText - The text prompt to send to the Gemini AI model.
- * @returns {Promise<GeminiResponseType>} - A promise that resolves to an object containing the generated text and its summary.
+ * The system will try each model sequentially until a successful response is received,
+ * starting with the fastest and latest versions and falling back to older or alternative models if necessary.
+ *
+ * This ordering is designed to maximize reliability and performance.
  */
-export const generateGeminiResponse = async (promptText: string): Promise<GeminiResponseType> => {
-    // try {
+const MODEL_VERSIONS = [
+    "gemini-2.0-flash",
+    "gemini-2.0-flash-001",
+    "gemini-2.0-flash-lite",
+    "gemini-1.5-flash",
+    "gemini-1.5-flash-8b",
+    "gemini-1.5-pro",
+];
 
-    const modelVersions = [
-        "gemini-2.0-flash",
-        "gemini-2.0-flash-001",
-        "gemini-2.0-flash-lite",
-        "gemini-1.5-flash",
-        "gemini-1.5-flash-8b",
-        "gemini-1.5-pro"
-    ];
-
-    for (const modelVersion of modelVersions) {
+/**
+ * Attempts to generate content from Gemini AI by trying multiple model versions in order.
+ *
+ * Iterates through the predefined list of model versions, sending the provided prompt to each model.
+ * If a model responds successfully, returns the stripped (plain text) result.
+ * If a model fails with a 500 or 503 error, automatically retries with the next model.
+ * Throws a fatal error immediately for other types of failures, or if all models fail.
+ *
+ * @param {any} prompt - The prompt payload to send to the AI model.
+ * @returns {Promise<string>} - The generated plain text content.
+ * @throws {Error} - Throws if all models fail or a non-retryable error occurs.
+ */
+async function tryGenerateContent(
+    prompt: any,
+): Promise<string> {
+    for (const modelVersion of MODEL_VERSIONS) {
         try {
-            const model = genAI.getGenerativeModel({model: modelVersion});
-
-            const result = await model.generateContent({
-                contents: [
-                    {
-                        role: "user",
-                        parts: [{text: promptText}],
-                    },
-                ],
-            });
-
-            const text = stripMarkdown(result.response.text());
-
-            const summaryResult = await model.generateContent({
-                contents: [{
-                    role: "user",
-                    parts: [{
-                        text: `
-                        You are a smart assistant. Based on the interaction below, summarize it in no more than 35 words. 
-                        Avoid using phrases like "the user" or "AI." Write a brief, neutral description of the request and response.
-                        
-                        Prompt:
-                        ${promptText}
-                        
-                        Response:
-                        ${text}
-                        `.trim()
-                    }],
-                }],
-            });
-
-            const summary = summaryResult.response.text().trim();
-
-            return {text, summary};
-
+            const model = genAI.getGenerativeModel({ model: modelVersion });
+            const result = await model.generateContent({ contents: [prompt] });
+            return stripMarkdown(result.response.text());
         } catch (error: any) {
             if (error?.status === 500 || error?.status === 503) {
                 console.warn(`Model ${modelVersion} failed with status ${error.status}. Trying next...`);
-                continue; // Try next model
+                continue;
             }
-
-            console.error("Gemini Fatal Error:", error);
+            console.error(`Gemini Fatal Error [${modelVersion}]:`, error);
             throw error;
         }
-
     }
-
     throw new Error("All Gemini models failed.");
+}
 
+
+/**
+ * Generates a detailed AI response and a concise summary based on a given prompt text.
+ *
+ * Constructs two prompts:
+ * - One to generate a full response from Gemini AI.
+ * - Another to request a summarized version of the interaction in no more than 35 words,
+ *   avoiding references to "user" or "AI."
+ *
+ * Sends both prompts through the model retry mechanism to ensure robustness against failures.
+ *
+ * @param {string} promptText - The input text used to generate the AI response.
+ * @returns {Promise<GeminiResponseType>} - An object containing both the generated text and its summary.
+ * @throws {Error} - Throws if all model versions fail for either the full response or the summary.
+ */
+export const generateGeminiResponse = async (promptText: string): Promise<GeminiResponseType> => {
+    const prompt = {
+        role: "user",
+        parts: [{ text: promptText }],
+    };
+
+    const text = await tryGenerateContent(prompt);
+
+    const summaryPrompt = {
+        role: "user",
+        parts: [{
+            text: `
+        You are a smart assistant. Based on the interaction below, summarize it in no more than 35 words. 
+        Avoid using phrases like "the user" or "AI." Write a brief, neutral description of the request and response.
+
+        Prompt:
+        ${promptText}
+
+        Response:
+        ${text}
+      `.trim(),
+        }],
+    };
+
+    const summary = await tryGenerateContent(summaryPrompt);
+
+    return { text, summary };
 };
 
+/**
+ * Generates a transcript from the provided audio input using the Gemini AI model.
+ *
+ * Converts the audio buffer to a base64-encoded string, builds a prompt requesting a transcription,
+ * and attempts to generate a transcript by sending the prompt to Gemini AI.
+ * Automatically retries across multiple model versions if initial attempts fail.
+ *
+ * @param {AudioRequest} param0 - An object containing the audio buffer and its MIME type.
+ * @returns {Promise<string>} - The generated transcript as plain text.
+ * @throws {Error} - Throws an error if all model attempts fail.
+ */
 export const generateGeminiAudioResponse = async (
     {audioBuffer, mimeType}: AudioRequest
 ): Promise<string> => {
-    const modelVersions = [
-        "gemini-2.0-flash",
-        "gemini-2.0-flash-001",
-        "gemini-2.0-flash-lite",
-        "gemini-1.5-flash",
-        "gemini-1.5-flash-8b",
-        "gemini-1.5-pro"
-    ];
-
     const base64Audio = audioBuffer.toString('base64');
-    for (const modelVersion of modelVersions) {
-        try {
 
-            const model = genAI.getGenerativeModel({model: modelVersion});
+    const audioPrompt = {
+        role: "user",
+        parts: [
+            { text: "Generate a transcript of this audio:" },
+            {
+                inlineData: {
+                    data: base64Audio,
+                    mimeType,
+                },
+            },
+        ],
+    };
 
-            const result = await model.generateContent({
-                contents: [{
-                    role: "user",
-                    parts: [
-                        {text: "Generate a transcript of this audio:"},
-                        {
-                            inlineData: {
-                                data: base64Audio,
-                                mimeType
-                            }
-                        }
-                    ]
-                }]
-            });
-
-            return stripMarkdown(result.response.text());
-
-        } catch (error: any) {
-            if (error?.status === 500 || error?.status === 503) {
-                console.warn(`Model ${modelVersion} failed with status ${error.status}. Trying next...`);
-                continue; // Try next model
-            }
-            console.error("Gemini Audio Fatal Error:", error);
-            throw error;
-        }
-    }
-    throw new Error("All Gemini audio models failed.");
+    return await tryGenerateContent(audioPrompt);
 };
 
 
