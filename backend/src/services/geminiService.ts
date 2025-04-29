@@ -111,7 +111,7 @@ export const generateGeminiAudioResponse = async (
 
             return stripMarkdown(result.response.text());
 
-        } catch (error) {
+        } catch (error: any) {
             if (error?.status === 500 || error?.status === 503) {
                 console.warn(`Model ${modelVersion} failed with status ${error.status}. Trying next...`);
                 continue; // Try next model
