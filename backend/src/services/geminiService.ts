@@ -79,32 +79,48 @@ export const generateGeminiResponse = async (promptText: string): Promise<Gemini
 export const generateGeminiAudioResponse = async (
     {audioBuffer, mimeType}: AudioRequest
 ): Promise<string> => {
-    try {
+    const modelVersions = [
+        "gemini-2.0-flash",
+        "gemini-2.0-flash-001",
+        "gemini-2.0-flash-lite",
+        "gemini-1.5-flash",
+        "gemini-1.5-flash-8b",
+        "gemini-1.5-pro"
+    ];
 
-        const model = genAI.getGenerativeModel({model: "gemini-2.0-flash"});
-        const base64Audio = audioBuffer.toString('base64');
+    const base64Audio = audioBuffer.toString('base64');
+    for (const modelVersion of modelVersions) {
+        try {
 
-        const result = await model.generateContent({
-            contents: [{
-                role: "user",
-                parts: [
-                    {text: "Generate a transcript of this audio:"},
-                    {
-                        inlineData: {
-                            data: base64Audio,
-                            mimeType
+            const model = genAI.getGenerativeModel({model: modelVersion});
+
+            const result = await model.generateContent({
+                contents: [{
+                    role: "user",
+                    parts: [
+                        {text: "Generate a transcript of this audio:"},
+                        {
+                            inlineData: {
+                                data: base64Audio,
+                                mimeType
+                            }
                         }
-                    }
-                ]
-            }]
-        });
+                    ]
+                }]
+            });
 
-        return stripMarkdown(result.response.text());
+            return stripMarkdown(result.response.text());
 
-    } catch (error) {
-        console.error("Gemini Audio Error:", error);
-        throw error;
+        } catch (error) {
+            if (error?.status === 500 || error?.status === 503) {
+                console.warn(`Model ${modelVersion} failed with status ${error.status}. Trying next...`);
+                continue; // Try next model
+            }
+            console.error("Gemini Audio Fatal Error:", error);
+            throw error;
+        }
     }
+    throw new Error("All Gemini audio models failed.");
 };
 
 
