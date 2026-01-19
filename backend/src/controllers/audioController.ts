@@ -1,22 +1,8 @@
 import {Request, Response} from "express";
-import {generateGeminiAudioResponse} from "../services/geminiService.js";
 
 
 export const transcribePrompt = async (req: Request, res: Response) => {
-    try {
-        if (!req.file) {
-           res.status(400).json({error: 'No audio file provided'});
-           return;
-        }
-
-        const result = await generateGeminiAudioResponse({
-            audioBuffer: req.file.buffer,
-            mimeType: req.file.mimetype
-        });
-
-        res.json(result);
-    } catch (error) {
-        console.error('Audio transcription error:', error);
-        res.status(500).json({error: 'Failed to transcribe audio'});
-    }
+    // This endpoint is currently unused as we use Chrome's native Speech Recognition API
+    // on the frontend for client-side transcription
+    res.status(501).json({error: 'This endpoint is not currently implemented'});
 };
